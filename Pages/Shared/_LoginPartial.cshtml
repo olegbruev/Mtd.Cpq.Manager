@@ -1,0 +1,133 @@
+@using Microsoft.AspNetCore.Identity
+@using Mtd.Cpq.Manager.Services
+
+@inject SignInManager<WebAppUser> SignInManager
+@inject UserHandler UserHandler
+@inject ConfigHandler ConfigHandler
+
+
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> Localizer;
+
+@{
+    string OrderMakerLink = ConfigHandler.options.Value.OrderMakerLink;
+    var user = await UserHandler.GetUserAsync(User);
+    if (user != null)
+    {
+        var list = await UserHandler.GetClaimsAsync(user);
+
+        if (list.Where(x => x.Type == "revoke").Any())
+        {
+            Context.Response.Redirect("/Identity/Account/Relogin");
+        }
+    }
+}
+
+
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        
+        string userName = $"Hello {user.Title}!";
+        <li class="nav-item">
+            <div class="d-flex align-items-center" style="position:relative">
+                @if (OrderMakerLink.Length > 0)
+                {
+                    <div class="p-2">
+                        <button class="nav-link text-dark btn btn-link" onclick="ClickApps(event)" data-toggle="tooltip" data-placement="left" title="External links">
+                            <i class="fas fa-th fa-lg"></i>
+                        </button>
+                        <div id="app-solutions" class="hidden">
+                            <a class="btn btn-link" href="@OrderMakerLink">
+                                <div class="d-flex">
+                                    <div class="p-2">
+                                        <img src="~/img/ordermaker-icon.png" width="24" height="24">
+                                    </div>
+                                    <div class="p-2" style="overflow:hidden; text-overflow:ellipsis; white-space: nowrap">
+                                        OrderMaker
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                }
+
+                <div class="p-2">
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                        <button type="submit" class="nav-link btn btn-link text-dark" data-toggle="tooltip" data-placement="right" title="Logout">
+                            <i class="fas fa-sign-out-alt fa-lg"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </li>
+        @*<li class="nav-item">
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                </form>
+            </li>*@
+    }
+    @*else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }*@
+</ul>
+<hr />
+
+@if (SignInManager.IsSignedIn(User) && !User.IsInRole(Mtd.Cpq.Manager.DataConfig.SystemRoles.Guest))
+{
+
+    List<string> menuAccess = await UserHandler.MenuUserAsync(User);
+
+    if (menuAccess.Contains("Supervision"))
+    {
+        <div class="dropdown navbar-nav">
+            <button onclick="openMenu('menu-superviser')" class="dropbtn nav-link btn btn-link text-dark p-2">@Localizer["SUPERVISION"]</button>
+            <div id="menu-superviser" class="dropdown-content">
+                <div class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-page="/Supervision/Parameters/Index">@Localizer["TITLES & TERMS"]</a>
+                </div>
+            </div>
+        </div>
+    }
+
+    if (menuAccess.Contains("Goods"))
+    {
+        <div class="dropdown navbar-nav">
+            <button onclick="openMenu('menu-goods')" class="dropbtn nav-link btn btn-link text-dark p-2">@Localizer["DATA MANAGE"]</button>
+            <div id="menu-goods" class="dropdown-content">
+                <div class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-page="/Goods/Catalog/Index">@Localizer["GROUPS LIST"]</a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-page="/Goods/Products/Index">@Localizer["ITEMS LIST"]</a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-page="/Goods/OneOfList/Index">@Localizer["OR OR LIST"]</a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-page="/Goods/Import/Index">@Localizer["IMPORT"]</a>
+                </div>
+            </div>
+        </div>
+    }
+
+    if (menuAccess.Contains("Sales"))
+    {
+        <div class="dropdown navbar-nav">
+            <button onclick="openMenu('menu-sales')" class="dropbtn nav-link btn btn-link text-dark p-2">@Localizer["CONFIG"]</button>
+            <div id="menu-sales" class="dropdown-content">
+                <div class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-page="/Proposal/Index">@Localizer["QUOTES"]</a>
+                </div>
+            </div>
+        </div>
+    }
+
+}

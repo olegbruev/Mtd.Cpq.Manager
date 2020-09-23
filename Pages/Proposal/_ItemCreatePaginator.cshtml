@@ -1,0 +1,30 @@
+﻿@model ItemsCreateModel
+<div class="d-flex justify-content-center">
+    <form method="get">
+        <input type="hidden" value="@Model.SearchText" />
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li class="page-item @if (@Model.Paginator.CPage == 1) {<text>disabled</text> }">
+                    <a class="page-link" asp-page="./ItemsCreate" asp-route-proposal="@Model.MtdCpqProposal.Id" asp-route-page="@Model.Paginator.FirstPage" tabindex="-1">Previous</a>
+                </li>
+                @if (@Model.Paginator.PrevPage != @Model.Paginator.CPage)
+                {
+                    <li class="page-item"><a class="page-link" asp-page="./ItemsCreate" asp-route-proposal="@Model.MtdCpqProposal.Id" asp-route-cpage="@Model.Paginator.PrevPage">@Model.Paginator.PrevPage</a></li>
+                }
+
+                <li class="page-item active">
+                    <a class="page-link"><span class="sr-only">(current)</span>@Model.Paginator.CPage</a>
+                </li>
+
+                @if (Model.Paginator.LastPage != Model.Paginator.CPage && Model.Paginator.LastPage>0)
+                {
+                    <li class="page-item"><a class="page-link" asp-page="./ItemsCreate" asp-route-proposal="@Model.MtdCpqProposal.Id" asp-route-cpage="@Model.Paginator.NextPage">@Model.Paginator.NextPage</a></li>
+                }
+
+                <li class="page-item @if (Model.Paginator.CPage == Model.Paginator.LastPage) {<text>disabled</text>}">
+                    <a class="page-link" asp-page="./ItemsCreate" asp-route-proposal="@Model.MtdCpqProposal.Id" asp-route-cpage="@Model.Paginator.NextPage">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </form>
+</div>

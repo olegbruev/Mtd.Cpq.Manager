@@ -1,0 +1,130 @@
+﻿@page
+@model DetailsModel
+@{
+    ViewData["Title"] = "Import Details";
+}
+
+<div>
+    <h1>@ViewBag.Title</h1>
+    <strong>At @Model.MtdCpqImport.TimeCr</strong>
+</div>
+<a class="btn btn-link" asp-page="./Index">
+    <i class="fas fa-arrow-left"></i>
+    Back to list
+</a>
+<hr />
+
+<form method="get" autocomplete="off">
+    <input type="hidden" value="@Model.MtdCpqImport.Id" name="id" />
+    <input type="hidden" value="@Model.Action" name="action" />
+    <input type="hidden" value="@Model.CPage" name="cpage" />
+    <div class="input-group">
+        <input type="text" class="form-control" aria-label="Text input with dropdown button"
+               placeholder="Search Number or Name" asp-for="@Model.SearchString">
+        <div class="input-group-append">
+            <button class="btn btn-outline-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @switch (Model.Action)
+                {
+                    case 1:
+                        {
+                            <text>
+                                <i class="far fa-edit"></i>
+                                Update Items
+                            </text>
+                            break;
+                        }
+                    case 3:
+                        {
+                            <text>
+                                <i class="fas fa-folder-minus fa-lg"></i>
+                                Archive Items
+                            </text>
+                            break;
+                        }
+                    default:
+                        {
+                            <text>
+                                <i class="fas fa-folder-plus fa-lg"></i>
+                                New Items
+                            </text>
+                            break;
+                        }
+                }
+
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item btn btn-link" asp-page="./Details" asp-route-action="2" asp-route-id="@Model.MtdCpqImport.Id">
+                    <i class="fas fa-folder-plus fa-lg"></i>
+                    New Items
+                </a>
+                <a class="dropdown-item btn btn-link" asp-page="./Details" asp-route-action="3" asp-route-id="@Model.MtdCpqImport.Id">
+                    <i class="fas fa-folder-minus fa-lg"></i>
+                    Archive Items
+                </a>
+                <a class="dropdown-item btn btn-link" asp-page="./Details" asp-route-action="1" asp-route-id="@Model.MtdCpqImport.Id">
+                    <i class="far fa-edit"></i>
+                    Update Items
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form id="import-form-open" method="post" enctype="multipart/form-data">
+    <div class="mtd-table-overflow">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.DataList)
+                {
+                    <tr>
+                        <td>@item.IdNumber</td>
+                        <td>@item.Name</td>
+                        <td style="min-width: 120px; text-align:right">
+                            <button class="btn btn-link" type="button" onclick="Redirect('@item.IdNumber')">
+                                <i class="fas fa-external-link-alt"></i>
+                                Open
+                            </button>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</form>
+
+
+@await Html.PartialAsync("./_PaginatorDetails")
+
+@section Scripts {
+    <script>
+        const Redirect = (number) => {
+            const form = document.getElementById("import-form-open");
+
+            var formData = CreateFormData(form);
+
+            $.ajax({
+                type: "POST",
+                url: `/Goods/Import/Details?handler=Open&number=${number}`,
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+
+                    if (response !== "null") {
+
+                        window.open(`/goods/products/edit?id=${response}`, '_blank');
+
+                    }
+                }
+            });
+        }
+    </script>
+}

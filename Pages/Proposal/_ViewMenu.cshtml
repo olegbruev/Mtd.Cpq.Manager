@@ -1,0 +1,143 @@
+﻿@model DetailsModel
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> Localizer;
+
+<form method="post" id="view-menu-form" enctype="multipart/form-data" asp-page-handler="viewset">
+    <input type="hidden" asp-for="MtdCpqProposal.Id" />
+    <div id="view-menu">
+        <div class="view-menu-close">
+            <button type="button" class="btn btn-link" onclick="settingClose()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="view-menu-title">
+            <h4>View settings</h4>
+        </div>
+
+        @*START RADIO BUTTONS VIEW*@
+        <hr style="border-top: 1px solid white;" />
+
+        <div class="view-checker" onclick="ViewProposalClick()">
+            <div class="view-checker-icon">
+                <i id="view-proposal-icon" class="fas fa-circle"></i>
+            </div>
+            <div class="view-checker-label">
+                @Localizer["QUOTES"]
+            </div>
+            <input id="view-proposal-input" type="hidden" asp-for="@Model.MtdCpqProposal.ViewProposal" />
+        </div>
+
+        <div class="view-checker" onclick="ViewDatasheetClick()">
+            <div class="view-checker-icon">
+                <i id="view-datasheet-icon" class="fas fa-circle"></i>
+            </div>
+            <div class="view-checker-label">
+                @Localizer["Tech Data"]
+            </div>
+            <input id="view-datasheet-input" type="hidden" asp-for="@Model.MtdCpqProposal.ViewDatasheet" />
+        </div>
+        <div id="view-proposal-params">
+            @*START RADIO BUTTONS PRICE*@
+            <hr style="border-top: 1px solid white;" />
+            <div class="view-checker" onclick="ViewGPriceClick()">
+                <div class="view-checker-icon">
+                    @{ string grossClass = "fas fa-check-circle";
+                        if (Model.MtdCpqProposal.ViewPriceGross != 1) { grossClass = "fas fa-circle"; }
+                    }
+                    <i id="view-gprice-icon" class="@grossClass"></i>
+                </div>
+                <div class="view-checker-label">
+                    @ViewBag.GrossPrice
+                </div>
+                <input id="view-gprice-input" type="hidden" asp-for="@Model.MtdCpqProposal.ViewPriceGross" />
+            </div>
+
+            <div class="view-checker" onclick="ViewCPriceClick()">
+                <div class="view-checker-icon">
+                    @{ string custClass = "fas fa-check-circle";
+                        if (Model.MtdCpqProposal.ViewPriceCustomer != 1) { custClass = "fas fa-circle"; }
+                    }
+                    <i id="view-cprice-icon" class="@custClass"></i>
+                </div>
+                <div class="view-checker-label">
+                    Customer price
+                </div>
+                <input id="view-cprice-input" type="hidden" asp-for="@Model.MtdCpqProposal.ViewPriceCustomer" />
+            </div>
+
+            <div class="view-checker" onclick="ViewNPriceClick()">
+                <div class="view-checker-icon">
+                    @{ string nopriceClass = "fas fa-check-circle";                        
+                        int nopriceValue = 0;
+                        if (Model.MtdCpqProposal.ViewPriceCustomer == 0 && Model.MtdCpqProposal.ViewPriceGross == 0)
+                        {
+                            nopriceValue = 1;
+                        }
+
+                        if (nopriceValue == 0) { nopriceClass = "fas fa-circle"; }
+                    }
+                    <i id="view-nprice-icon" class="@nopriceClass"></i>
+                </div>
+                <div class="view-checker-label">
+                    No price
+                </div>
+                <input id="view-nprice-input" type="hidden" value="@nopriceValue" />
+            </div>
+
+            <hr style="border-top: 1px solid white;" />
+            @*END RADIO BUTTONS PRICE*@
+
+            <div class="view-checker" onclick="ViewNoteClick()">
+                <div class="view-checker-icon">
+                    @{ string noteClass = "fas fa-check-square";
+                        if (Model.MtdCpqProposal.ViewNote != 1) { noteClass = "fas fa-square"; }
+                    }
+                    <i id="view-note-icon" class="@noteClass"></i>
+                </div>
+                <div class="view-checker-label">
+                    @Localizer["EXTEND DESCR"]
+                </div>
+                <input id="view-note-input" type="hidden" asp-for="@Model.MtdCpqProposal.ViewNote" />
+            </div>
+
+            <div class="view-checker" onclick="ViewQtyClick()">
+                <div class="view-checker-icon">
+                    @{ string qtyClass = "fas fa-check-square";
+                        if (Model.MtdCpqProposal.ViewQty != 1) { qtyClass = "fas fa-square"; }
+                    }
+                    <i id="view-qty-icon" class="@qtyClass"></i>
+                </div>
+                <div class="view-checker-label">
+                    Quantity
+                </div>
+                <input id="view-qty-input" type="hidden" asp-for="@Model.MtdCpqProposal.ViewQty" />
+            </div>
+
+            <div class="view-checker" onclick="ViewDeliveryClick()">
+                <div class="view-checker-icon">
+                    @{ string delivClass = "fas fa-check-square";
+                        if (Model.MtdCpqProposal.ViewDelivery != 1) { delivClass = "fas fa-square"; }
+                    }
+                    <i id="view-delivery-icon" class="@delivClass"></i>
+                </div>
+                <div class="view-checker-label">
+                    Delivery condition
+                </div>
+                <input id="view-delivery-input" type="hidden" asp-for="@Model.MtdCpqProposal.ViewDelivery" />
+            </div>
+
+            <div class="view-checker" onclick="ViewImagesClick()">
+                <div class="view-checker-icon">
+                    @{ string imagesClass = "fas fa-check-square";
+                        if (Model.MtdCpqProposal.ViewImages != 1) { imagesClass = "fas fa-square"; }
+                    }
+                    <i id="view-images-icon" class="@imagesClass"></i>
+                </div>
+                <div class="view-checker-label">
+                    Item image
+                </div>
+                <input id="view-images-input" type="hidden" asp-for="@Model.MtdCpqProposal.ViewImages" />
+            </div>
+        </div>
+    </div>
+</form>

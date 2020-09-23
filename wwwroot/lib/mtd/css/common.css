@@ -1,0 +1,15 @@
+﻿.mtd-table-overflow {
+    overflow: hidden;
+    overflow-x:auto;
+}
+
+    .mtd-table-overflow table tr td {        
+        max-width: 250px;
+        overflow: hidden;
+        overflow-wrap: break-word;
+        vertical-align:middle;       
+    }
+
+    .mtd-table-overflow table th {
+        vertical-align:middle;
+    }

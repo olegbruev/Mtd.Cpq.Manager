@@ -1,0 +1,259 @@
+﻿@page
+@model IndexModel
+@using System.Text.RegularExpressions;
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> Localizer;
+
+@{
+    ViewData["Title"] = @Localizer["Items list"];
+}
+
+<h1>@ViewBag.Title</h1>
+
+<form method="get" autocomplete="off">
+    <input type="hidden" value="@Model.Catalog.Id" name="catalog" />
+    <input type="hidden" value="@Model.CPage" name="cpage" />
+
+    <div class="input-group pb-4">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">
+                Master Product
+            </span>
+        </div>
+        <select class="form-control" asp-items="ViewBag.MasterList" name="master" aria-describedby="basic-addon1" onchange="this.form.submit()"></select>
+    
+        @if (Model.Master != null)
+        {
+            <div class="input-group-append">
+                <a class="btn btn-primary" asp-page="./Relations"
+                   asp-route-product="@Request.Query["master"]"
+                   asp-route-archive="@Model.Archive"
+                   asp-route-Pcpage="@Model.CPage"
+                   asp-route-PsearchText="@Model.SearchText"
+                   asp-route-master="@Model.Master">
+                    <i class="fas fa-link"></i>
+                    @Localizer["Linkage"]
+                </a>
+            </div>
+        }
+    </div>
+
+    <div class="input-group">
+        <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search Number or Name" asp-for="@Model.SearchText">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @await Component.InvokeAsync("MTDImgViewer", new { height = 20, imgArray = Model.Catalog.Image })
+                @Model.Catalog.Name
+            </button>
+            <div class="dropdown-menu">
+                @{ var items = Model.Catalogs.Where(x => x.Id != Model.Catalog.Id);}
+
+                @foreach (var item in @items)
+                {
+                    <a class="dropdown-item btn btn-link" asp-page="./Index"
+                       asp-route-catalog="@item.Id" asp-route-master="@Model.Master">
+                        @await Component.InvokeAsync("MTDImgViewer", new { height = 20, imgArray = item.Image })
+                        @item.Name
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="mtd-table-overflow pt-2">
+    <table class="table table-items">
+        <thead>
+            <tr>
+                <th colspan="2" style="padding:0; border:0;">
+                    <a asp-page="Create" asp-route-id="@Model.Catalog.Id">
+                        <i class="fas fa-plus"></i>
+                        Create New
+                    </a>
+                </th>
+                <th colspan="6" style="padding:0; border:0; text-align: right">
+                    <form id="archive-form" method="get">
+                        <input type="hidden" asp-for="@Model.Catalog.Id" name="catalog" />
+                        <input type="hidden" asp-for="@Model.CPage" />
+                        <input type="hidden" value="@Model.SearchText" name="searchText"/>
+                        @{
+                            string toogle = "fas fa-toggle-off fa-lg";
+                            string color = "black";
+                            @if (Model.Archive)
+                            {
+                                toogle = "fas fa-toggle-on fa-lg";
+                                color = "red";
+                            }
+                        }
+                        <span id="archive-div" class="unselectable" style="cursor: pointer; color: @color" onclick="ClickArchive()">
+                            Archive view <i id="archive-icon" class="@toogle"></i>
+                        </span>
+                        <input id="archive-checkbox" asp-for="@Model.Archive" type="checkbox" style="display:none" />
+                    </form>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.MtdCpqProducts[0].Image)
+                </th>
+                <th style="text-align:center">
+                    @Localizer["Part number"]
+                </th>
+                <th>
+                    @Localizer["Item description"]
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MtdCpqProducts[0].Price)
+                </th>
+                <th style="text-align:center">EXTENDED DESCR</th>
+                <th style="text-align:center">TECH DATA</th>
+                <th class="vertical-th" style="color: gray">ANCHOR</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.MtdCpqProducts)
+            {
+            <tr @if (item.Archive == 1) { <text> style="color:red" </text> }>
+                <td>
+                    @await Component.InvokeAsync("MTDImgViewer", new { maxHeight = 64, maxWidth = 64, imgArray = item.Image })
+                </td>
+                <td style="white-space: nowrap">
+                    @Html.DisplayFor(modelItem => item.IdNumber)
+                </td>
+                <td style="width: 100%">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td style="white-space: nowrap">
+                    @item.Price.ToString("C2", Model.CultureInfo)
+                </td>
+                <td style="text-align:center">
+                    @if (item.Note != null && item.Note.Length > 10)
+                    {<i class="fas fa-check fa-lg" style="color: green"></i>}
+                    else
+                    { <i class="fas fa-exclamation-triangle fa-lg" style="color:orange"></i>}
+                </td>
+                <td style="text-align:center">
+                    @{
+                        bool exists = false;
+                        if (item.Datasheet != null)
+                        {
+                            var text = Regex.Replace(item.Datasheet, "<.*?>", String.Empty);
+                            exists = text.Length > 10 ? true : false;
+                        }
+                    }
+
+                    @if (item.Datasheet != null && exists)
+                    {<i class="fas fa-check fa-lg" style="color: green"></i>}
+                    else
+                    { <i class="fas fa-exclamation-triangle fa-lg" style="color:orange"></i>}
+                </td>
+                <td style="text-align:center; color: gray; white-space:nowrap">
+                    @{ 
+                        string anchorID = Model.Anchors.Where(x => x.ProductMaster == Model.Master && x.ProductAnchor == item.Id)
+                            .Select(x=>x.Id).FirstOrDefault();
+                        bool anchorNotice = Model.Anchors.Where(x => x.ProductMaster == Model.Master && x.ProductAnchor == item.Id && x.Notice != null
+                            && x.Notice != string.Empty).Any();
+
+                        bool anchorLink = false;
+                        if (anchorID != null)
+                        {
+                            anchorLink = Model.AnchorBinds.Where(x => x.MtdCpqRuleAnchorId == anchorID).Any();
+                        }
+
+                        if (anchorLink) {
+                            <text> <i class="fas fa-link fa-lg"></i> </text>
+                        }
+
+                        if (anchorNotice)
+                        {
+                            <text> <i class="far fa-comment-dots fa-lg"></i> </text>
+                        }
+
+                        if (!anchorNotice && !anchorLink)
+                        {
+                            <text>NO</text>
+                        }
+                    }
+                </td>
+            </tr>
+                <tr class="hover-table-row">
+                    <td colspan="7" style="text-align: left; white-space:nowrap; border:0;">
+                        <a asp-page="./Edit" asp-route-id="@item.Id"
+                           asp-route-cpage="@Model.CPage"
+                           asp-route-searchText="@Model.SearchText"
+                           asp-route-archive="@Model.Archive"
+                           asp-route-master="@Model.Master"
+                           >
+                            <i class="fas fa-edit"></i>
+                            Edit
+                        </a> |
+                        <a asp-page="./Anchor"
+                           asp-route-product="@item.Id"
+                           asp-route-archive="@Model.Archive"
+                           asp-route-Pcpage="@Model.CPage"
+                           asp-route-PsearchText="@Model.SearchText"
+                           asp-route-master="@Model.Master"
+                           >
+                            <i class="fas fa-anchor"></i>
+                            @Localizer["Anchor links"]
+                        </a> |
+                        <button type="button" class="btn btn-link" data-toggle="modal" onclick="DeleteProduct('@item.Id')" data-target="#delete-modal">
+                            <i class="far fa-trash-alt"></i>
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@await Html.PartialAsync("./_PaginatorIndex")
+
+<form method="post">
+    <input type="hidden" value="@Model.SearchText" name="searchText" />
+    <input type="hidden" value="@Model.CPage" name="cpage"  />
+    <input type="hidden" value="@Model.Catalog.Id" name="catalog" />
+    <input id="delete-input" name="delete-input" type="hidden" />
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger" asp-page-handler="Delete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+
+    <script>
+        function DeleteProduct(id) {
+            document.getElementById("delete-input").value = id;
+        }
+
+        function ClickArchive() {
+            const checkbox = document.getElementById("archive-checkbox");
+            const form = document.getElementById("archive-form");
+            const icon = document.getElementById("archive-icon");
+
+            icon.className = '';
+            icon.classList.add("fas", "fa-sync-alt", "fa-lg", "fa-spin");
+
+            checkbox.checked = !checkbox.checked;
+
+            form.submit();
+        }
+    </script>
+}

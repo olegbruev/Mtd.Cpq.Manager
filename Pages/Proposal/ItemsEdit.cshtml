@@ -1,0 +1,210 @@
+﻿@page
+@model Mtd.Cpq.Manager.Pages.Proposal.ItemsEditModel
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> Localizer;
+
+
+@{
+    ViewData["Title"] = Localizer["Items Configurator"];
+    string ID = HttpContext.Request.Query["id"];
+    int included = Model.MtdCpqProposal.ConfigMasterInluded;
+    int changeRule = Model.MtdCpqProposal.ConfigChangeRule;
+}
+
+@await Html.PartialAsync("./_NoticeMessage")
+
+<div class="d-flex align-items-center">
+    <div class="flex-grow-1 pr-2">
+        <h1>@ViewBag.Title</h1>
+        <a asp-page="./Details" asp-route-Id="@ID">
+            <i class="fas fa-arrow-left"></i>
+            Back to details
+        </a>
+    </div>
+    <div>
+        <button type="button" class="btn btn-danger" data-toggle="modal"
+                data-target="#delete-modal" asp-page-handler="DeleteAll" asp-route-id="@ID">
+            <div class="p-1">
+                <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                Delete all items
+            </div>
+        </button>
+    </div>
+</div>
+<hr />
+<div class="d-flex align-items-center flex-wrap">
+    <div id="include-img" class="p-2 align-items-center" @if (included == 0) { <text> style="opacity:0.4" </text> }>
+        @await Component.InvokeAsync("MTDImgViewer", new { maxHeight = 110, imgArray = Model.MtdCpqProposal.MasterImage })
+    </div>
+    <div class="p-2 flex-grow-1 font-weight-bold" style="overflow: hidden; overflow-x:auto;">
+        <table>
+            <tr><td>QUOTE:</td><td class="text-nowrap" style="padding-left: 4px">@Model.MtdCpqProposal.IdNumber at @Model.MtdCpqProposal.DateCreation.ToShortDateString()</td></tr>
+            <tr>
+                <td class="text-nowrap">PRODUCT:</td>
+                <td style="padding-left: 4px; font-size:large">
+                    @Model.MtdCpqProposal.MasterNumber @Model.MtdCpqProposal.MasterName
+                </td>
+            </tr>
+            <tr><td class="text-nowrap">PREPARED FOR:</td><td style="padding-left: 4px">@Model.MtdCpqProposal.PreparedFor</td></tr>
+        </table>
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary" onclick="Price('@ID')">
+            NEXT
+            <i class="fas fa-arrow-alt-circle-right fa-lg"></i>
+        </button>
+    </div>
+</div>
+<hr />
+
+<div class="d-flex flex-wrap align-items-center">
+    <div class="p-1">
+        <form method="post" asp-route-catalog="@Model.Catalog.Id" asp-route-id="@Model.MtdCpqProposal.Id" asp-page-handler="Include">
+            @{var iconInclude = included == 1 ? "on" : "off"; var colorInclude = included == 1 ? "success" : "dark";}
+            <button id="button-include" class="btn btn-outline-@colorInclude" type="button" onclick="ClickInclude();" style="width: 280px">
+                <div class="d-flex" style="pointer-events: none; white-space: nowrap;">
+                    <div style="min-width: 48px;">
+                        <i data-icon class="fas fa-toggle-@iconInclude" aria-hidden="true" style="font-size: 1.5em"></i>
+                    </div>
+                    <div>
+                        @Localizer["INCL or EXCL Mainframe"]
+                    </div>
+                </div>
+            </button>
+        </form>
+    </div>
+    <div class="p-1">
+        <form method="post" asp-route-catalog="@Model.Catalog.Id" asp-route-id="@Model.MtdCpqProposal.Id" asp-page-handler="Rule">
+            @{var iconRule = changeRule == 0 ? "on" : "off"; var colorRule = changeRule == 0 ? "success" : "dark"; }
+            <button id="button-rule" class="btn btn-outline-@colorRule" type="button" onclick="ClickRule();" style="width:280px">
+                <div class="d-flex" style="pointer-events: none; white-space: nowrap;">
+                    <div style="min-width: 48px;">
+                        <i data-icon-on class="fas fa-toggle-@iconRule" aria-hidden="true" style="font-size: 1.5em"></i>
+                    </div>
+                    <div>
+                        @Localizer["ON or OFF Linkage"]
+                    </div>
+                </div>
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="m-1 p-1" style="background-color: #ccc; color:dimgray">
+    <i class="fas fa-info-circle"></i>
+    Choose group  of items  there  to review and select needed items. Use search line of necessity.
+</div>
+
+<div class="d-flex flex-wrap" style="margin-top: 20px">
+    <div class="p-1 mb-4">
+        <div style="position: absolute; background-color: white; color:black; margin-top: -23px; padding: 4px; box-shadow: 2px 3px 4px #ccc; border-radius: 50%">
+            <strong>Group</strong>
+        </div>
+        <button style="width: 280px; overflow-x:hidden; text-overflow:ellipsis"
+                class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            @await Component.InvokeAsync("MTDImgViewer", new { height = 25, imgArray = Model.Catalog.Image })
+            @Model.Catalog.Name
+        </button>
+        <div class="dropdown-menu" style="box-shadow: 2px 2px 4px #ccc;">
+            @{ var catalogs = Model.Catalogs.Where(x => x.Id != Model.Catalog.Id);}
+
+            @foreach (var catalog in catalogs)
+            {
+                <a style="width: 280px; overflow-x: hidden; text-overflow:ellipsis" class="dropdown-item btn btn-link"
+                   asp-page="./ItemsEdit" asp-route-id="@Model.MtdCpqProposal.Id"
+                   asp-route-catalog="@catalog.Id">
+                    @await Component.InvokeAsync("MTDImgViewer", new { height = 20, imgArray = catalog.Image })
+                    @catalog.Name
+                </a>
+            }
+        </div>
+    </div>
+    <div class="p-1 flex-grow-1 d-flex justify-content-md-end">
+        <div>
+            <div style="position: absolute; background-color: white; color:black; margin-top: -23px; margin-left:auto; padding: 4px; box-shadow: 2px 3px 4px #ccc; border-radius: 50%">
+                <strong>Search line</strong>
+            </div>
+            <form method="get" autocomplete="off">
+                <input type="hidden" asp-for="@Model.MtdCpqProposal.Id" name="id" />
+                <input type="hidden" asp-for="@Model.Catalog.Id" name="catalog" />
+                <input type="text" style="width: 280px" class="form-control" aria-label="Text input with dropdown button" placeholder="Search Number or Name in Group" asp-for="@Model.SearchText">
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<div class="mtd-table-overflow">
+    <table class="table">
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                string iconClass = "far fa-circle";
+                string color = "black";
+                bool required = ((item.Required == 1 || item.Forbidden == 1) && changeRule == 0) ? true : false;
+                if (required && changeRule != 1) { color = "brown"; }
+                if (item.MtdCpqProposalOneOfId != null && changeRule != 1) { color = Model.OneOfs.FirstOrDefault(x => x.Id == item.MtdCpqProposalOneOfId).Color; }
+
+                if (item.Selected == 1)
+                {
+                    iconClass = "far fa-check-circle";
+                }
+
+                if (item.Forbidden == 1)
+                {
+                    iconClass = "fas fa-ban";
+                }
+
+                <tr mtd-data-catalog="@item.ProposalCatalogId">
+                    <td style="text-align:center; width: 80px ">
+                        <form method="post" asp-route-id="@item.Id">
+                            <button type="button" style="color:@color" id="@item.Id-button" class="btn" onclick="OnClickCheckBox('@item.Id')" @if (required) { <text> disabled </text> }>
+                                <div style="pointer-events: none;">
+                                    <i id="@item.Id-icon" class="@iconClass" style="font-size: 2em"></i>
+                                </div>
+                            </button>
+                            <input mtd-checkbox="@item.Id" id="@item.Id-input" style="display: none" type="checkbox" name="@item.Id-checkbox" @if (item.Selected == 1) { <text> checked</text> } />
+                        </form>
+                    </td>
+                    <td>
+                        @await Component.InvokeAsync("MTDImgViewer", new { maxWidth = 64, maxHeight = 64, imgArray = item.Image })
+                    </td>
+                    <td class="text-nowrap" mtd-text="@item.Id">@item.IdNumber</td>
+                    <td mtd-text="@item.Id" style="width:100%">@item.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<button onclick="topFunction()" id="btnUp" title="Go to top">
+    <i class="fas fa-arrow-alt-circle-up" style="font-size: 1.5em"></i>
+    <div>UP</div>
+</button>
+
+<form method="post">
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete all items</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger" asp-page-handler="DeleteAll" asp-route-id="@Model.MtdCpqProposal.Id">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/js/proposal-edit-items.js" asp-append-version="true"></script>
+}

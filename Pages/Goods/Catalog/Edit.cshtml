@@ -1,0 +1,71 @@
+﻿@page
+@model Mtd.Cpq.Manager.Pages.Goods.Catalog.EditModel
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "Edit Catalog";
+}
+
+<form method="post" autocomplete="off" enctype="multipart/form-data">
+    <div class="d-flex">
+        <div class="flex-grow-1">
+            <h1>@ViewBag.Title</h1>
+        </div>
+        <div class="p-2 justify-content-center">
+            <button class="btn btn-primary">
+                <i class="fas fa-save"></i>
+                Save
+            </button>
+        </div>
+    </div>
+    <div>
+        <a asp-page="./Index">
+            <i class="fas fa-arrow-left"></i>
+            Back to List
+        </a>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MtdCpqCatalog.Id" />
+            <div class="form-group">
+                <label>@Localizer["Image"]</label>
+                @await Component.InvokeAsync("MTDImgSelector", new { id = Model.MtdCpqCatalog.Id, required = false, imgArray = Model.MtdCpqCatalog.Image })
+            </div>
+            <div class="form-group">
+                <label asp-for="MtdCpqCatalog.IdNumber" class="control-label"></label>
+                <input asp-for="MtdCpqCatalog.IdNumber" class="form-control" />
+                <span asp-validation-for="MtdCpqCatalog.IdNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MtdCpqCatalog.Name" class="control-label"></label>
+                <input asp-for="MtdCpqCatalog.Name" class="form-control" />
+                <span asp-validation-for="MtdCpqCatalog.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MtdCpqCatalog.Note" class="control-label"></label>
+                <textarea asp-for="MtdCpqCatalog.Note" class="form-control" rows="3" cols="40"></textarea>
+                <span asp-validation-for="MtdCpqCatalog.Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MtdCpqCatalog.ImportTag" class="control-label"></label>
+                <select asp-for="MtdCpqCatalog.ImportTag" class="form-control" asp-items="@ViewBag.TagList"></select>
+                <span asp-validation-for="MtdCpqCatalog.ImportTag" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MtdCpqCatalog.Sequence" class="control-label"></label>
+                <input asp-for="MtdCpqCatalog.Sequence" class="form-control" />
+                <span asp-validation-for="MtdCpqCatalog.Sequence" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

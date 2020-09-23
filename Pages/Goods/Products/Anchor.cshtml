@@ -1,0 +1,222 @@
+﻿@page
+@model AnchorModel
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> Localizer;
+
+@{
+    ViewData["Title"] = @Localizer["Anchor links of item"];
+}
+
+
+<h1>@ViewBag.Title</h1>
+
+<div style="display:flex;">
+    <div style="flex-grow: 1">
+        <a asp-page="./Index"
+           asp-route-catalog="@Model.MtdCpqProduct.MtdCpqCatalogId"
+           asp-route-cpage="@Model.PCPage"
+           asp-route-searchText="@Model.PSearchText"
+           asp-route-archive="@Model.Archive"
+           asp-route-master="@Model.Master">
+            <i class="fas fa-arrow-left"></i>
+            Back to List
+        </a>
+    </div>
+</div>
+<hr />
+
+<form method="get" autocomplete="off">
+    <input type="hidden" value="@Model.MtdCpqProduct.Id" name="product">
+    <input type="hidden" value="@Model.Catalog.Id" name="catalog" />
+    <input type="hidden" value="@Model.PCPage" name="pcpage" />
+    <input type="hidden" value="@Model.PSearchText" name="pserachText" />
+    <input type="hidden" value="@Model.Archive" name="archive" />
+    <input type="hidden" value="@Model.CPage" name="cpage" />
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">
+                Master Product
+            </span>
+        </div>
+        <select id="select-master" class="form-control" asp-items="ViewBag.MasterList" name="master" aria-describedby="basic-addon1" onchange="this.form.submit()"></select>
+    </div>
+</form>
+<div style="display: flex;">
+    <div>
+        @await Component.InvokeAsync("MTDImgViewer", new { maxheight = 150, maxWidth = 150, imgArray = Model.MtdCpqProduct.Image })
+    </div>
+    <div style="align-self: center; flex-grow:1;">
+        <span style="font-weight: bold;">@Model.MtdCpqProduct.IdNumber</span>
+        <span style="font-weight: bold; font-size:large; word-break:break-word">@Model.MtdCpqProduct.Name</span>
+        <div class="position-relative">
+            <textarea id="text-notice-reader" class="form-control" placeholder="Write a notice here for the Item" readonly>@Model.Notice</textarea>
+            <div style="position: absolute; bottom: -15px;">
+                <button class="btn btn-primary" style="box-shadow: 3px 3px 6px #ccc" data-toggle="modal" data-target="#dialogNotice">
+                    <i class="fas fa-edit"></i>
+                    Edit notice
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="get" autocomplete="off">
+    <input type="hidden" value="@Model.MtdCpqProduct.Id" name="product">
+    <input type="hidden" asp-for="@Model.Catalog.Id" name="catalog" />
+    <input type="hidden" asp-for="@Model.PCPage" />
+    <input type="hidden" asp-for="@Model.PSearchText" />
+    <input type="hidden" asp-for="@Model.Archive" />
+    <input type="hidden" value="@Model.CPage" name="cpage" />
+    <div class="input-group pt-3">
+        <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search Number or Name" asp-for="@Model.SearchText">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @await Component.InvokeAsync("MTDImgViewer", new { height = 20, imgArray = Model.Catalog.Image })
+                @Model.Catalog.Name
+            </button>
+            <div class="dropdown-menu">
+                @foreach (var item in @Model.Catalogs)
+                {
+                    <a class="dropdown-item btn btn-link" asp-page="./Anchor"
+                       asp-route-product="@Model.MtdCpqProduct.Id"
+                       asp-route-catalog="@item.Id"
+                       asp-route-pcpage="@Model.PCPage"
+                       asp-route-psearchtext="@Model.PSearchText"
+                       asp-route-master="@Model.Master">
+                        @await Component.InvokeAsync("MTDImgViewer", new { height = 20, imgArray = item.Image })
+                        @item.Name
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="mtd-table-overflow">
+    <table class="table">
+        <thead>
+            <tr style="white-space: nowrap">
+                <th>No link</th>
+                <th>Include</th>
+                <th>Exclude</th>
+                <th style="border-right: 1px solid black">Fix as Must</th>
+                <th>Image</th>
+                <th>Part number</th>
+                <th>Item description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+                bool include = Model.Binds.Where(x => x.MtdCpqProductId == item.Id && x.Include==1).Any();
+                bool exclude = Model.Binds.Where(x => x.MtdCpqProductId == item.Id && x.Include==0).Any();
+                bool required = Model.Binds.Where(x => x.MtdCpqProductId == item.Id && x.Required==1).Any();
+
+
+                var noLinkOnStyle = !include & !exclude ? "" : "display:none";
+                var noLinkOffStyle = include || exclude ? "" : "display:none";
+
+                var includeOnStyle = include ? "" : "display:none";
+                var includeOffStyle = !include ? "" : "display:none";
+
+                var excludeOnStyle = exclude ? "" : "display:none";
+                var excludeOffStyle = !exclude ? "" : "display:none";
+
+                var requiredOnStyle = required ? "" : "display:none";
+                var requiredOffStyle = !required ? "" : "display:none";
+
+                <tr style="border-bottom: 3px solid white;border-top: 3px solid white">
+                    <td class="action-td" style="background-color: whitesmoke; border-top-left-radius: 50%; border-bottom-left-radius: 50%">
+                        <form anchor-click="@item.Id" id="@item.Id-nolink-form" method="post" asp-page-handler="SetLink" 
+                              asp-route-product_master="@Model.Master" asp-route-product_parent="@Model.MtdCpqProduct.Id" 
+                              asp-route-product_child="@item.Id" asp-route-actionType="nolink">                            
+                            <i id="@item.Id-nolink-on" class="far fa-dot-circle fa-2x" style="color: navy; @noLinkOnStyle"></i>
+                            <i id="@item.Id-nolink-off" class="far fa-circle fa-2x" style="color: navy; cursor: pointer; @noLinkOffStyle"></i>
+                            <i id="@item.Id-nolink-spin" class="fas fa-sync-alt fa-2x fa-spin" style="color: navy; display: none"></i>
+                            <input id="@item.Id-nolink-checkbox" name="@item.Id-nolink-checkbox" type="checkbox"
+                                   style="display:none;" @if (!include && !exclude) { <text> checked</text>} />
+                        </form>
+                    </td>
+                    <td class="action-td" style="background-color: whitesmoke;">
+                        <form anchor-click="@item.Id" id="@item.Id-include-form" method="post" asp-page-handler="SetLink" 
+                              asp-route-product_master="@Model.Master" asp-route-product_parent="@Model.MtdCpqProduct.Id"
+                              asp-route-product_child="@item.Id" asp-route-actionType="include">
+                            <i id="@item.Id-include-on" class="fas fa-check-circle fa-2x" style="color: navy; @includeOnStyle"></i>
+                            <i id="@item.Id-include-off" class="far fa-circle fa-2x" style="color: navy; cursor: pointer; @includeOffStyle"></i>
+                            <i id="@item.Id-include-spin" class="fas fa-sync-alt fa-2x fa-spin" style="color: navy; display: none"></i>
+                            <input id="@item.Id-include-checkbox" name="@item.Id-include-checkbox" type="checkbox"
+                                   style="display:none;" @if (include) { <text> checked</text>} />
+                        </form>
+                    </td>
+                    <td class="action-td" style="background-color: whitesmoke; border-top-right-radius: 50%; border-bottom-right-radius: 50%">
+                        <form anchor-click="@item.Id" id="@item.Id-exclude-form" method="post" asp-page-handler="SetLink"
+                              asp-route-product_master="@Model.Master" asp-route-product_parent="@Model.MtdCpqProduct.Id"
+                              asp-route-product_child="@item.Id" asp-route-actionType="exclude">
+                            <i id="@item.Id-exclude-on" class="fas fa-ban fa-2x" style="color: navy; @excludeOnStyle"></i>
+                            <i id="@item.Id-exclude-off" class="far fa-circle fa-2x" style="color: navy; cursor: pointer; @excludeOffStyle"></i>
+                            <i id="@item.Id-exclude-spin" class="fas fa-sync-alt fa-2x fa-spin" style="color: navy; display: none"></i>
+                            <input id="@item.Id-exclude-checkbox" name="@item.Id-exclude-checkbox" type="checkbox"
+                                   style="display:none;" @if (exclude) { <text> checked</text>} />
+                        </form>
+                    </td>
+                    <td class="action-td" style="border-right: 1px solid black;">
+                        <form id="@item.Id-required-form" method="post" asp-page-handler="SetLink" 
+                              asp-route-product_master="@Model.Master" asp-route-product_parent="@Model.MtdCpqProduct.Id"
+                              asp-route-product_child="@item.Id" asp-route-actionType="required" onclick="ClickRequired('@item.Id')">
+                            <i id="@item.Id-required-on" class="fas fa-toggle-on fa-2x" style="cursor: pointer; color: red; @requiredOnStyle"></i>
+                            <i id="@item.Id-required-off" class="fas fa-toggle-off fa-2x" style="cursor: pointer; @requiredOffStyle"></i>
+                            <i id="@item.Id-required-spin" class="fas fa-sync-alt fa-2x fa-spin" style="display: none"></i>
+                            <input id="@item.Id-required-checkbox" name="@item.Id-required-checkbox" type="checkbox"
+                                   style="display:none;" @if (required) { <text> checked</text>} />
+                        </form>
+                    </td>
+                    <td style="max-width:68px;">
+                        @await Component.InvokeAsync("MTDImgViewer", new { maxWidth = 64, maxHeight = 64, imgArray = item.Image })
+                    </td>
+                    <td style="white-space: nowrap;">
+                        @item.IdNumber
+                    </td>
+                    <td class="w-75">
+                        @item.Name
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@await Html.PartialAsync("./_PaginatorAnchor")
+
+
+<!-- Modal -->
+<div class="modal fade" id="dialogNotice" tabindex="-1" role="dialog" aria-labelledby="dialogNoticeLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dialogNoticeLabel">Edit notice of item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="text-notice-form" method="post" autocomplete="off"
+                      asp-page-handler="SaveNotice" asp-route-master_id="@Model.Master" asp-route-product_id="@Model.MtdCpqProduct.Id">
+                    <textarea id="text-notice-writer" name="text-notice-writer" class="form-control" placeholder="Write a notice here for the Item" rows="5">@Model.Notice</textarea>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="ClickSaveNotice()" style="width: 150px">
+                    <i id="icon-save" class="fas fa-save"></i>
+                    <i id="icon-spinner" style="display: none" class="fas fa-sync-alt fa-spin"></i>
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/product-anchor.js" asp-append-version="true"></script>
+}

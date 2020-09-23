@@ -1,0 +1,70 @@
+﻿@page
+@model Mtd.Cpq.Manager.Pages.Proposal.EditOwnerModel
+@using System.Globalization
+
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> Localizer;
+
+@{
+    ViewData["Title"] = "Set owner for Quote";
+}
+
+<div class="d-flex">
+    <div class="p-2 flex-grow-1 d-flex align-items-end">
+        <h1>@ViewBag.Title</h1>
+    </div>
+</div>
+
+<a asp-page="./Index" asp-route-cpage="@Request.Query["cpage"]" asp-route-searchText="@Request.Query["searchText"]" asp-route-filter="@Request.Query["filter"]">
+    <i class="fas fa-arrow-left"></i>
+    Back to List
+</a>
+
+
+<hr />
+
+<div class="d-md-flex">
+    <div class="flex-md-grow-1">
+        @if (Model.MtdCpqProposal.Logo != null)
+        {
+            @await Component.InvokeAsync("MTDImgViewer", new { maxheight = 100, maxWidth = 250, imgArray = Model.MtdCpqProposal.Logo })
+        }
+        <div class="p-3">
+            @Model.MtdCpqProposal.Description
+        </div>
+
+    </div>
+    <div class="header-overflow">
+        <table>
+            <tr><td colspan="2"><strong>@Model.MtdCpqProposal.IdNumber at @Model.MtdCpqProposal.DateCreation.ToShortDateString()</strong></td></tr>
+            <tr><td>@Localizer["Prepared by"]:</td><td>@Model.MtdCpqProposal.PreparedBy</td></tr>
+            <tr><td>@Localizer["Phone"]:</td><td>@Model.MtdCpqProposal.ContactPhone</td></tr>
+            <tr><td>@Localizer["Email"]:</td><td>@Model.MtdCpqProposal.ContactEmail</td></tr>
+            <tr><td>@Localizer["Contact"]:</td><td>@Model.MtdCpqProposal.ContactName</td></tr>
+        </table>
+    </div>
+</div>
+
+<div class="text-center mt-2 p-2" style="line-height: 1.3em; box-shadow: 1px 1px 2px 1px #ccc;">
+    <span>owner</span><br />
+    <span style="font-weight:bold; text-transform:uppercase">@Model.CurrentOwner</span>
+</div>
+
+
+<form method="post" asp-page-handler="SetOwner">
+    <input type="hidden" asp-for="@Model.MtdCpqProposal.Id" />
+    <div class="d-flex align-items-center pt-4">
+        <div class="p-2">
+            <span style="font-weight: bold">New owner:</span>
+        </div>
+        <div class="flex-grow-1 p-2">
+            <select asp-for="NewOwner" class="form-control" asp-items="ViewBag.UserList"></select>
+        </div>
+        <div class="p-2">
+            <button class="btn btn-primary">
+                <i class="fas fa-save"></i>
+                Save
+            </button>
+        </div>
+    </div>
+</form>

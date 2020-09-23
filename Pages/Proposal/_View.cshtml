@@ -1,0 +1,237 @@
+﻿@model DetailsModel
+@using System.Globalization
+
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> Localizer;
+
+@{
+    bool Price = Model.MtdCpqProposal.ViewPriceGross == 1 ? true : false;
+    bool Qty = Model.MtdCpqProposal.ViewQty == 1 ? true : false;
+    bool ImageOn = Model.MtdCpqProposal.ViewImages == 1 ? true : false;
+    decimal GrossPrice = 0;
+    CultureInfo.CurrentUICulture = Model.CultureView;
+}
+
+<div class="d-md-flex">
+    <div class="flex-md-grow-1">
+        @if (Model.MtdCpqProposal.Logo != null)
+        {
+            @await Component.InvokeAsync("MTDImgViewer", new { maxheight = 100, maxWidth = 250, imgArray = Model.MtdCpqProposal.Logo })
+        }
+    </div>
+    <div class="header-overflow">
+        <table>
+            <tr><td colspan="2"><strong>№ @Model.MtdCpqProposal.IdNumber at @Model.MtdCpqProposal.DateCreation.ToShortDateString()</strong></td></tr>
+            <tr><td>@Localizer["Prepared by"]:</td><td>@Model.MtdCpqProposal.PreparedBy</td></tr>
+            <tr><td>@Localizer["Phone"]:</td><td>@Model.MtdCpqProposal.ContactPhone</td></tr>
+            <tr><td>@Localizer["Email"]:</td><td>@Model.MtdCpqProposal.ContactEmail</td></tr>
+            <tr><td>@Localizer["Contact"]:</td><td>@Model.MtdCpqProposal.ContactName</td></tr>
+        </table>
+    </div>
+</div>
+<hr />
+<div style="line-height: 1em">
+    <h1>@Model.MtdCpqProposal.TitleName</h1>
+    <p><span>@Model.MtdCpqProposal.TitleNote</span></p>
+</div>
+
+<div class="row m-1" style="text-align: right; border-right: 8px solid lightgray; margin-bottom: 4px">
+    <div class="d-flex col-lg-2 col-md-3 col-sm-12 justify-content-center">
+        @if (Model.MtdCpqProposal.MasterId != null && Model.MtdCpqProposal.MasterImage != null)
+        {
+        <div class="view-image" style="max-width:230px">
+            @await Component.InvokeAsync("MTDImgViewer", new { imgArray = Model.MtdCpqProposal.MasterImage })
+        </div>            
+        }
+    </div>
+    <div class="col-lg-10 col-md-9 col-sm-12">
+        <div>
+            <h6>@Localizer["Prepared for"]</h6>
+            <span style="font-style:italic; white-space: pre-line">@Model.MtdCpqProposal.PreparedFor</span>
+        </div>
+        <div class="mt-3">
+            <h6>@Localizer["Description"]</h6>
+            <span style="font-style:italic; white-space: pre-line">@Model.MtdCpqProposal.Description</span>
+        </div>
+    </div>
+</div>
+
+<div class="mtd-table-overflow">
+    <table class="view-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>@Localizer["Part Number"]</th>
+                <th class="text-center text-nowrap">@Localizer["Item Description"]</th>
+                @if (Qty)
+                {
+                    <th class="text-center text-nowrap">
+                        @Localizer["Qty"]
+                    </th>
+                }
+                @if (Price)
+                {
+                    <th>@Localizer["Cost"]</th>
+                    <th>
+                        @Localizer["Subtotal"]
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.MtdCpqProposal.MasterId != null && Model.MtdCpqProposal.ConfigMasterInluded == 1)
+            {
+                <tr class="font-weight-bold">
+
+                    <td>
+                    </td>
+
+                    <td class="p-2 text-nowrap">
+                        @Model.MtdCpqProposal.MasterNumber
+                    </td>
+                    <td style="width: 100%">
+                        @Model.MtdCpqProposal.MasterName
+                    </td>
+                    @if (Qty)
+                    {
+                        <td class="p-2 text-center text-nowrap">
+                            @Model.MtdCpqProposal.MasterQty
+
+                        </td>
+                    }
+                    @if (Price)
+                    {
+                        <td class="p-2 text-right text-nowrap">
+                            @Model.MtdCpqProposal.MasterPrice.ToString("C2", Model.CatalogCulture)
+                        </td>
+                        <td class="p-2 text-right text-nowrap">
+                            @{ decimal masterSum = Model.MtdCpqProposal.MasterPrice * Model.MtdCpqProposal.MasterQty;
+                                GrossPrice += masterSum;
+                            }
+                            @masterSum.ToString("C2", Model.CatalogCulture)
+                        </td>
+                    }
+
+                </tr>
+
+                @if (Model.MtdCpqProposal.ViewNote == 1)
+                {
+                    <tr>
+
+                        <td></td>
+
+                        <td></td>
+                        <td><div class="view-note" style="white-space: pre-line">@Model.MtdCpqProposal.MasterNote</div></td>
+                        <td></td>
+                        @if (Price)
+                        {
+                            <td></td>
+                            <td></td>
+                        }
+                    </tr>
+                }
+
+            }
+
+            @foreach (var catalog in Model.Catalogs)
+            {
+                var items = @Model.Items.Where(x => x.ProposalCatalogId == catalog.Id).ToList();
+                if (items.Count > 0)
+                {
+                    <tr><td colspan="6" style="padding: 4px;background-color: gray;color: white">@catalog.Name</td></tr>
+                    foreach (var item in items)
+                    {
+                        <tr>
+                            <td>
+                                @if (ImageOn)
+                                {
+                                    @await Component.InvokeAsync("MTDImgViewer", new { maxheight = 64, maxWidth = 64, imgArray = @item.Image })
+                                }
+                            </td>
+                            <td class="p-2 text-nowrap">@item.IdNumber</td>
+                            <td class="w-100">@item.Name</td>
+                            @if (Qty)
+                            {
+                                <td class="text-center">
+                                    @item.Qty
+                                </td>
+                            }
+                            @if (Price)
+                            {
+                                <td class="text-right text-nowrap p-1">@item.Price.ToString("C2", Model.CatalogCulture)</td>
+                                <td class="text-right text-nowrap p-1">
+                                    @{decimal itemSum = item.Price * item.Qty; GrossPrice += itemSum;}
+                                    @itemSum.ToString("C2", Model.CatalogCulture)
+                                </td>
+                            }
+
+                        </tr>
+
+                        @if (Model.MtdCpqProposal.ViewNote == 1)
+                        {
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td><div class="view-note" style="white-space: pre-line">@item.Note</div></td>
+                                @if (Qty)
+                                {
+                                    <td></td>
+                                }
+                                @if (Price)
+                                {
+                                    <td></td>
+                                    <td></td>
+                                }
+                            </tr>
+                        }
+
+                    }
+                }
+            }
+
+            @{
+                int spanTitle = Qty ? 4 : 3;
+                int spanTotal = spanTitle - 1;
+                int spanDelivery = spanTitle + 2;
+            }
+
+
+            @if (Model.MtdCpqProposal.ViewPriceGross == 1)
+            {
+                <tr style="font-weight: bolder">
+                    <td colspan="@spanTitle" class="p-2 text-right">@Localizer["Total"]:</td>
+                    <td colspan="@spanTotal" class="text-right text-nowrap">@GrossPrice.ToString("C2", Model.CatalogCulture)</td>
+                </tr>
+            }
+
+            @if (Model.MtdCpqProposal.ViewPriceCustomer == 1)
+            {
+                <tr style="font-weight:bolder">
+                    @{
+                        CultureInfo cultureTotal = new CultureInfo(Model.MtdCpqProposal.CustomerCurrency ?? Model.CatalogCulture.Name, false);
+                    }
+                    <td colspan="@spanTitle" class="text-right text-nowrap">
+                        @Localizer["Total"]:
+                        @Model.MtdCpqProposal.PriceCustomer.ToString("C2", cultureTotal)
+                    </td>
+                    <td></td>
+                </tr>
+            }
+
+
+            @if (Model.MtdCpqProposal.ViewDelivery == 1)
+            {
+                <tr>
+                    <td colspan="@spanDelivery">
+                        <div style="margin-top: 20px; border: 1px solid #ccc; min-height: 3em; padding: 4px">
+                            <div style="float:left; margin-top: -17px; background-color:white; padding: 0px 3px 0px 3px; width: auto ">
+                                <span class="p-3; font-weight-bold">@Localizer["Delivery condition"]</span>
+                            </div>
+                            <div style="padding-top: 10px; white-space: pre-line; font-style: italic">@Model.MtdCpqProposal.DeliveryCondition</div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

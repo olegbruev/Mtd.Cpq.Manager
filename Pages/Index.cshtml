@@ -1,0 +1,39 @@
+﻿@page
+@model IndexModel
+
+@using Mtd.Cpq.Manager.Services
+@using Mtd.Cpq.Manager.DataConfig
+@using System.Security.Claims;
+@inject SignInManager<WebAppUser> SignInManager
+@inject UserHandler UserHandler
+
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+@if (SignInManager.IsSignedIn(User) && User.IsInRole(SystemRoles.Guest))
+{
+
+<div class="text-center">
+    <h1 class="display-2">CPQ Software</h1>
+    <h3>The system of creating an offer and prices</h3>
+</div>
+
+<div class="text-center" style="margin-top: 50px">
+    <h5>Welcome to the CPQ System</h5>
+    <strong><span style="color: red;">Your access level is "Guest"</span></strong>
+</div>
+}
+else
+{
+<div class="jumbotron">
+    <h1 class="display-4">CPQ Software</h1>
+    <p class="lead">The system of creating an offer and prices</p>
+    <hr class="my-4">
+    @*<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>*@
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" asp-area="" asp-page="/Proposal/Create" role="button">CREATE QUOTE</a>
+    </p>
+</div>
+}

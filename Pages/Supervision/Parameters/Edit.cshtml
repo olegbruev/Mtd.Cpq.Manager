@@ -1,0 +1,145 @@
+﻿@page
+@model Mtd.Cpq.Manager.Pages.Supervision.Parameters.EditModel
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> Localizer;
+
+@{
+    ViewData["Title"] = Localizer["Titles and Terms Editor"];
+}
+
+@if (!Model.IsEditor)
+{
+    <h1>@ViewBag.Title</h1>
+    <a asp-page="./Index">
+        <i class="fas fa-arrow-left"></i>
+        Back to List
+    </a>
+    <div class="text-center mt-2 p-2" style="line-height: 1.3em; box-shadow: 1px 1px 2px 1px #ccc;">
+        <span style="font-weight:bold; text-transform:uppercase; color: gray">No access for edit</span>
+    </div>
+    <hr />
+
+    <div class="d-md-flex">
+        <div class="flex-md-grow-1">
+            @if (Model.MtdCpqTitles.Logo != null)
+            {
+                @await Component.InvokeAsync("MTDImgViewer", new { maxheight = 100, maxWidth = 250, imgArray = Model.MtdCpqTitles.Logo })
+            }
+        </div>
+        <div class="header-overflow">
+            <table>
+                <tr><td>@Localizer["Prepared by"]:</td><td>@Model.MtdCpqTitles.PreparedBy</td></tr>
+                <tr><td>@Localizer["Phone"]:</td><td>@Model.MtdCpqTitles.ContactPhone</td></tr>
+                <tr><td>@Localizer["Email"]:</td><td>@Model.MtdCpqTitles.ContactEmail</td></tr>
+                <tr><td>@Localizer["Contact"]:</td><td>@Model.MtdCpqTitles.ContactName</td></tr>
+            </table>
+        </div>
+    </div>
+
+}
+else
+{
+    <form method="post" autocomplete="off" enctype="multipart/form-data">
+        <div class="d-flex">
+            <div class="p-2 flex-grow-1 d-flex align-items-end">
+                <h1>@ViewBag.Title</h1>
+            </div>
+            <div class="p-2 justify-content-center">
+                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <button type="button" class="btn btn-danger" data-toggle="modal" onclick="DeleteParameter('@Model.MtdCpqTitles.Id')" data-target="#delete-modal">
+                        <i class="far fa-trash-alt"></i>
+                        Delete
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Save Titles
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <a asp-page="./Index">
+            <i class="fas fa-arrow-left"></i>
+            Back to List
+        </a>
+
+        <hr />
+
+        <input type="hidden" asp-for="MtdCpqTitles.Id" />
+        <div class="row">
+            <div class="col-md-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    @await Component.InvokeAsync("MTDImgSelector", new { id = Model.MtdCpqTitles.Id, imgArray = Model.MtdCpqTitles.Logo })
+                </div>
+                <div class="form-group">
+                    <label asp-for="MtdCpqTitles.Name" class="control-label">Name in the list</label>
+                    <input asp-for="MtdCpqTitles.Name" class="form-control" />
+                    <span asp-validation-for="MtdCpqTitles.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MtdCpqTitles.PreparedBy" class="control-label">Company Name</label>
+                    <input asp-for="MtdCpqTitles.PreparedBy" class="form-control" />
+                    <span asp-validation-for="MtdCpqTitles.PreparedBy" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="MtdCpqTitles.ContactName" class="control-label">Contact Name</label>
+                    <input asp-for="MtdCpqTitles.ContactName" class="form-control" />
+                    <span asp-validation-for="MtdCpqTitles.ContactName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MtdCpqTitles.ContactPhone" class="control-label">Contact Phone</label>
+                    <input asp-for="MtdCpqTitles.ContactPhone" class="form-control" />
+                    <span asp-validation-for="MtdCpqTitles.ContactPhone" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MtdCpqTitles.ContactEmail" class="control-label">Contact Email</label>
+                    <input asp-for="MtdCpqTitles.ContactEmail" class="form-control" />
+                    <span asp-validation-for="MtdCpqTitles.ContactEmail" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="MtdCpqTitles.Language" class="control-label"></label>
+                    <select class="form-control" asp-for="MtdCpqTitles.Language" asp-items="ViewBag.Language"></select>
+                    <span asp-validation-for="MtdCpqTitles.Language" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+
+
+<form method="post">
+    <input id="delete-input" name="delete-input" type="hidden" />
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete parameter</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger" asp-page-handler="Delete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function DeleteParameter(id) {
+            document.getElementById("delete-input").value = id;
+        }
+    </script>
+}

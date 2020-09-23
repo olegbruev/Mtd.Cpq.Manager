@@ -1,0 +1,75 @@
+﻿@page
+@model Mtd.Cpq.Manager.Pages.Supervision.Parameters.CreateModel
+
+@{
+    ViewData["Title"] = "Create Titles & Terms";
+}
+<form method="post" autocomplete="off" enctype="multipart/form-data">
+    <div class="d-flex">
+        <div class="flex-grow-1">
+            <h1>@ViewBag.Title</h1>
+        </div>
+        <div class="p-2 justify-content-center">
+            <button class="btn btn-primary">
+                <i class="fas fa-save"></i>
+                Save
+            </button>
+        </div>
+    </div>
+
+    <a asp-page="Index">
+        <i class="fas fa-arrow-left"></i>
+        Back to List
+    </a>
+
+    <hr />
+
+    <div class="row">
+        <div class="col-md-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @await Component.InvokeAsync("MTDImgSelector", new { id = "1" })
+            </div>
+            <div class="form-group">
+                <label asp-for="MtdCpqTitles.Name" class="control-label">Name in the list</label>
+                <input asp-for="MtdCpqTitles.Name" class="form-control" required />
+                <span asp-validation-for="MtdCpqTitles.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MtdCpqTitles.PreparedBy" class="control-label">Company Name</label>
+                <input asp-for="MtdCpqTitles.PreparedBy" class="form-control" required />
+                <span asp-validation-for="MtdCpqTitles.PreparedBy" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="MtdCpqTitles.ContactName" class="control-label">Contact Name</label>
+                <input asp-for="MtdCpqTitles.ContactName" class="form-control" required />
+                <span asp-validation-for="MtdCpqTitles.ContactName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MtdCpqTitles.ContactPhone" class="control-label">Contact Phone</label>
+                <input asp-for="MtdCpqTitles.ContactPhone" class="form-control" required />
+                <span asp-validation-for="MtdCpqTitles.ContactPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MtdCpqTitles.ContactEmail" class="control-label">Contact Email</label>
+                <input asp-for="MtdCpqTitles.ContactEmail" class="form-control" required />
+                <span asp-validation-for="MtdCpqTitles.ContactEmail" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="MtdCpqTitles.Language" class="control-label"></label>
+                <select class="form-control" asp-for="MtdCpqTitles.Language" asp-items="ViewBag.Language"></select>
+                <span asp-validation-for="MtdCpqTitles.Language" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

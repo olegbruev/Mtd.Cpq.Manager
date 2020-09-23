@@ -1,0 +1,70 @@
+﻿@page
+@model ItemsCreateModel
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> Localizer;
+
+@{
+    ViewData["Title"] = Localizer["Create Quote items"];
+}
+
+@TempData["UserMessage"]
+
+<h1>@ViewBag.Title</h1>
+<a asp-page="./Details" asp-route-id="@Model.MtdCpqProposal.Id">
+    <i class="fas fa-arrow-left"></i>
+    Back to details
+</a>
+<form method="get" asp-page-handler="Search" autocomplete="off">
+    <input id="proposal-id-get" type="hidden" asp-for="@Model.MtdCpqProposal.Id" name="proposal" />
+    <input type="hidden" asp-for="@Model.Catalog.Id" name="catalog" />
+    <input type="hidden" asp-for="@Model.CPage" name="cpage" />
+    <div class="input-group">
+        <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search Number or Name" asp-for="@Model.SearchText">
+    </div>
+</form>
+
+<div style="padding-top: 12px;">
+    @await Html.PartialAsync("./_ItemCreatePaginator")
+</div>
+<hr />
+<div class="d-flex justify-content-center">
+    <form method="post">
+        <input id="proposal-id-post" type="hidden" asp-for="MtdCpqProposal.Id" name="proposal" />
+        <div class="d-flex flex-wrap justify-content-center">
+            @foreach (var item in Model.Products)
+            {
+                <div class="card" style="width: 13rem;">
+                    <div class="card-img-top">
+                        @await Component.InvokeAsync("MTDImgViewer", new { maxWidth = 180, maxHeight = 240, imgArray = item.Image })
+                    </div>
+                    <div class="card-body">
+                        @*<h5 class="card-title">@item.IdNumber</h5>
+                            <p class="card-text">@item.Name</p>*@
+                    </div>
+                    <div style="margin: 8px;">
+                        <h5 class="card-title">@item.IdNumber</h5>
+                        <p class="card-text">@item.Name</p>
+                        <button class="btn btn-outline-primary" asp-route-product="@item.Id" onclick="CreateItems('@item.Id')">
+                            <i id="@item.Id-icon" class="far fa-plus-square"></i>
+                            @Localizer["Configure"]
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </form>
+</div>
+
+<hr />
+@await Html.PartialAsync("./_ItemCreatePaginator")
+
+@section Scripts {
+    <script>
+        const CreateItems = (id) => {
+            Cover(true, 0);
+            const icon = document.getElementById(`${id}-icon`);
+            icon.className = "";
+            icon.classList.add("fas", "fa-spinner", "fa-lg", "fa-spin");
+        }
+    </script>
+}

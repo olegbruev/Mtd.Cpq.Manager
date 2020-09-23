@@ -1,0 +1,107 @@
+﻿@page
+@model ItemsTotalModel
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> Localizer;
+
+@{
+    ViewData["Title"] = Localizer["Тоtal Price and Terms"];
+}
+
+<form method="post" autocomplete="off" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Proposal.Id" />
+    <div class="d-flex align-items-center">
+        <div class="flex-grow-1"><h1>@ViewBag.Title</h1></div>
+        <div>
+            <button class="btn btn-primary" type="submit">
+                <i class="fas fa-save"></i>
+                Save
+            </button>
+        </div>
+    </div>
+
+    <a asp-page="./Details" asp-route-id="@Model.Proposal.Id">
+        <i class="fas fa-arrow-left"></i>
+        Back to details
+    </a>
+    <hr />
+    <div class="d-flex align-items-center flex-wrap">
+        <div>
+            <a class="btn btn-primary" asp-page="./ItemsPrice" asp-route-id="@Model.Proposal.Id">
+                <i class="fas fa-arrow-alt-circle-left fa-lg"></i>
+                PREV
+            </a>
+        </div>
+        <div class="p-2 flex-grow-1 font-weight-bold" style="overflow: hidden; overflow-x:auto;">
+            <table>
+                <tr><td>QUOTE:</td><td class="text-nowrap" style="padding-left: 4px">@Model.Proposal.IdNumber at @Model.Proposal.DateCreation.ToShortDateString()</td></tr>
+                <tr><td class="text-nowrap">PREPARED FOR:</td><td style="padding-left: 4px">@Model.Proposal.PreparedFor</td></tr>
+            </table>
+        </div>
+        <div>
+            <span style="font-weight: bold; text-transform:uppercase">Gross Total Price: @Model.GrossPrice.ToString("C2", Model.CurrencyCatalog)</span>
+        </div>
+    </div>
+    <hr />
+    <div class="d-flex align-items-center">
+        <div class="p-1 flex-grow-1 text-right">
+            Price for Customer:
+        </div>
+        <div class="p-1">
+            <input class="form-control" asp-for="@Model.Proposal.PriceCustomer" onclick="this.select();" />
+        </div>
+        <div class="p-1">
+            <div class="btn-group">
+                <input type="hidden" id="currency-input" asp-for="Proposal.CustomerCurrency" />
+                <button id="currency-button" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i id="currency-icon" class=""></i> <span id="currency-tag"></span>
+                </button>
+                <div class="dropdown-menu" style="box-shadow: 2px 2px 3px #ccc">
+                    <a class="dropdown-item" href="#" onclick="ClickCurrency('it-IT')"><i class="fas fa-euro-sign"></i> EUR</a>
+                    <a class="dropdown-item" href="#" onclick="ClickCurrency('us-US')"><i class="fas fa-dollar-sign"></i> USD</a>
+                    <a class="dropdown-item" href="#" onclick="ClickCurrency('ru-RU')"><i class="fas fa-ruble-sign"></i> RUB</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Delivery condition</label>
+        <textarea class="form-control" asp-for="@Model.Proposal.DeliveryCondition" rows="8"></textarea>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        (() => {
+            var input = document.getElementById("currency-input");
+            ClickCurrency(input.value);
+        })();
+        function ClickCurrency(currency) {
+            var icon = document.getElementById("currency-icon");
+            var code = document.getElementById("currency-tag");
+            var input = document.getElementById("currency-input");
+            input.value = currency;
+            icon.className = '';
+            switch (currency) {
+                case "ru-RU": {
+                    icon.classList.add('fas', 'fa-ruble-sign');
+                    code.innerText = 'RUB';
+                    break;
+                }
+                case "us-US": {
+                    icon.classList.add('fas', 'fa-dollar-sign');
+                    code.innerText = 'USD';
+                    break;
+                }
+                default: {
+                    icon.classList.add('fas', 'fa-euro-sign');
+                    code.innerText = 'EUR';
+                    break;
+                }
+            }
+        }
+    </script>
+
+}

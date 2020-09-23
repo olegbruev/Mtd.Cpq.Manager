@@ -1,0 +1,163 @@
+﻿@page
+@model RelationsModel
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> Localizer;
+
+@{
+    ViewData["Title"] = @Localizer["Linkage of item"];
+}
+
+<h1>@ViewBag.Title</h1>
+
+<div style="display:flex;">
+    <div style="flex-grow: 1">
+        <a asp-page="./Index"
+           asp-route-catalog="@Model.MtdCpqProduct.MtdCpqCatalogId"
+           asp-route-cpage="@Model.PCPage"
+           asp-route-searchText="@Model.PSearchText"
+           asp-route-archive="@Model.Archive"
+           asp-route-master="@Request.Query["master"]"
+           >
+            <i class="fas fa-arrow-left"></i>
+            Back to List
+        </a>
+    </div>
+</div>
+<hr />
+
+<div style="display: flex; flex-wrap:wrap">
+    <div style="align-self: center; padding-left: 8px; flex-grow:1">
+        <span style="font-weight: bold">@Model.MtdCpqProduct.IdNumber</span>
+        <h4>@Model.MtdCpqProduct.Name</h4>
+    </div>
+    <div>
+        @await Component.InvokeAsync("MTDImgViewer", new { maxheight = 150, maxWidth = 150, imgArray = Model.MtdCpqProduct.Image })
+    </div>
+</div>
+
+<form method="get" autocomplete="off">
+    <input type="hidden" value="@Model.MtdCpqProduct.Id" name="product">
+    <input type="hidden" asp-for="@Model.Catalog.Id" name="catalog" />
+    <input type="hidden" asp-for="@Model.PCPage" />
+    <input type="hidden" asp-for="@Model.PSearchText" />
+    <input type="hidden" asp-for="@Model.Archive" />
+    <input type="hidden" asp-for="@Model.CPage" />
+    <input type="hidden" value="@Model.Master" name="master" />
+    <div class="input-group">
+        <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search Number or Name" asp-for="@Model.SearchText">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @await Component.InvokeAsync("MTDImgViewer", new { height = 20, imgArray = Model.Catalog.Image })
+                @Model.Catalog.Name
+            </button>
+            <div class="dropdown-menu">
+                @foreach (var item in @Model.Catalogs)
+                {
+                    <a class="dropdown-item btn btn-link" asp-page="./Relations"
+                       asp-route-product="@Model.MtdCpqProduct.Id"
+                       asp-route-catalog="@item.Id"
+                       asp-route-master="@Request.Query["master"]">
+                        @await Component.InvokeAsync("MTDImgViewer", new { height = 20, imgArray = item.Image })
+                        @item.Name
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="mtd-table-overflow">
+    <table class="table">
+        <thead>
+            <tr style="white-space: nowrap">
+                <th style="width: 64px;">Available</th>
+                <th style="width: 64px;">Required</th>
+                <th>Image</th>
+                <th>Part number</th>
+                <th>Item description</th>
+                <th>OR OR rule</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>
+                        <form id="@item.Id-available-form" method="post" asp-page-handler="Availables" asp-route-id="@item.Id" asp-route-product="@Model.MtdCpqProduct.Id">
+                            @{
+                                string atoogle = "far fa-circle fa-lg";
+                                string acolor = "gray";
+                                bool isExists = Model.Rules.Where(x => x.ProductIdChild == item.Id).Any();
+                                @if (isExists)
+                                {
+                                    atoogle = "far fa-check-circle fa-lg";
+                                    acolor = "navy";
+                                }
+                            }
+                            <div id="@item.Id-available-div" style="cursor:pointer; color: @acolor" onclick="ClickAvailables('@item.Id')">
+                                <i id="@item.Id-available-icon" class="@atoogle" style="font-size: 2em"></i>
+                                <input id="@item.Id-available-checkbox" name="@item.Id-available-checkbox" type="checkbox" style="display:none;" @if (isExists) { <text> checked</text>} />
+                            </div>
+                        </form>
+                    </td>
+                    <td style="text-align: center">
+                        <form id="@item.Id-required-form" method="post" asp-page-handler="Required" asp-route-id="@item.Id" asp-route-product="@Model.MtdCpqProduct.Id">
+                            @{
+                                string rtoogle = "fas fa-toggle-off fa-lg";
+                                string rcolor = "gray";
+                                bool checkRequired = false;
+                                var required = Model.Rules.Where(x => x.ProductIdChild == item.Id).Select(x => x.Required).FirstOrDefault();
+                                @if (required == 1)
+                                {
+                                    checkRequired = true;
+                                    rtoogle = "fas fa-toggle-on fa-lg";
+                                    rcolor = "red";
+                                }
+                            }
+                            <div id="@item.Id-required-div" style="cursor:pointer; color: @rcolor" onclick="ClickRequired('@item.Id')">
+                                <i id="@item.Id-required-icon" class="@rtoogle" style="font-size: 1.7em"></i>
+                                <input id="@item.Id-required-checkbox" name="@item.Id-available-checkbox" type="checkbox" style="display:none;" @if (checkRequired) { <text> checked</text>} />
+                            </div>
+                        </form>
+                    </td>
+                    <td style="max-width:68px">
+                        @await Component.InvokeAsync("MTDImgViewer", new { maxWidth = 64, maxHeight = 64, imgArray = item.Image })
+                    </td>
+                    <td style="white-space: nowrap">
+                        @item.IdNumber
+                    </td>
+                    <td class="w-75">
+                        @item.Name
+                    </td>
+                    <td class="w-25 text-center">
+                        <form id="@item.Id-oneof-form" method="post" asp-page-handler="OneOf" asp-route-id="@item.Id" asp-route-product="@Model.MtdCpqProduct.Id">
+                            <i id="@item.Id-oneof-icon-wait" class="fas fa-sync-alt fa-spin" style="font-size: 1.7em; display: none"></i>
+                            <select id="@item.Id-oneof-select" class="form-control" onchange="SelectOneOf('@item.Id')" name="@item.Id-oneof-select">
+                                @foreach (var op in Model.MtdCpqOneOfs)
+                                {
+                                    string OneOfId = Model.Rules.Where(x => x.ProductIdChild == item.Id).Select(x => x.OneOfId).FirstOrDefault();
+
+                                    if (op.Id == OneOfId)
+                                    {
+                                        <option value="@op.Id" selected>@op.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@op.Id">@op.Name</option>
+                                    }
+                                }
+                            </select>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@await Html.PartialAsync("./_PaginatorRelations")
+
+@section Scripts {
+    <script src="~/js/product-relations.js" asp-append-version="true"></script>
+}

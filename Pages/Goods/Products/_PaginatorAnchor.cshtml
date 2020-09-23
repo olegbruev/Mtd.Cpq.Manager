@@ -1,0 +1,77 @@
+﻿@model AnchorModel
+
+<form method="get">
+    <nav aria-label="...">
+        <ul class="pagination">
+            <li class="page-item @if (@Model.Paginator.CPage == 1) {<text>disabled</text> }">
+                <a class="page-link" asp-page="./Anchor"
+                   asp-route-cpage="@Model.Paginator.FirstPage"
+                   asp-route-catalog="@Model.Catalog.Id"
+                   asp-route-product="@Model.MtdCpqProduct.Id"
+                   asp-route-searchText="@Model.SearchText"
+                   asp-route-psearchText="@Model.PSearchText"
+                   asp-route-pcpage="@Model.PCPage"
+                   asp-route-archive="@Model.Archive",
+                   asp-route-master="@Model.Master"
+                   tabindex="-1">
+                    Previous
+                </a>
+            </li>
+            @if (@Model.Paginator.PrevPage != @Model.Paginator.CPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-page="./Anchor"
+                       asp-route-cpage="@Model.Paginator.PrevPage"
+                       asp-route-catalog="@Model.Catalog.Id"
+                       asp-route-product="@Model.MtdCpqProduct.Id"
+                       asp-route-searchText="@Model.SearchText"
+                       asp-route-psearchText="@Model.PSearchText"
+                       asp-route-pcpage="@Model.PCPage"
+                       asp-route-archive="@Model.Archive"
+                       asp-route-master="@Model.Master"
+                       >
+                        @Model.Paginator.PrevPage
+                    </a>
+                </li>
+            }
+
+            <li class="page-item active">
+                <a class="page-link"><span class="sr-only">(current)</span>@Model.Paginator.CPage</a>
+            </li>
+
+            @if (Model.Paginator.LastPage != Model.Paginator.CPage && Model.Paginator.LastPage > 0)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-page="./Anchor"
+                       asp-route-cpage="@Model.Paginator.NextPage"
+                       asp-route-catalog="@Model.Catalog.Id"
+                       asp-route-product="@Model.MtdCpqProduct.Id"
+                       asp-route-searchText="@Model.SearchText"
+                       asp-route-psearchText="@Model.PSearchText"
+                       asp-route-pcpage="@Model.PCPage"
+                       asp-route-archive="@Model.Archive"
+                       asp-route-master="@Model.Master"
+                       >
+                        @Model.Paginator.NextPage
+                    </a>
+                </li>
+            }
+
+            <li class="page-item @if (Model.Paginator.CPage == Model.Paginator.LastPage) {<text>disabled</text>}">
+                <a class="page-link" asp-page="./Anchor"
+                   asp-route-cpage="@Model.Paginator.NextPage"
+                   asp-route-catalog="@Model.Catalog.Id"
+                   asp-route-product="@Model.MtdCpqProduct.Id"
+                   asp-route-searchText="@Model.SearchText"
+                   asp-route-psearchText="@Model.PSearchText"
+                   asp-route-pcpage="@Model.PCPage"
+                   asp-route-archive="@Model.Archive"
+                   asp-route-master="@Model.Master"
+                   >
+                    Next
+                </a>
+            </li>
+        </ul>
+    </nav>
+</form>
+

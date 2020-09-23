@@ -1,0 +1,126 @@
+﻿@page
+@model EditModel
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> Localizer;
+
+@{
+    ViewData["Title"] = Localizer["Edit item"];
+}
+
+@section Head {
+    <link href="~/lib/quill/dist/quill.snow.css" rel="stylesheet">
+    <link href="~/lib/quill/dist/quill.bubble.css" rel="stylesheet">
+}
+
+<form id="form" method="post" autocomplete="off" enctype="multipart/form-data">
+    <input type="hidden" name="get-cpage" value="@Request.Query["cpage"]" />
+    <input type="hidden" name="get-searchText" value="@Request.Query["searchText"]" />
+    <input type="hidden" name="get-archive" value="@Request.Query["archive"]" />
+    <input type="hidden" name="get-master" value="@Request.Query["master"]" />
+
+    <div class="d-flex">
+        <div class="flex-grow-1">
+            <h1>@ViewBag.Title</h1>
+        </div>
+        <div class="p-2 align-items-center">
+            <button type="button" class="btn btn-primary" onclick="SaveDatasheet()">
+                <i class="fas fa-save"></i>
+                Save
+            </button>
+        </div>
+    </div>
+
+    <a asp-page="./Index"
+       asp-route-catalog="@Model.MtdCpqProduct.MtdCpqCatalogId"
+       asp-route-cpage="@Request.Query["cpage"]"
+       asp-route-searchText="@Request.Query["searchText"]"
+       asp-route-archive="@Request.Query["archive"]"
+       asp-route-master="@Request.Query["master"]">
+        <i class="fas fa-arrow-left"></i>
+        Back to List
+    </a>
+
+    <hr />
+
+    @{
+        string color = Model.Archive ? "red" : "navy";
+        string toggle = Model.Archive ? "fas fa-toggle-on" : "fas fa-toggle-off";
+    }
+
+    <div class="form-group">
+        <label asp-for="MtdCpqProduct.Name" class="control-label">
+            Item description
+        </label>
+        <input asp-for="MtdCpqProduct.Name" class="form-control" />
+        <span asp-validation-for="MtdCpqProduct.Name" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex flex-wrap">
+        <div class="flex-grow-1">
+            @await Component.InvokeAsync("MTDCheckbox", new { id = "master-product", label = "Master product", result = Model.MtdCpqProduct.Som == 1 ? true : false })
+        </div>
+        <div>
+            <span id="archive-div" class="unselectable" style="cursor: pointer; color: @color;" onclick="ClickArchive()">
+                Archive <i id="archive-icon" class="@toggle"></i>
+            </span>
+            <input id="archive-checkbox" type="checkbox" asp-for="@Model.Archive" style="display:none" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <input type="hidden" asp-for="MtdCpqProduct.Id" />
+            <div class="form-group">
+                @await Component.InvokeAsync("MTDImgSelector", new { id = Model.MtdCpqProduct.Id, imgArray = Model.MtdCpqProduct.Image })
+                <span asp-validation-for="MtdCpqProduct.Image" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="MtdCpqProduct.MtdCpqCatalogId" class="control-label"></label>
+                <input asp-for="MtdCpqProduct.MtdCpqCatalogId" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label asp-for="MtdCpqProduct.IdNumber" class="control-label">Part Number</label>
+                <input asp-for="MtdCpqProduct.IdNumber" class="form-control" />
+                <span asp-validation-for="MtdCpqProduct.IdNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="MtdCpqProduct.Price" class="control-label"></label>
+                <input asp-for="MtdCpqProduct.Price" data-a-sep="." class="form-control" />
+                <span asp-validation-for="MtdCpqProduct.Price" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label asp-for="MtdCpqProduct.Sequence" class="control-label">
+                    Sort index
+                </label>
+                <input asp-for="MtdCpqProduct.Sequence" data-a-sep="." class="form-control" />
+                <span asp-validation-for="MtdCpqProduct.Sequence" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label asp-for="MtdCpqProduct.Note" class="control-label">Extended description</label>
+                <textarea id="text-note" asp-for="MtdCpqProduct.Note" class="form-control" rows="7"></textarea>
+                <span asp-validation-for="MtdCpqProduct.Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input id="data-input" type="hidden" asp-for="MtdCpqProduct.Datasheet" class="form-control" />
+                <label asp-for="MtdCpqProduct.Datasheet" class="control-label">Tech Data</label>
+                <div id="data-editor" style="height: 350px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+    <script src="~/lib/quill/dist/quill.min.js" asp-append-version="true"></script>
+    <script src="~/js/product-edit.js" asp-append-version="true"></script>
+}

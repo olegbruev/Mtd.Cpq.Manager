@@ -1,0 +1,60 @@
+﻿@page
+@model Mtd.Cpq.Manager.CreateModel
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> Localizer;
+
+@{
+    ViewData["Title"] = Localizer["Create OR OR rule"];
+}
+<form method="post" autocomplete="off">
+    <div class="d-flex align-items-center">
+        <div class="flex-grow-1">
+            <h1>@ViewBag.Title</h1>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i>
+                Save
+            </button>
+        </div>
+    </div>
+
+
+    <a asp-page="Index">
+        <i class="fas fa-arrow-left"></i>
+        Back to List
+    </a>
+
+
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="MtdCpqOneOf.Name" class="control-label"></label>
+                <input asp-for="MtdCpqOneOf.Name" class="form-control" />
+                <span asp-validation-for="MtdCpqOneOf.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MtdCpqOneOf.Note" class="control-label"></label>
+                <textarea asp-for="MtdCpqOneOf.Note" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="MtdCpqOneOf.Note" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="MtdCpqOneOf.Color" class="control-label"></label>
+                <input type="color" asp-for="MtdCpqOneOf.Color" class="form-control" />
+                <span asp-validation-for="MtdCpqOneOf.Color" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MtdCpqOneOf.ImportTag" class="control-label"></label>
+                <select asp-for="MtdCpqOneOf.ImportTag" class="form-control" asp-items="@ViewBag.TagList"></select>
+                <span asp-validation-for="MtdCpqOneOf.ImportTag" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

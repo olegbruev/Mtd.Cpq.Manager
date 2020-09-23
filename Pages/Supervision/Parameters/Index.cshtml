@@ -1,0 +1,147 @@
+﻿@page
+@model Mtd.Cpq.Manager.Pages.Supervision.Parameters.IndexModel
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> Localizer;
+
+@{
+    ViewData["Title"] = Localizer["Quotes Titles and Terms"];
+}
+<h1>@ViewBag.Title</h1>
+<div class="d-flex flex-row">
+    <div class="p-2 flex-grow-1 d-flex align-items-end">
+        <a asp-page="Create">
+            <i class="fas fa-plus"></i>
+            Create New
+        </a>
+    </div>
+</div>
+
+
+<form method="get" autocomplete="off">
+    <div class="input-group">
+        <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search" asp-for="@Model.SearchText">
+        <input type="hidden" name="filter" asp-for="@Model.Filter">
+        <div class="input-group-append">
+            <button style="width:150px" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-filter"></i>
+                @{ if (Model.Filter)
+                    { <text>Own Titles</text>}
+                else
+                {<text> All Titles</text>}
+                }
+            </button>
+            <div class="dropdown-menu" style="box-shadow: 2px 2px 3px #ccc">
+                <a class="dropdown-item btn btn-link" asp-page="./Index">
+                    All Titles
+                </a>
+                <a class="dropdown-item btn btn-link" asp-page="./Index" asp-route-searchText="@Model.SearchText" asp-route-filter="true">
+                    Own Titles
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="mtd-table-overflow">
+    <table class="table table-items">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TitlesList[0].Logo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TitlesList[0].Name)
+                </th>
+                <th>
+                    Company
+                </th>
+                <th>
+                    Contact Name
+                </th>
+                <th>
+                    Owner
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.TitlesList)
+            {
+                <tr>
+                    <td  style="padding-top: 12px; max-width: 190px">
+                        @await Component.InvokeAsync("MTDImgViewer", new { maxWidth = 180, maxHeight = 56, imgArray = item.Logo })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PreparedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Owner)
+                    </td>
+                </tr>
+                <tr class="hover-table-row">
+                    <td colspan="5" style="text-align: left; white-space:nowrap; border:0;">
+                        <div class="d-flex align-items-center p-2" style="white-space: nowrap;">
+                            <div>
+                                <a asp-page="./Edit" asp-route-id="@item.Id">
+                                    <i class="fas fa-edit"></i>
+                                    View and edit
+                                </a>
+                            </div>
+                            @*<div>
+                                <button type="button" class="btn btn-link" data-toggle="modal" onclick="DeleteParameter('@item.Id')" data-target="#delete-modal">
+                                    <i class="far fa-trash-alt"></i>
+                                    Delete
+                                </button>
+                            </div>*@
+                            @if (Model.IsAdmin)
+                            {
+                                <div class="pl-2">
+                                    <a asp-page="./EditOwner" asp-route-id="@item.Id">
+                                        <i class="fas fa-id-badge"></i>
+                                        Set Owner
+                                    </a>
+                                </div>
+                            }
+                        </div>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<form method="get">
+    <input type="hidden" value="@Model.SearchText" />
+    <nav aria-label="...">
+        <ul class="pagination">
+            <li class="page-item @if (@Model.Paginator.CPage == 1) {<text>disabled</text> }">
+                <a class="page-link" asp-page="./Index" asp-route-page="@Model.Paginator.FirstPage" tabindex="-1">Previous</a>
+            </li>
+            @if (@Model.Paginator.PrevPage != @Model.Paginator.CPage)
+            {
+                <li class="page-item"><a class="page-link" asp-page="./Index" asp-route-cpage="@Model.Paginator.PrevPage">@Model.Paginator.PrevPage</a></li>
+            }
+
+            <li class="page-item active">
+                <a class="page-link"><span class="sr-only">(current)</span>@Model.Paginator.CPage</a>
+            </li>
+
+            @if (Model.Paginator.LastPage != Model.Paginator.CPage && Model.Paginator.LastPage > 0)
+            {
+                <li class="page-item"><a class="page-link" asp-page="./Index" asp-route-cpage="@Model.Paginator.NextPage">@Model.Paginator.NextPage</a></li>
+            }
+
+            <li class="page-item @if (Model.Paginator.CPage == Model.Paginator.LastPage) {<text>disabled</text>}">
+                <a class="page-link" asp-page="./Index" asp-route-cpage="@Model.Paginator.NextPage">Next</a>
+            </li>
+        </ul>
+    </nav>
+</form>
+

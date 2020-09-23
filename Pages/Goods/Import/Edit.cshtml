@@ -1,0 +1,112 @@
+﻿@page
+@model EditModel
+
+@{
+    ViewData["Title"] = "Edit import parameters";
+}
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="MtdCpqImportParam.Id" />
+
+    <div class="d-flex align-items-center">
+        <div class="flex-grow-1">
+            <h1>@ViewBag.Title</h1>
+        </div>
+        <div>
+            <button class="btn btn-primary">
+                <i class="fas fa-save"></i>
+                Save
+            </button>
+        </div>
+    </div>
+
+    <div>
+        <a asp-page="./Index">
+            <i class="fas fa-arrow-left"></i>
+            Back to Import
+        </a>
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-1">
+            <div class="form-group">
+                <label asp-for="MtdCpqImportParam.ColNumber" class="control-label"></label>
+                <input type="number" asp-for="MtdCpqImportParam.ColNumber" class="form-control" />
+                <span asp-validation-for="MtdCpqImportParam.ColNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-group">
+                <label asp-for="MtdCpqImportParam.ColName" class="control-label"></label>
+                <input type="number" asp-for="MtdCpqImportParam.ColName" class="form-control" />
+                <span asp-validation-for="MtdCpqImportParam.ColName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-group">
+                <label asp-for="MtdCpqImportParam.ColNote" class="control-label"></label>
+                <input type="number" asp-for="MtdCpqImportParam.ColNote" class="form-control" />
+                <span asp-validation-for="MtdCpqImportParam.ColNote" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-group">
+                <label asp-for="MtdCpqImportParam.ColData" class="control-label"></label>
+                <input type="number" asp-for="MtdCpqImportParam.ColData" class="form-control" />
+                <span asp-validation-for="MtdCpqImportParam.ColData" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-group">
+                <label asp-for="MtdCpqImportParam.ColPrice" class="control-label"></label>
+                <input type="number" asp-for="MtdCpqImportParam.ColPrice" class="form-control" />
+                <span asp-validation-for="MtdCpqImportParam.ColPrice" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-group">
+                <label asp-for="MtdCpqImportParam.TagData" class="control-label"></label>
+                <select asp-for="MtdCpqImportParam.TagData" class="form-control" asp-items="@ViewBag.TagData"></select>
+                <span asp-validation-for="MtdCpqImportParam.TagData" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-group">
+                <label asp-for="MtdCpqImportParam.TagMaster" class="control-label"></label>
+                <select asp-for="MtdCpqImportParam.TagMaster" class="form-control" asp-items="@ViewBag.TagMaster"></select>
+                <span asp-validation-for="MtdCpqImportParam.TagMaster" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-group">
+                <label asp-for="MtdCpqImportParam.TagRequired" class="control-label"></label>
+                <select asp-for="MtdCpqImportParam.TagRequired" class="form-control" asp-items="@ViewBag.TagRequired"></select>
+                <span asp-validation-for="MtdCpqImportParam.TagRequired" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr><th>Tag</th><th style="width: 100%">Destination</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>CollNumber</td><td>The column number in Excel file that contains the Part Number of Item</td></tr>
+        <tr><td>CollName</td><td>The column number in Excel file that contains the Item descriptions</td></tr>
+        <tr><td>CollNote</td><td>The column number in Excel file that contains the Extended descriptions of Item</td></tr>
+        <tr><td>ColData</td><td>The column number in Excel file that contains the Technical Data of Item</td></tr>
+        <tr><td>ColPrice</td><td>The column number in Excel file that contains the Price of Item</td></tr>
+        <tr><td>TagData</td><td>The tag that marks the column in the Excel file in which there will be tags defining the "Linkage rules"  and catalog tags. This Tag must be in the first line of the file sheet of the Excel file that you want to import. Other tags thе Linkage rule and the catalog tags should be lower in the same column.</td></tr>
+        <tr><td>TagMaster</td><td>The tag which definition the Item as Master product</td></tr>
+        <tr><td>TagRequired</td><td>The tag which definition for Item as Required item to configuration Quotes</td></tr>
+
+    </tbody>
+</table>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

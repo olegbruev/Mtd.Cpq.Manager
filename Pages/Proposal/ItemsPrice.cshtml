@@ -1,0 +1,147 @@
+﻿@page
+@model Mtd.Cpq.Manager.Pages.Proposal.ItemsPriceModel
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> Localizer;
+
+@{
+    ViewData["Title"] = Localizer["Price Configurator"];;
+}
+
+<form id="form-table" method="post" action="" autocomplete="off" enctype="multipart/form-data">
+    <input type="hidden" asp-for="MtdCpqProposal.Id" />
+    <input type="hidden" asp-for="CatalogCulture" />
+    <div class="d-flex flex-wrap">
+        <div class="flex-grow-1">
+            <h1>@ViewBag.Title</h1>
+        </div>
+        <div class="p-2 align-items-center">
+
+        </div>
+    </div>
+    <div>
+        <a asp-page="./Details" asp-route-Id="@Model.MtdCpqProposal.Id">
+            <i class="fas fa-arrow-left"></i>
+            Back to details
+        </a>
+    </div>
+    <hr />
+    <div class="d-flex align-items-center flex-wrap">
+        <div>
+            <a class="btn btn-primary" asp-page="./ItemsEdit" asp-route-id="@Model.MtdCpqProposal.Id">
+                <i class="fas fa-arrow-alt-circle-left fa-lg"></i>
+                PREV
+            </a>
+        </div>
+        <div class="p-2 flex-grow-1 font-weight-bold" style="overflow: hidden; overflow-x:auto;">
+            <table>
+                <tr><td>QUOTE:</td><td class="text-nowrap" style="padding-left: 4px">@Model.MtdCpqProposal.IdNumber at @Model.MtdCpqProposal.DateCreation.ToShortDateString()</td></tr>
+                <tr><td class="text-nowrap">PREPARED FOR:</td><td style="padding-left: 4px">@Model.MtdCpqProposal.PreparedFor</td></tr>
+            </table>
+        </div>
+        <div>
+            <a class="btn btn-primary" asp-page="./ItemsTotal" asp-route-id="@Model.MtdCpqProposal.Id">
+                NEXT
+                <i class="fas fa-arrow-alt-circle-right fa-lg"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="mtd-table-overflow">
+        <table class="table">
+            <thead>
+                <tr><th></th><th></th><th></th><th class="text-center">Qty</th><th class="text-center">@Localizer["Price"]</th><th class="text-center">Subtotal</th></tr>
+            </thead>
+            <tbody>
+                @if (Model.MtdCpqProposal.ConfigMasterInluded == 1)
+                {
+                    <tr>
+                        <td hidden><input type="hidden" asp-for="@Model.MtdCpqProposal.MasterId" /></td>
+                        <td>
+                            @await Component.InvokeAsync("MTDImgViewer", new { maxWidth = 96, maxHeight = 96, imgArray = Model.MtdCpqProposal.MasterImage })
+                        </td>
+                        <td class="text-nowrap">
+                            <div>
+                                <strong>@Model.MtdCpqProposal.MasterNumber</strong>
+                                @*@await Component.InvokeAsync("MTDImgViewer", new { maxheight = 96, imgArray = Model.MtdCpqProposal.MasterImage })*@
+                            </div>
+                        </td>
+                        <td class="w-100">
+                            <strong>@Model.MtdCpqProposal.MasterName</strong>
+                        </td>
+                        <td style="min-width: 100px">
+                            <input type="number" id="@Model.MtdCpqProposal.Id-qty" name="@Model.MtdCpqProposal.Id-qty" class="form-control" asp-for="MtdCpqProposal.MasterQty" onClick="this.select();" onkeyup="PressQtyPrice('@Model.MtdCpqProposal.Id',true)" />
+                        </td>
+                        <td style="min-width: 150px">
+                            <input id="@Model.MtdCpqProposal.Id-price" name="@Model.MtdCpqProposal.Id-price" class="form-control" asp-for="MtdCpqProposal.MasterPrice" onClick="this.select();" onkeyup="PressQtyPrice('@Model.MtdCpqProposal.Id',true)" />
+                        </td>
+                        <td class="text-right  text-nowrap">
+                            @{
+                                decimal masterSum = @Model.MtdCpqProposal.MasterQty * @Model.MtdCpqProposal.MasterPrice;
+                            }
+                            <div style="width: 120px; text-overflow:ellipsis; overflow:hidden">
+                                <span id="@Model.MtdCpqProposal.Id-sum">@masterSum.ToString("C2", Model.CatalogCulture)</span>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+
+
+                @foreach (var catalog in Model.Catalogs)
+                {
+                    var items = Model.Items.Where(x => x.ProposalCatalogId == catalog.Id).OrderBy(x => x.Name).ToList();
+                    if (items.Count > 0)
+                    {
+                        <tr style="background-color: gray; color: white; font-size: large">
+                            <td colspan="6">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        <strong>@catalog.Name</strong>
+                                    </div>
+                                    <div>
+                                        <span class="unselectable" style="cursor: pointer; font-weight: bold;" onclick="ClickCatalog('@catalog.Id')">
+                                            <i id="@catalog.Id-icon" class="far fa-minus-square fa-lg"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                    @foreach (var item in items)
+                    {
+                        <tr mtd-data-catalog="@catalog.Id">
+                            <td hidden></td>
+                            <td>
+                                @await Component.InvokeAsync("MTDImgViewer", new { maxWidth = 64, maxHeight = 64, imgArray = item.Image })
+                            </td>
+                            <td class="text-nowrap">@item.IdNumber</td>
+                            <td style="width: 100%">@item.Name</td>
+                            <td style="min-width: 100px">
+                                <input id="@item.Id-qty" name="@item.Id-qty" class="form-control" asp-for="@item.Qty" onClick="this.select();" onkeyup="PressQtyPrice('@item.Id')" />
+                            </td>
+                            <td style="min-width: 150px">
+                                <input id="@item.Id-price" name="@item.Id-price" class="form-control" asp-for="@item.Price" onClick="this.select();" onkeyup="PressQtyPrice('@item.Id')" />
+                            </td>
+                            <td class="text-right  text-nowrap">
+                                @{
+                                    decimal itemSum = @item.Qty * @item.Price;
+                                }
+                                <span id="@item.Id-sum">@itemSum.ToString("C2", Model.CatalogCulture)</span>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+
+<button onclick="topFunction()" id="btnUp" title="Go to top">
+    <i class="fas fa-arrow-alt-circle-up" style="font-size: 1.5em"></i>
+    <div>UP</div>
+</button>
+
+@section Scripts {
+    <script src="~/js/proposoal-edit-price.js" asp-append-version="true"></script>
+}
