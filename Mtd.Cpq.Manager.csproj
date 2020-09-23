@@ -14,6 +14,7 @@
     <Description>CPQ Software
 The system of creating an offer and prices</Description>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <PackageReleaseNotes>1.2.2.beta.5</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

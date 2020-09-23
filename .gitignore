@@ -10,6 +10,12 @@
 *.userosscache
 *.sln.docstates
 
+Mtd.Cpq.Manager.sln
+appsettings.json
+appsettings.Development.json
+appsettings.Prodaction.json
+package-lock.json
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
