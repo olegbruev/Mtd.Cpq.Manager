@@ -25,7 +25,7 @@ namespace Mtd.Cpq.Manager.Pages.Supervision.Parameters
             _context = context;
             _userHandler = userHandler;
         }
-        
+
         public IList<TitlesItem> TitlesList { get; set; }
         public string SearchText { get; set; }
         public int CPage { get; set; }
@@ -39,22 +39,31 @@ namespace Mtd.Cpq.Manager.Pages.Supervision.Parameters
             Filter = filter;
             int count = 0;
 
-            IList<MtdCpqTitles> TempList;            
+            IList<MtdCpqTitles> TempList;
             UserParams userParams = await _userHandler.GetTitlesForUserAsync(HttpContext.User);
 
             IQueryable<MtdCpqTitles> queryAccess = _context.MtdCpqTitles;
 
             /*Access check*/
-            if (userParams.CpqPolicyView != CpqPolicyView.ViewAll || Filter)
+            if (userParams.CpqPolicyView != CpqPolicyView.ViewAll)
             {
-                queryAccess = queryAccess.Where(x => userParams.GroupTitleIds.Contains(x.Id) && userParams.OwnTitleIds.Contains(x.Id));
+
+                if (Filter)
+                {
+                    queryAccess = queryAccess.Where(x => userParams.OwnTitleIds.Contains(x.Id));
+                }
+                else
+                {
+                    queryAccess = queryAccess.Where(x => userParams.GroupTitleIds.Contains(x.Id) || userParams.OwnTitleIds.Contains(x.Id));
+
+                }
             }
 
             if (searchText == null)
             {
                 count = await queryAccess.CountAsync();
                 Paginator = new Paginator(CPage, 10, count);
-                TempList = await queryAccess.OrderBy(x=>x.Name)             
+                TempList = await queryAccess.OrderBy(x => x.Name)
                     .Skip(Paginator.Skip)
                     .Take(Paginator.Take)
                     .ToListAsync();
@@ -67,10 +76,10 @@ namespace Mtd.Cpq.Manager.Pages.Supervision.Parameters
                     || x.PreparedBy.ToUpper().Contains(text)
                     || x.ContactName.ToUpper().Contains(text));
 
-                IList<string> userIds = await _userHandler.Users.Where(x => x.Title.ToUpper().Contains(text) || x.TitleGroup.ToUpper().Contains(text)).Select(x=>x.Id).ToListAsync();
+                IList<string> userIds = await _userHandler.Users.Where(x => x.Title.ToUpper().Contains(text) || x.TitleGroup.ToUpper().Contains(text)).Select(x => x.Id).ToListAsync();
                 if (userIds != null)
                 {
-                    IList<string> titlesIds =  await _userHandler.GetTitlesIdsForUsersAsync(userIds);
+                    IList<string> titlesIds = await _userHandler.GetTitlesIdsForUsersAsync(userIds);
                     filterQuery = filterQuery.Union(queryAccess.Where(x => titlesIds.Contains(x.Id)));
                 }
 
@@ -86,21 +95,22 @@ namespace Mtd.Cpq.Manager.Pages.Supervision.Parameters
             IList<string> ids = TempList.Select(x => x.Id).ToList();
             Dictionary<string, WebAppUser> dictonary = await _userHandler.GetOwnersTitlesAsync(ids);
 
-            TitlesList = TempList.Select(x => 
-                    new TitlesItem { 
-                        Id = x.Id, 
-                        Logo = x.Logo, 
-                        Name = x.Name, 
-                        PreparedBy = x.PreparedBy, 
-                        ContactName = x.ContactName, 
-                        Owner = GetLongUserName(dictonary,x.Id)
+            TitlesList = TempList.Select(x =>
+                    new TitlesItem
+                    {
+                        Id = x.Id,
+                        Logo = x.Logo,
+                        Name = x.Name,
+                        PreparedBy = x.PreparedBy,
+                        ContactName = x.ContactName,
+                        Owner = GetLongUserName(dictonary, x.Id)
                     }).ToList();
 
             IsAdmin = User.IsInRole(SystemRoles.Admin);
             return Page();
         }
-         
-        private string GetLongUserName (Dictionary<string, WebAppUser> dictonary, string key)
+
+        private string GetLongUserName(Dictionary<string, WebAppUser> dictonary, string key)
         {
             if (!dictonary.Where(f => f.Key == key).Any()) { return "No owner"; }
             WebAppUser appUser = dictonary.FirstOrDefault(f => f.Key == key).Value;
