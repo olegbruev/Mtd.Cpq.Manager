@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -49,6 +50,8 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
         public bool PrintGrossPrice { get; set; }
         public bool IsEditor { get; set; }
 
+        public List<string> MasterNotes { get; set; }
+
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
@@ -74,13 +77,13 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
 
             Items = await _context.MtdCpqProposalItem
                 .Where(x => x.MtdCpqProposalId == MtdCpqProposal.Id && x.Selected == 1)
-                .OrderBy(x=>x.Sequence)
+                .OrderBy(x => x.Sequence)
                 .ToListAsync();
             Catalogs = await _context.MtdCpqProposalCatalogs
                 .Where(x => x.MtdCpqProposalId == MtdCpqProposal.Id)
                 .OrderBy(x => x.Sequence)
                 .ToListAsync();
-            
+
             CatalogCulture = new CultureInfo(_config.Value.CatalogCulture, false);
             string cultureInfo = MtdCpqProposal.Language ?? _config.Value.CultureInfo;
             CultureView = new CultureInfo(cultureInfo, false);
@@ -88,6 +91,15 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
             PrintGrossPrice = userParams.PrintGrossPrice;
 
             ViewData["GrossPrice"] = personalMenu.Value.GrossPrice;
+
+            MasterNotes = new List<string>();
+            if (MtdCpqProposal.MasterNote != null && MtdCpqProposal.MasterNote.Length > 0)
+            {
+                Regex regex = new Regex(@"(.*?)(?:(\r\n){2,}|\r{2,}|\n{2,}|$)", RegexOptions.Multiline);
+                MatchCollection matches = regex.Matches(MtdCpqProposal.MasterNote);
+                foreach (Match match in matches) { MasterNotes.Add(match.Value); }
+            }
+
 
             return Page();
         }
@@ -139,7 +151,7 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
 
             return new OkObjectResult("OK");
         }
-       
+
         public async Task<IActionResult> OnPostExcelAsync(string id)
         {
             if (id == null) { return NotFound(); }
@@ -258,6 +270,7 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
                     Left = 450,
                     Right = 450
                 };
+
                 SectionProperties sectionProps = new SectionProperties();
                 sectionProps.Append(pageMargin);
                 wordDoc.AddMainDocumentPart();

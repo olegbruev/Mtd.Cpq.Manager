@@ -9,7 +9,6 @@ namespace Mtd.Cpq.Manager.Components
     [ViewComponent(Name = "MTDImgSelector")]
     public class MTDImgSelector : ViewComponent
     {
-
         private static bool CheckDelete(string codeForm, HttpRequest request)
         {
 

@@ -34,6 +34,9 @@ namespace Mtd.Cpq.Manager.Data
         public virtual DbSet<MtdCpqTitles> MtdCpqTitles { get; set; }
         public virtual DbSet<MtdCpqConfig> MtdCpqConfig { get; set; }
 
+        public virtual DbSet<MtdCpqNotification> MtdCpqNotifications { get; set; }
+        public virtual DbSet<MtdCpqReaderUser> MtdCpqReaderUsers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -1084,10 +1087,77 @@ namespace Mtd.Cpq.Manager.Data
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
                     .HasColumnType("varchar(36)");
-    
-                entity.Property(e => e.TitleLogo)
-                    .HasColumnName("title_logo")
-                    .HasColumnType("mediumblob");
+                
+                entity.Property(e => e.Name)
+                    .HasColumnName("name")
+                    .HasColumnType("varchar(255)");
+
+                entity.Property(e => e.Value)
+                    .HasColumnName("value")
+                    .HasColumnType("longtext");
+
+            });
+
+            modelBuilder.Entity<MtdCpqNotification>(entity =>
+            {
+                entity.ToTable("mtd_cpq_notification");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.Message)
+                    .IsRequired()
+                    .HasColumnName("message")
+                    .HasColumnType("longtext");
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasColumnName("user_id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.TimeCr)
+                    .IsRequired()
+                    .HasColumnName("timecr")
+                    .HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<MtdCpqReaderUser>(entity =>
+            {
+                entity.ToTable("mtd_cpq_reader_user");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.MessageId)
+                    .IsRequired()
+                    .HasColumnName("message_id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasColumnName("user_id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.TimeCr)
+                    .IsRequired()
+                    .HasColumnName("timecr")
+                    .HasColumnType("datetime");
+
+                entity.HasOne(d => d.MtdCpqNotification)
+                    .WithMany(p => p.MtdCpqReaderUsers)
+                    .HasForeignKey(d => d.MessageId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_notification_user");
 
             });
         }

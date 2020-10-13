@@ -8,6 +8,8 @@ namespace Mtd.Cpq.Manager.Data
     public class MtdCpqConfig
     {
         public string Id { get; set; }
-        public byte[] TitleLogo { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
+        
     }
 }

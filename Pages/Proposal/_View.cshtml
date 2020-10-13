@@ -39,9 +39,9 @@
     <div class="d-flex col-lg-2 col-md-3 col-sm-12 justify-content-center">
         @if (Model.MtdCpqProposal.MasterId != null && Model.MtdCpqProposal.MasterImage != null)
         {
-        <div class="view-image" style="max-width:230px">
-            @await Component.InvokeAsync("MTDImgViewer", new { imgArray = Model.MtdCpqProposal.MasterImage })
-        </div>            
+            <div class="view-image" style="max-width:230px">
+                @await Component.InvokeAsync("MTDImgViewer", new { imgArray = Model.MtdCpqProposal.MasterImage })
+            </div>
         }
     </div>
     <div class="col-lg-10 col-md-9 col-sm-12">
@@ -82,7 +82,6 @@
             @if (Model.MtdCpqProposal.MasterId != null && Model.MtdCpqProposal.ConfigMasterInluded == 1)
             {
                 <tr class="font-weight-bold">
-
                     <td>
                     </td>
 
@@ -116,19 +115,29 @@
 
                 @if (Model.MtdCpqProposal.ViewNote == 1)
                 {
-                    <tr>
 
-                        <td></td>
+                    foreach (var masterNote in Model.MasterNotes)
+                    {
 
-                        <td></td>
-                        <td><div class="view-note" style="white-space: pre-line">@Model.MtdCpqProposal.MasterNote</div></td>
-                        <td></td>
-                        @if (Price)
-                        {
+                        @*<tr>
+                                <td colspan="6"><div class="view-note" style="white-space: pre-line; padding-left: 8px;">@masterNote</div></td>
+                            </tr>*@
+
+                        <tr>
                             <td></td>
                             <td></td>
-                        }
-                    </tr>
+                            <td><div class="view-note" style="white-space: pre-line">@masterNote</div></td>
+                            <td></td>
+
+                            @if (Price)
+                            {
+                                <td></td>
+                                <td></td>
+                            }
+
+                        </tr>
+                    }
+
                 }
 
             }
@@ -219,7 +228,7 @@
             }
 
 
-            @if (Model.MtdCpqProposal.ViewDelivery == 1)
+            @if (Model.MtdCpqProposal.ViewDelivery == 1 && Model.MtdCpqProposal.DeliveryCondition != null && Model.MtdCpqProposal.DeliveryCondition.Length>0)
             {
                 <tr>
                     <td colspan="@spanDelivery">

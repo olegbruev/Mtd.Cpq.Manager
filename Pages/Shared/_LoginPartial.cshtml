@@ -85,6 +85,20 @@
 
     List<string> menuAccess = await UserHandler.MenuUserAsync(User);
 
+
+    if (menuAccess.Contains("Admin"))
+    {
+        <div class="dropdown navbar-nav">
+            <button onclick="openMenu('menu-admin')" class="dropbtn nav-link btn btn-link text-dark p-2">@Localizer["ADMIN"]</button>
+            <div id="menu-admin" class="dropdown-content">
+                <div class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Index">@Localizer["INTERFACE"]</a>
+                </div>
+            </div>
+        </div>
+    }
+
+
     if (menuAccess.Contains("Supervision"))
     {
         <div class="dropdown navbar-nav">
@@ -129,5 +143,7 @@
             </div>
         </div>
     }
+
+
 
 }

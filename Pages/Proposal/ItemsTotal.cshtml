@@ -42,25 +42,32 @@
         </div>
     </div>
     <hr />
-    <div class="d-flex align-items-center">
-        <div class="p-1 flex-grow-1 text-right">
-            Price for Customer:
-        </div>
-        <div class="p-1">
-            <input class="form-control" asp-for="@Model.Proposal.PriceCustomer" onclick="this.select();" />
-        </div>
-        <div class="p-1">
-            <div class="btn-group">
-                <input type="hidden" id="currency-input" asp-for="Proposal.CustomerCurrency" />
-                <button id="currency-button" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i id="currency-icon" class=""></i> <span id="currency-tag"></span>
-                </button>
-                <div class="dropdown-menu" style="box-shadow: 2px 2px 3px #ccc">
-                    <a class="dropdown-item" href="#" onclick="ClickCurrency('it-IT')"><i class="fas fa-euro-sign"></i> EUR</a>
-                    <a class="dropdown-item" href="#" onclick="ClickCurrency('us-US')"><i class="fas fa-dollar-sign"></i> USD</a>
-                    <a class="dropdown-item" href="#" onclick="ClickCurrency('ru-RU')"><i class="fas fa-ruble-sign"></i> RUB</a>
+    <div class="text-right">
+        <div class="d-flex align-items-center">
+            <div class="p-1 flex-grow-1 text-right pb-3">
+                <label asp-for="@Model.Proposal.PriceCustomer" class="control-label">Price for Customer:</label>
+            </div>
+            <div class="p-1">
+                <div class="form-group">
+                    <input type="text" class="form-control" asp-for="@Model.Proposal.PriceCustomer" onclick="this.select();" />
                 </div>
             </div>
+            <div class="p-1">
+                <div class="form-group btn-group">
+                    <input type="hidden" id="currency-input" asp-for="Proposal.CustomerCurrency" />
+                    <button id="currency-button" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i id="currency-icon" class=""></i> <span id="currency-tag"></span>
+                    </button>
+                    <div class="dropdown-menu" style="box-shadow: 2px 2px 3px #ccc">
+                        <a class="dropdown-item" href="#" onclick="ClickCurrency('it-IT')"><i class="fas fa-euro-sign"></i> EUR</a>
+                        <a class="dropdown-item" href="#" onclick="ClickCurrency('us-US')"><i class="fas fa-dollar-sign"></i> USD</a>
+                        <a class="dropdown-item" href="#" onclick="ClickCurrency('ru-RU')"><i class="fas fa-ruble-sign"></i> RUB</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <span asp-validation-for="@Model.Proposal.PriceCustomer" class="text-danger"></span>
         </div>
     </div>
 
@@ -73,11 +80,14 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
+    <script src="/lib/Inputmask/jquery.inputmask.min.js"></script>
+
     <script>
         (() => {
             var input = document.getElementById("currency-input");
-            ClickCurrency(input.value);
+            ClickCurrency(input.value);      
         })();
+
         function ClickCurrency(currency) {
             var icon = document.getElementById("currency-icon");
             var code = document.getElementById("currency-tag");
@@ -102,6 +112,17 @@
                 }
             }
         }
+
+
+        $.validator.methods.number = function (value, element) {
+            return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+        }
+
+        $.validator.methods.range = function (value, element, param) {
+            var globalizedValue = value.replace(",", ".");
+            return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+        }
+
     </script>
 
 }

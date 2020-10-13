@@ -4,9 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-Mtd.Cpq.Manager-58CE7E00-08B9-45D4-96EC-00738A4DB050</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <Version>1.2.2</Version>
-    <AssemblyVersion>1.2.2.7</AssemblyVersion>
-    <FileVersion>1.2.2.7</FileVersion>
+    <Version>1.2.3</Version>
+    <AssemblyVersion>1.2.3.1</AssemblyVersion>
+    <FileVersion>1.2.3.1</FileVersion>
     <Authors>Oleg Bruev</Authors>
     <Product>Mtd.Cpq.Manager</Product>
     <Copyright>Oleg Bruev</Copyright>
@@ -14,7 +14,7 @@
     <Description>CPQ Software
 The system of creating an offer and prices</Description>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
-    <PackageReleaseNotes>1.2.2.beta.7</PackageReleaseNotes>
+    <PackageReleaseNotes>1.2.3.beta.1</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -66,6 +66,8 @@ The system of creating an offer and prices</Description>
     <Compile Remove="Migrations\20191230130133_DataSheet.Designer.cs" />
     <Compile Remove="Migrations\20200505155930_AddTitles.cs" />
     <Compile Remove="Migrations\20200505155930_AddTitles.Designer.cs" />
+    <Compile Remove="Migrations\20201011164439_UpdateNotifications.cs" />
+    <Compile Remove="Migrations\20201011164439_UpdateNotifications.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -97,6 +99,7 @@ The system of creating an offer and prices</Description>
 
 
   <ItemGroup>
+    <Folder Include="wwwroot\lib\Inputmask\" />
     <Folder Include="wwwroot\lib\suneditor\" />
   </ItemGroup>
 

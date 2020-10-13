@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mtd.Cpq.Manager.Data;
 
 namespace Mtd.Cpq.Manager.Migrations
 {
     [DbContext(typeof(CpqContext))]
-    partial class CpqContextModelSnapshot : ModelSnapshot
+    [Migration("20201011170051_UpdateNotifications")]
+    partial class UpdateNotifications
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

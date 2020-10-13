@@ -1,10 +1,6 @@
 ﻿@using Mtd.Cpq.Manager.Services
 @inject Mtd.Cpq.Manager.Services.UserHandler userHandler;
-@inject ConfigHandler ConfigHandler
 
-@{
-    string OrderMakerLink = $"{ConfigHandler.options.Value.OrderMakerLink}/images/logo.png";
-}
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,7 +33,7 @@
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">
 
-                    <img src="@OrderMakerLink" style="max-width: 200px;">
+                    <img src="/images/logo.png" style="max-width: 200px;">
 
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
