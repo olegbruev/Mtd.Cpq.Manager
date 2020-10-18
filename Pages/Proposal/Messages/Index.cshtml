@@ -1,0 +1,99 @@
+﻿@page
+@model Mtd.Cpq.Manager.Pages.Proposal.Messages.IndexModel
+
+@{
+    ViewData["Title"] = "Message List";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<form method="get" autocomplete="off">
+    <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search" asp-for="@Model.SearchText">
+</form>
+
+<div class="m-4"></div>
+
+<table>
+    <tbody>
+        @foreach (var item in Model.UserMessages)
+        {
+
+            string displayUp = item.Readed ? "" : "none";
+            string displayDown = item.Readed ? "none" : "";
+
+            <tr style="border-top: 1px solid #ccc">
+                <td>
+                    <div id="@item.Id-icon-up" class="p-2" style="display: @displayUp">
+                        <i class="far fa-envelope-open fa-lg" style="color: green"></i>
+                    </div>
+
+                    <div id="@item.Id-icon-down" class="p-2" style="display: @displayDown">
+                        <a href="#" onclick="OpenMessage('@item.Id')">
+                            <i class="far fa-envelope fa-lg" style="color: red"></i>
+                        </a>
+                    </div>
+
+                </td>
+                <td style="width: 100%">
+                    <div id="@item.Id-title-up" class="p-2" style="display: @displayUp">
+                        <strong>@Html.DisplayFor(modelItem => item.Title)</strong>
+                    </div>
+                    <div id="@item.Id-title-down" class="p-2" style="display: @displayDown">
+                        <a href="#" onclick="OpenMessage('@item.Id')"><strong>@Html.DisplayFor(modelItem => item.Title)</strong></a>
+                    </div>
+                </td>
+                <td style="white-space:nowrap">
+                    <div class="p-2 font-weight-bold">
+                        @Html.DisplayFor(modelItem => item.TimeCr)
+                    </div>
+                </td>
+            </tr>
+            <tr style="border-bottom: 1px solid #ccc">
+                <td colspan="3">
+                    <div id="@item.Id-message" style="padding: 12px; display: @displayUp">
+                        @Html.DisplayFor(modelItem => item.Message)
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form id="form-message" method="post" asp-page-handler="Read">
+    <input id="message-id" type="hidden" name="messageId" />
+</form>
+
+<div class="m-4"></div>
+
+<form method="get">
+    <input type="hidden" value="@Model.SearchText" />
+    <nav aria-label="...">
+        <ul class="pagination">
+            <li class="page-item @if (@Model.Paginator.CPage == 1) {<text>disabled</text> }">
+                <a class="page-link" asp-page="./Index" asp-route-page="@Model.Paginator.FirstPage" tabindex="-1" asp-route-searchText="@Model.SearchText">Previous</a>
+            </li>
+            @if (@Model.Paginator.PrevPage != @Model.Paginator.CPage)
+            {
+                <li class="page-item"><a class="page-link" asp-page="./Index" asp-route-cpage="@Model.Paginator.PrevPage" asp-route-searchText="@Model.SearchText">@Model.Paginator.PrevPage</a></li>
+            }
+
+            <li class="page-item active">
+                <a class="page-link"><span class="sr-only">(current)</span>@Model.Paginator.CPage</a>
+            </li>
+
+            @if (Model.Paginator.LastPage != Model.Paginator.CPage && Model.Paginator.LastPage > 0)
+            {
+                <li class="page-item"><a class="page-link" asp-page="./Index" asp-route-cpage="@Model.Paginator.NextPage" asp-route-searchText="@Model.SearchText">@Model.Paginator.NextPage</a></li>
+            }
+
+            <li class="page-item @if (Model.Paginator.CPage == Model.Paginator.LastPage) {<text>disabled</text>}">
+                <a class="page-link" asp-page="./Index" asp-route-cpage="@Model.Paginator.NextPage" asp-route-searchText="@Model.SearchText">Next</a>
+            </li>
+        </ul>
+    </nav>
+</form>
+
+
+@section Scripts{
+    <script src="~/js/proposal-message.js" asp-append-version="true"></script>
+}

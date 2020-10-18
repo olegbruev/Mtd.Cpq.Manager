@@ -33,7 +33,7 @@ namespace Mtd.Cpq.Manager.Data
         public virtual DbSet<MtdCpqRuleAvailable> MtdCpqRuleAvailable { get; set; }
         public virtual DbSet<MtdCpqTitles> MtdCpqTitles { get; set; }
         public virtual DbSet<MtdCpqConfig> MtdCpqConfig { get; set; }
-
+        public virtual DbSet<MtdCpqConfigFile> MtdCpqConfigFiles { get; set; }
         public virtual DbSet<MtdCpqNotification> MtdCpqNotifications { get; set; }
         public virtual DbSet<MtdCpqReaderUser> MtdCpqReaderUsers { get; set; }
 
@@ -1096,6 +1096,44 @@ namespace Mtd.Cpq.Manager.Data
                     .HasColumnName("value")
                     .HasColumnType("longtext");
 
+                entity.Property(e => e.ValueType)
+                    .HasColumnName("value_type")
+                    .HasColumnType("varchar(45)");
+
+            });
+
+            modelBuilder.Entity<MtdCpqConfigFile>(entity =>
+            {
+                entity.ToTable("mtd_cpq_config_file");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.FileName)
+                    .IsRequired()
+                    .HasColumnName("file_name")
+                    .HasColumnType("varchar(255)");
+
+                entity.Property(e => e.FileSize)
+                    .IsRequired()
+                    .HasColumnName("file_size")
+                    .HasColumnType("bigint");
+
+                entity.Property(e => e.FileType)
+                    .IsRequired()
+                    .HasColumnName("file_type")
+                    .HasColumnType("varchar(255)");
+
+                entity.Property(e => e.FileData)
+                    .IsRequired()
+                    .HasColumnName("file_data")
+                    .HasColumnType("mediumblob");
+
             });
 
             modelBuilder.Entity<MtdCpqNotification>(entity =>
@@ -1110,15 +1148,20 @@ namespace Mtd.Cpq.Manager.Data
                     .HasColumnName("id")
                     .HasColumnType("varchar(36)");
 
+                entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasColumnName("title")
+                    .HasColumnType("varchar(255)");
+
                 entity.Property(e => e.Message)
                     .IsRequired()
                     .HasColumnName("message")
                     .HasColumnType("longtext");
 
-                entity.Property(e => e.UserId)
+                entity.Property(e => e.UserName)
                     .IsRequired()
-                    .HasColumnName("user_id")
-                    .HasColumnType("varchar(36)");
+                    .HasColumnName("user_name")
+                    .HasColumnType("varchar(255)");
 
                 entity.Property(e => e.TimeCr)
                     .IsRequired()
@@ -1134,6 +1177,12 @@ namespace Mtd.Cpq.Manager.Data
                     .HasName("id_UNIQUE")
                     .IsUnique();
 
+                entity.HasIndex(e => e.UserName)
+                    .HasName("idx-username");
+
+                entity.HasIndex(e => e.MessageId)
+                    .HasName("fk_notification_user_idx");
+
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
                     .HasColumnType("varchar(36)");
@@ -1143,10 +1192,10 @@ namespace Mtd.Cpq.Manager.Data
                     .HasColumnName("message_id")
                     .HasColumnType("varchar(36)");
 
-                entity.Property(e => e.UserId)
+                entity.Property(e => e.UserName)
                     .IsRequired()
-                    .HasColumnName("user_id")
-                    .HasColumnType("varchar(36)");
+                    .HasColumnName("user_name")
+                    .HasColumnType("varchar(255)");
 
                 entity.Property(e => e.TimeCr)
                     .IsRequired()

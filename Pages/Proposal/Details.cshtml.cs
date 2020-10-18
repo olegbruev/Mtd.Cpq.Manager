@@ -87,7 +87,7 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
             CatalogCulture = new CultureInfo(_config.Value.CatalogCulture, false);
             string cultureInfo = MtdCpqProposal.Language ?? _config.Value.CultureInfo;
             CultureView = new CultureInfo(cultureInfo, false);
-            UserHandler.UserParams userParams = _userHandler.GetCpqPolicyAsync(User);
+            UserHandler.UserParams userParams = _userHandler.GetCpqPolicy(User);
             PrintGrossPrice = userParams.PrintGrossPrice;
 
             ViewData["GrossPrice"] = personalMenu.Value.GrossPrice;

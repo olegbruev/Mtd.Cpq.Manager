@@ -46,7 +46,6 @@ namespace Mtd.Cpq.Manager
                 options.Cookie.Name = ".MTD.Service";      
             });
 
-
             services.AddDataProtection()
                 .SetApplicationName($"{Configuration.GetConnectionString("ClientName")}")
                 .PersistKeysToFileSystem(new DirectoryInfo(Configuration.GetConnectionString("KeysFolder")));
@@ -97,7 +96,8 @@ namespace Mtd.Cpq.Manager
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.Configure<PersonalMenu>(Configuration.GetSection("PersonalMenu"));
 
-            services.AddScoped<UserHandler>();            
+            services.AddScoped<UserHandler>();
+            services.AddScoped<Notifications>();
             services.Configure<ConfigSettings>(Configuration.GetSection("ConfigSettings"));
             services.AddScoped<ConfigHandler>();
 
@@ -114,9 +114,7 @@ namespace Mtd.Cpq.Manager
             {
                 options.LowercaseUrls = true;
                 options.LowercaseQueryStrings = false;
-            });
-
-            services.AddMvc(options => options.EnableEndpointRouting = false);
+            });     
 
         }
 
@@ -152,7 +150,6 @@ namespace Mtd.Cpq.Manager
                 endpoints.MapRazorPages();
             });
 
-            app.UseMvc();
         }
     }
 }

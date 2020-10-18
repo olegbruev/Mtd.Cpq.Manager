@@ -9,8 +9,8 @@ namespace Mtd.Cpq.Manager.Data
     {
         public string Id { get; set; }
         public string MessageId { get; set; }
-        public string UserId { get; set; }
-        public string TimeCr { get; set; }
+        public string UserName { get; set; }
+        public DateTime TimeCr { get; set; }
 
         public virtual MtdCpqNotification MtdCpqNotification { get; set; }
 

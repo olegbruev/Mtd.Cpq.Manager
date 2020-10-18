@@ -61,16 +61,18 @@
                             </div>
                         </div>
                     </td>
-                    <td>
+                    @*<td>
                         <div class="p-2 text-center">
                             @await Component.InvokeAsync("MTDImgViewer", new { maxHeight = 56, maxWidth = 96, imgArray = item.Logo })<br />
                             <span style="white-space: nowrap">@Html.DisplayFor(modelItem => item.ContactName)</span>
                         </div>
-                    </td>
+                    </td>*@
                     <td class="text-left p-2 w-100">
-                        <strong>@Html.DisplayFor(modelItem => item.PreparedFor)</strong>
-                        <br />
-                        @Html.DisplayFor(modelItem => item.Description)
+                        <div style="height: 5em;">
+                            <strong>@Html.DisplayFor(modelItem => item.PreparedFor)</strong>
+                            <br />
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </div>
                     </td>
                     <td class="p-2 text-center" style="white-space: nowrap">
                         <span style="white-space: nowrap">@Html.DisplayFor(modelItem => item.OwnerName)</span>

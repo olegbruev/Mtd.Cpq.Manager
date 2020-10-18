@@ -21,8 +21,10 @@ namespace Mtd.Cpq.Manager.Components
             return true;
         }
 
-        private static async Task<byte[]> GetImageAsync(string codeForm, HttpRequest request)
+        public static async Task<MTDImgSModify> ImageModifyAsync(string codeForm, HttpRequest request)
         {
+
+            byte[] imgArray = null;            
 
             string idInput = $"{codeForm}-file-upload-input";
             IFormFile file = request.Form.Files.FirstOrDefault(x => x.Name == idInput);
@@ -30,17 +32,10 @@ namespace Mtd.Cpq.Manager.Components
             {
                 byte[] streamArray = new byte[file.Length];
                 await file.OpenReadStream().ReadAsync(streamArray, 0, streamArray.Length);
-                return streamArray;
+                imgArray = streamArray;
             }
 
-            return null;
-        }
 
-
-        public static async Task<MTDImgSModify> ImageModifyAsync(string codeForm, HttpRequest request)
-        {
-
-            var imgArray = await MTDImgSelector.GetImageAsync(codeForm, request);
             bool delCommand = MTDImgSelector.CheckDelete(codeForm, request);
 
             MTDImgSModify imgSModify = new MTDImgSModify { Image = null, Modify = false };
@@ -55,6 +50,10 @@ namespace Mtd.Cpq.Manager.Components
             {
                 imgSModify.Image = imgArray;
                 imgSModify.Modify = true;
+                imgSModify.ContentType = file.ContentType;
+                imgSModify.Name = file.Name;
+                imgSModify.Size = file.Length;
+                                        
             }
 
             if (imgArray == null && !delCommand)
@@ -77,6 +76,10 @@ namespace Mtd.Cpq.Manager.Components
     {
         public byte[] Image { get; set; }
         public bool Modify { get; set; }
+        public string ContentType { get; set; }
+        public long Size { get; set; }
+        public string Name { get; set; }
+
     }
 
     public class MTDImgSelectorModel
@@ -86,3 +89,4 @@ namespace Mtd.Cpq.Manager.Components
         public bool Required { get; set; }
     }
 }
+

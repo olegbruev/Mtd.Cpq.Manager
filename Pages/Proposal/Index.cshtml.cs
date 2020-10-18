@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Mtd.Cpq.Manager.Data;
 using Mtd.Cpq.Manager.DataConfig;
-using Mtd.Cpq.Manager.Migrations;
 using Mtd.Cpq.Manager.Models;
 using Mtd.Cpq.Manager.Models.Proposal;
 using Mtd.Cpq.Manager.Services;

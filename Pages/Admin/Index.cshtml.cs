@@ -23,19 +23,7 @@ namespace Mtd.Cpq.Manager.Pages.Admin
 
         public async Task<IActionResult> OnGetAsync()
         {
-            string logoImg = await context.MtdCpqConfig.Where(x => x.Id == ConfigId.LogoImg).Select(x => x.Value).FirstOrDefaultAsync();
-            if (logoImg != null)
-            {
-                int NumberChars = logoImg.Length;
-                byte[] bytes = new byte[NumberChars / 2];
-                for (int i = 0; i < NumberChars; i += 2)
-                {
-                    bytes[i / 2] = Convert.ToByte(logoImg.Substring(i, 2), 16);
-                }
-
-                LogoImg = bytes;
-            }
-
+            LogoImg = await context.MtdCpqConfigFiles.Where(x => x.Id == ConfigId.FileLogoImg).Select(x => x.FileData).FirstOrDefaultAsync();
             return Page();
         }
 
@@ -43,25 +31,24 @@ namespace Mtd.Cpq.Manager.Pages.Admin
         public async Task<IActionResult> OnPostAsync()
         {
 
-             bool exists = await  context.MtdCpqConfig.Where(x=>x.Id == ConfigId.LogoImg).AnyAsync();
+             bool exists = await  context.MtdCpqConfigFiles.Where(x=>x.Id == ConfigId.FileLogoImg).AnyAsync();
             
              MTDImgSModify imgSModify = await MTDImgSelector.ImageModifyAsync("LogoImg", Request);
             
             if (imgSModify.Modify && imgSModify.Image != null)
             {
-                string logoImg = BitConverter.ToString(imgSModify.Image).Replace("-", "");
+
+                MtdCpqConfigFile cpqConfig = new MtdCpqConfigFile { Id = ConfigId.FileLogoImg,  FileName = imgSModify.Name,  FileSize = imgSModify.Size, FileType = imgSModify.ContentType, FileData  = imgSModify.Image};
                 
-                MtdCpqConfig cpqConfig = new MtdCpqConfig { Id = ConfigId.LogoImg, Name = ConfigId.LogoImg.ToString(), Value = logoImg };
-                
-                if (exists) { context.MtdCpqConfig.Update(cpqConfig); } else { await context.MtdCpqConfig.AddAsync(cpqConfig); }
+                if (exists) { context.MtdCpqConfigFiles.Update(cpqConfig); } else { await context.MtdCpqConfigFiles.AddAsync(cpqConfig); }
 
                 await context.SaveChangesAsync();
             }
 
-            if (imgSModify.Image == null && exists)
+            if (imgSModify.Image == null && imgSModify.Modify)
             {
-                MtdCpqConfig cpqConfig = new MtdCpqConfig { Id = ConfigId.LogoImg };
-                context.MtdCpqConfig.Remove(cpqConfig);
+                MtdCpqConfigFile cpqConfig = new MtdCpqConfigFile { Id = ConfigId.FileLogoImg };
+                context.MtdCpqConfigFiles.Remove(cpqConfig);
                 await context.SaveChangesAsync();
             }
 

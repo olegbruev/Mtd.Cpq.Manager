@@ -334,7 +334,7 @@ namespace Mtd.Cpq.Manager.Services
         public async Task<UserParams> GetTitlesForUserAsync(ClaimsPrincipal user)
         {
             WebAppUser appUser = await GetUserAsync(user);
-            UserParams userParams = GetCpqPolicyAsync(user);
+            UserParams userParams = GetCpqPolicy(user);
             IList<WebAppUser> users = await GetUsersInGroupsAsync(user);
             IList<string> userIds = users.Select(x => x.Id).ToList();
             userParams.GroupTitleIds = new List<string>();
@@ -370,7 +370,7 @@ namespace Mtd.Cpq.Manager.Services
 
         public async Task<UserParams> GetQuotesForUserAsync(ClaimsPrincipal user, bool onlyOwn = false)
         {
-            UserParams userParams = GetCpqPolicyAsync(user);
+            UserParams userParams = GetCpqPolicy(user);
 
             if (userParams.CpqPolicyView.Equals(CpqPolicyView.ViewGroup) && !onlyOwn)
             {
@@ -390,7 +390,7 @@ namespace Mtd.Cpq.Manager.Services
 
         public async Task<bool> CheckQuoteAccessAsync(string guid, ClaimsPrincipal user)
         {
-            UserParams userParams = GetCpqPolicyAsync(user);
+            UserParams userParams = GetCpqPolicy(user);
             if (userParams.CpqPolicyView == CpqPolicyView.ViewAll) { return true; }
 
             if (userParams.CpqPolicyView.Equals(CpqPolicyView.ViewGroup))
@@ -410,7 +410,7 @@ namespace Mtd.Cpq.Manager.Services
         }
         public async Task<bool> CheckQuoteEditAsync(string guid, ClaimsPrincipal user)
         {
-            UserParams userParams = GetCpqPolicyAsync(user);
+            UserParams userParams = GetCpqPolicy(user);
             if (userParams.CpqPolicyEdit == CpqPolicyEdit.EditAll) { return true; }
 
             if (userParams.CpqPolicyEdit.Equals(CpqPolicyEdit.EditGroup))
@@ -431,7 +431,7 @@ namespace Mtd.Cpq.Manager.Services
 
         public async Task<bool> CheckTitlesAccessAsync(string guid, ClaimsPrincipal user)
         {
-            UserParams userParams = GetCpqPolicyAsync(user);
+            UserParams userParams = GetCpqPolicy(user);
             if (userParams.CpqPolicyView == CpqPolicyView.ViewAll) { return true; }
 
             if (userParams.CpqPolicyView.Equals(CpqPolicyView.ViewGroup))
@@ -451,7 +451,7 @@ namespace Mtd.Cpq.Manager.Services
         }
         public async Task<bool> CheckTitlesEditAsync(string guid, ClaimsPrincipal user)
         {
-            UserParams userParams = GetCpqPolicyAsync(user);
+            UserParams userParams = GetCpqPolicy(user);
             if (userParams.CpqPolicyEdit == CpqPolicyEdit.EditAll) { return true; }
 
             if (userParams.CpqPolicyEdit.Equals(CpqPolicyEdit.EditGroup))
@@ -470,7 +470,7 @@ namespace Mtd.Cpq.Manager.Services
             return false;
         }
 
-        public UserParams GetCpqPolicyAsync(ClaimsPrincipal user)
+        public UserParams GetCpqPolicy(ClaimsPrincipal user)
         {
             UserParams userParams = new UserParams { CpqPolicyEdit = CpqPolicyEdit.EditOwn, CpqPolicyView = CpqPolicyView.ViewOwn, PrintGrossPrice = false };
             if (user == null) { return userParams; }
@@ -483,7 +483,6 @@ namespace Mtd.Cpq.Manager.Services
             if (claim.Value.Contains("print-gross-price")) { userParams.PrintGrossPrice = true; }
 
             return userParams;
-
         }
 
     }

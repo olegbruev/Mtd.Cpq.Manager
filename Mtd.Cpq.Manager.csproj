@@ -4,9 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-Mtd.Cpq.Manager-58CE7E00-08B9-45D4-96EC-00738A4DB050</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <Version>1.2.3</Version>
-    <AssemblyVersion>1.2.3.2</AssemblyVersion>
-    <FileVersion>1.2.3.2</FileVersion>
+    <Version>1.2.4</Version>
+    <AssemblyVersion>1.2.4.1</AssemblyVersion>
+    <FileVersion>1.2.4.1</FileVersion>
     <Authors>Oleg Bruev</Authors>
     <Product>Mtd.Cpq.Manager</Product>
     <Copyright>Oleg Bruev</Copyright>
@@ -14,7 +14,7 @@
     <Description>CPQ Software
 The system of creating an offer and prices</Description>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
-    <PackageReleaseNotes>1.2.3.beta.2</PackageReleaseNotes>
+    <PackageReleaseNotes>1.2.4.beta.1</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -68,6 +68,12 @@ The system of creating an offer and prices</Description>
     <Compile Remove="Migrations\20200505155930_AddTitles.Designer.cs" />
     <Compile Remove="Migrations\20201011164439_UpdateNotifications.cs" />
     <Compile Remove="Migrations\20201011164439_UpdateNotifications.Designer.cs" />
+    <Compile Remove="Migrations\20201016085229_UpdateConfigFile.cs" />
+    <Compile Remove="Migrations\20201016085229_UpdateConfigFile.Designer.cs" />
+    <Compile Remove="Migrations\20201016091018_UpdateConfigFile.cs" />
+    <Compile Remove="Migrations\20201016091018_UpdateConfigFile.Designer.cs" />
+    <Compile Remove="Migrations\20201016095824_UpdateConfigFile.cs" />
+    <Compile Remove="Migrations\20201016095824_UpdateConfigFile.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -79,12 +85,13 @@ The system of creating an offer and prices</Description>
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.5">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="MySql.Data" Version="8.0.20" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
   </ItemGroup>

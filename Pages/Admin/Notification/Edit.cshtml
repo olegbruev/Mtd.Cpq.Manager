@@ -1,0 +1,42 @@
+﻿@page
+@model Mtd.Cpq.Manager.Pages.Admin.Notification.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<div>
+    <a asp-page="./Index">
+        <i class="fas fa-arrow-left"></i>
+        Back to List
+    </a>
+</div>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post" autocomplete="off">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MtdCpqNotification.Id" />
+            <div class="form-group">
+                <label asp-for="MtdCpqNotification.Title" class="control-label"></label>
+                <input asp-for="MtdCpqNotification.Title" class="form-control" />
+                <span asp-validation-for="MtdCpqNotification.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MtdCpqNotification.Message" class="control-label"></label>
+                <textarea asp-for="MtdCpqNotification.Message" class="form-control" rows="8" cols="40" ></textarea>
+                <span asp-validation-for="MtdCpqNotification.Message" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

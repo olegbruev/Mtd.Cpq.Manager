@@ -1,5 +1,7 @@
 ﻿@using Mtd.Cpq.Manager.Services
-@inject Mtd.Cpq.Manager.Services.UserHandler userHandler;
+@inject UserHandler userHandler;
+@inject ConfigHandler configHandler;
+
 
 <!DOCTYPE html>
 <html>
@@ -33,8 +35,11 @@
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">
 
-                    @*<img src="/images/logo.png" style="max-width: 200px;">*@
-                    <img src="/img/logo-title.png" style="max-width: 200px;">
+                    @{
+                        var logoArray = await configHandler.GetLogo();
+                    }
+                    <img src="@logoArray" style="max-width: 200px;">
+                    @*<img src="/img/logo-title.png" style="max-width: 200px;">*@
 
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"

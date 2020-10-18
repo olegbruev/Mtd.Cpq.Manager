@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Mtd.Cpq.Manager.AppConfig
 {
-    public static class ConfigId
+    public static class ConfigType
     {
-        public static string FileLogoImg => "69BF8B06-20B8-4753-AB25-67C484959816";        
+        public static string AdminScript => "AdminScript";
     }
 }

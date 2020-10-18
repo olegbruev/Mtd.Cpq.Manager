@@ -10,4 +10,6 @@ namespace Mtd.Cpq.Manager.Data
         public string Id { get; set; }        
         public int Counter { get; set; }
     }
+
 }
+

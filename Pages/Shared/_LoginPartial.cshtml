@@ -4,7 +4,7 @@
 @inject SignInManager<WebAppUser> SignInManager
 @inject UserHandler UserHandler
 @inject ConfigHandler ConfigHandler
-
+@inject Notifications notifications;
 
 @using Microsoft.Extensions.Localization;
 @inject IStringLocalizer<SharedResource> Localizer;
@@ -28,14 +28,21 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
+        int qty = await notifications.GetQtyForUserAsync(User);
+        string qtyDisplay = qty > 0 ? "" : "none";
 
-        string userName = $"Hello {user.Title}!";
         <li class="nav-item">
             <div class="d-flex align-items-center" style="position:relative">
+                <div>
+                    <a href="/proposal/messages/index" class="notification" data-toggle="tooltip" data-placement="bottom" title="Messages">
+                        <span><i class="fas fa-bell fa-lg"></i></span>
+                        <div id="qty-message" class="badge" style="display: @qtyDisplay">@qty</div>
+                    </a>
+                </div>
                 @if (OrderMakerLink.Length > 0)
                 {
                     <div class="p-2">
-                        <button class="nav-link text-dark btn btn-link" onclick="ClickApps(event)" data-toggle="tooltip" data-placement="left" title="External links">
+                        <button class="nav-link text-dark btn btn-link" onclick="ClickApps(event)" data-toggle="tooltip" data-placement="bottom" title="External links">
                             <i class="fas fa-th fa-lg"></i>
                         </button>
                         <div id="app-solutions" class="hidden">
@@ -55,7 +62,7 @@
 
                 <div class="p-2">
                     <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                        <button type="submit" class="nav-link btn btn-link text-dark" data-toggle="tooltip" data-placement="right" title="Logout">
+                        <button type="submit" class="nav-link btn btn-link text-dark" data-toggle="tooltip" data-placement="bottom" title="Logout">
                             <i class="fas fa-sign-out-alt fa-lg"></i>
                         </button>
                     </form>
@@ -93,6 +100,12 @@
             <div id="menu-admin" class="dropdown-content">
                 <div class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Index">@Localizer["INTERFACE"]</a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Maintenance">@Localizer["MAINTENANCE"]</a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Notification/Index">@Localizer["NOTIFICATIONS"]</a>
                 </div>
             </div>
         </div>
@@ -139,6 +152,9 @@
             <div id="menu-sales" class="dropdown-content">
                 <div class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-page="/Proposal/Index">@Localizer["QUOTES"]</a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-page="/Proposal/Messages/Index">@Localizer["MESSAGES"]</a>
                 </div>
             </div>
         </div>

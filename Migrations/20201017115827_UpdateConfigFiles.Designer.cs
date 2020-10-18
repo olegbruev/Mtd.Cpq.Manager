@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mtd.Cpq.Manager.Data;
 
 namespace Mtd.Cpq.Manager.Migrations
 {
     [DbContext(typeof(CpqContext))]
-    partial class CpqContextModelSnapshot : ModelSnapshot
+    [Migration("20201017115827_UpdateConfigFiles")]
+    partial class UpdateConfigFiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -351,12 +353,12 @@ namespace Mtd.Cpq.Manager.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnName("title")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(36)");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnName("user_name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnName("user_id")
+                        .HasColumnType("varchar(36)");
 
                     b.HasKey("Id");
 
@@ -929,14 +931,15 @@ namespace Mtd.Cpq.Manager.Migrations
                         .HasColumnName("message_id")
                         .HasColumnType("varchar(36)");
 
-                    b.Property<DateTime>("TimeCr")
+                    b.Property<string>("TimeCr")
+                        .IsRequired()
                         .HasColumnName("timecr")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnName("user_name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnName("user_id")
+                        .HasColumnType("varchar(36)");
 
                     b.HasKey("Id");
 
@@ -944,11 +947,7 @@ namespace Mtd.Cpq.Manager.Migrations
                         .IsUnique()
                         .HasName("id_UNIQUE");
 
-                    b.HasIndex("MessageId")
-                        .HasName("fk_notification_user_idx");
-
-                    b.HasIndex("UserName")
-                        .HasName("idx-username");
+                    b.HasIndex("MessageId");
 
                     b.ToTable("mtd_cpq_reader_user");
                 });
