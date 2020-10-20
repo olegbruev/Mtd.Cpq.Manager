@@ -5,8 +5,8 @@
     <UserSecretsId>aspnet-Mtd.Cpq.Manager-58CE7E00-08B9-45D4-96EC-00738A4DB050</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <Version>1.2.4</Version>
-    <AssemblyVersion>1.2.4.2</AssemblyVersion>
-    <FileVersion>1.2.4.2</FileVersion>
+    <AssemblyVersion>1.2.4.3</AssemblyVersion>
+    <FileVersion>1.2.4.3</FileVersion>
     <Authors>Oleg Bruev</Authors>
     <Product>Mtd.Cpq.Manager</Product>
     <Copyright>Oleg Bruev</Copyright>
@@ -14,7 +14,7 @@
     <Description>CPQ Software
 The system of creating an offer and prices</Description>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
-    <PackageReleaseNotes>1.2.4.beta.2</PackageReleaseNotes>
+    <PackageReleaseNotes>1.2.4.beta.3</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

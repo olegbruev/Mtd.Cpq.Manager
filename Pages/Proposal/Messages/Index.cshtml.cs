@@ -29,7 +29,7 @@ namespace Mtd.Cpq.Manager.Pages.Proposal.Messages
             _context = context;
         }
 
-        public IList<UserMessage> UserMessages { get; set; }
+        public List<UserMessage> UserMessages { get; set; }
 
         public Paginator Paginator { get; set; }
         public int CPage { get; set; }
@@ -41,36 +41,39 @@ namespace Mtd.Cpq.Manager.Pages.Proposal.Messages
             CPage = cpage < 1 ? 1 : cpage;
             SearchText = searchText;
             int count = 0;
-
-            var query = from notice in _context.MtdCpqNotifications
-                        join userInfo in _context.MtdCpqReaderUsers on notice.Id equals userInfo.MessageId into g
-                        from userInfo in g.DefaultIfEmpty()
-                        select new { notice, userInfo };
-
-
-            query = query.Where(x => x.userInfo.UserName == User.Identity.Name || x.userInfo.UserName == null);
-
+                       
+            IQueryable<MtdCpqNotification> query = _context.MtdCpqNotifications;
 
             if (searchText != null)
             {
                 string text = searchText.ToUpper();
-                query = query.Where(x => x.notice.Message.ToUpper().Contains(text) || x.notice.Title.ToUpper().Contains(text));
+                query = query.Where(x => x.Message.ToUpper().Contains(text) || x.Title.ToUpper().Contains(text));
             }
 
             count = await query.CountAsync();
             Paginator = new Paginator(CPage, 10, count);
-            query = query.OrderByDescending(x => x.notice.TimeCr)
+            query = query.OrderByDescending(x => x.TimeCr)
                 .Skip(Paginator.Skip)
                 .Take(Paginator.Take);
 
-            UserMessages = await query.Select(x => new UserMessage
+            UserMessages = new List<UserMessage>();
+            List<MtdCpqNotification> noties = await query.ToListAsync();
+            IList<string> readedIds = await _context.MtdCpqReaderUsers
+                .Where(x => x.UserName == User.Identity.Name && noties.Select(s=>s.Id).Contains(x.MessageId))
+                .Select(x => x.MessageId).ToListAsync();
+
+            noties.ForEach((item) =>
             {
-                Id = x.notice.Id,
-                Title = x.notice.Title,
-                Message = x.notice.Message,
-                TimeCr = x.notice.TimeCr,
-                Readed = x.userInfo.Id != null
-            }).ToListAsync();
+                UserMessages.Add(new UserMessage
+                {
+                    Id = item.Id,
+                    Title = item.Title,
+                    Message = item.Message,
+                    TimeCr = item.TimeCr,
+                    Readed = readedIds.Where(x=>x == item.Id).Any()
+                });
+
+            });
 
             return Page();
         }
