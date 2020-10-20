@@ -45,8 +45,11 @@ namespace Mtd.Cpq.Manager.Pages.Proposal.Messages
             var query = from notice in _context.MtdCpqNotifications
                         join userInfo in _context.MtdCpqReaderUsers on notice.Id equals userInfo.MessageId into g
                         from userInfo in g.DefaultIfEmpty()
-                        where userInfo.UserName == User.Identity.Name || userInfo.UserName == null
                         select new { notice, userInfo };
+
+
+            query = query.Where(x => x.userInfo.UserName == User.Identity.Name || x.userInfo.UserName == null);
+
 
             if (searchText != null)
             {
