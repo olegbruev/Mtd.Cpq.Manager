@@ -28,12 +28,15 @@ namespace Mtd.Cpq.Manager.Pages.Supervision.Parameters
         public IActionResult OnGetAsync()
         {
             Language language = new Language();
-            ViewData["Language"] = new SelectList(language.Items, "Culture", "Name", language.Items.Where(x => x.Culture.Equals("en-US")));
+            ViewData["Language"] = new SelectList(language.Items, "Culture", "Name", language.Items.Where(x => x.Culture.Equals("en-US")));            
             return Page();
         }
 
         [BindProperty]
         public MtdCpqTitles MtdCpqTitles { get; set; }
+        
+        [BindProperty]
+        public bool LogoFlexible { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -44,6 +47,9 @@ namespace Mtd.Cpq.Manager.Pages.Supervision.Parameters
             
             MTDImgSModify imgSModify = await MTDImgSelector.ImageModifyAsync("1", Request);
             MtdCpqTitles.Logo = imgSModify.Image;
+            MtdCpqTitles.LogoWidth = MtdCpqTitles.LogoWidth <=0 ? 250 : MtdCpqTitles.LogoWidth;
+            MtdCpqTitles.LogoHeight = MtdCpqTitles.LogoHeight <= 0 ? 100 : MtdCpqTitles.LogoHeight;
+            MtdCpqTitles.LogoFlexible = LogoFlexible ? (sbyte) 1 : (sbyte) 0;
 
             MtdCpqTitles.Id = Guid.NewGuid().ToString();
             WebAppUser appUser = await _userHandler.GetUserAsync(HttpContext.User);

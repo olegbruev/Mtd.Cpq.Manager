@@ -23,6 +23,9 @@ namespace Mtd.Cpq.Manager.Data
         public string ContactEmail { get; set; }
         public string Description { get; set; }
         public byte[] Logo { get; set; }
+        public int LogoWidth { get; set; }
+        public int LogoHeight { get; set; }
+        public sbyte LogoFlexible { get; set; }
         public decimal PriceCustomer { get; set; }
         public string CustomerCurrency { get; set; }        
         public sbyte ConfigMasterInluded { get; set; }

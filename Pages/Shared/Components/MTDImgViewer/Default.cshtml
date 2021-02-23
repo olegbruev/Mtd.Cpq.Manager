@@ -10,12 +10,15 @@
         imgBody = string.Format("data:image/png;base64,{0}", base64);
     }
 
-    string width = @Model.Width != -1 ? $" width:{@Model.Width}px; " : string.Empty;
-    string maxWidth = @Model.MaxWidth != -1 ? $" max-width:{@Model.MaxWidth}px; " : string.Empty;
-    string height = @Model.Height != -1 ? $" height:{@Model.Height}px; " : string.Empty;
-    string maxHeight = @Model.MaxHeight != -1 ? $" max-height:{@Model.MaxHeight}px; " : string.Empty;
+    string flexible = Model.Flexible ? " width:100%;height:100%; " : string.Empty;
 
-    string style = string.Concat(width, maxWidth, height, maxHeight);
+    string width = Model.Width != -1 && !Model.Flexible ? $" width:{@Model.Width}px; " : string.Empty;
+    string maxWidth = Model.MaxWidth != -1 ? $" max-width:{@Model.MaxWidth}px; " : string.Empty;
+    string height = Model.Height != -1 && !Model.Flexible ? $" height:{@Model.Height}px; " : string.Empty;
+    string maxHeight = Model.MaxHeight != -1 ? $" max-height:{@Model.MaxHeight}px; " : string.Empty;
+
+    string style = string.Concat(width, maxWidth, height, maxHeight, flexible);
+    
 }
 
-<img src="@imgBody" @if (@style.Length > 0) {<text>style="@style"</text> }/>
+<img src="@imgBody" @if (@style.Length > 0) {<text>style="@style"</text> } />

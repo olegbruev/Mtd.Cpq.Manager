@@ -16,7 +16,13 @@
     <div class="flex-md-grow-1">
         @if (Model.MtdCpqProposal.Logo != null)
         {
-            @await Component.InvokeAsync("MTDImgViewer", new { maxheight = 100, maxWidth = 250, imgArray = Model.MtdCpqProposal.Logo })
+            @await Component.InvokeAsync("MTDImgViewer", new
+            {
+                maxheight = Model.MtdCpqProposal.LogoHeight,
+                maxWidth = Model.MtdCpqProposal.LogoWidth,
+                flexible = Model.MtdCpqProposal.LogoFlexible == 1,
+                imgArray = Model.MtdCpqProposal.Logo
+            })
         }
     </div>
     <div class="header-overflow">
@@ -228,7 +234,7 @@
             }
 
 
-            @if (Model.MtdCpqProposal.ViewDelivery == 1 && Model.MtdCpqProposal.DeliveryCondition != null && Model.MtdCpqProposal.DeliveryCondition.Length>0)
+            @if (Model.MtdCpqProposal.ViewDelivery == 1 && Model.MtdCpqProposal.DeliveryCondition != null && Model.MtdCpqProposal.DeliveryCondition.Length > 0)
             {
                 <tr>
                     <td colspan="@spanDelivery">

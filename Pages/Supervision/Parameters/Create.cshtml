@@ -64,6 +64,20 @@
                 <select class="form-control" asp-for="MtdCpqTitles.Language" asp-items="ViewBag.Language"></select>
                 <span asp-validation-for="MtdCpqTitles.Language" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="MtdCpqTitles.LogoWidth" class="control-label">Logo width</label>
+                <input id="logo-width" asp-for="MtdCpqTitles.LogoWidth" class="form-control" />
+                <span asp-validation-for="MtdCpqTitles.LogoWidth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MtdCpqTitles.LogoHeight" class="control-label">Logo height</label>
+                <input id="logo-height" asp-for="MtdCpqTitles.LogoHeight" class="form-control" />
+                <span asp-validation-for="MtdCpqTitles.LogoHeight" class="text-danger"></span>
+            </div>
+            <div class="form-check">
+                <input id="logoFlexible" type="checkbox" class="form-check-input" asp-for="@Model.LogoFlexible" />
+                <label class="form-check-label" for="logoFlexible">Flexible logo</label>
+            </div>
         </div>
     </div>
 </form>
@@ -71,5 +85,6 @@
 
 
 @section Scripts {
+    <script src="~/js/supervision-parameters.js" asp-append-version="true"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

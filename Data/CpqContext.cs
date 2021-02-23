@@ -455,6 +455,24 @@ namespace Mtd.Cpq.Manager.Data
                     .HasColumnName("logo")
                     .HasColumnType("mediumblob");
 
+                entity.Property(e => e.LogoWidth)
+                    .IsRequired()
+                    .HasColumnName("logo_width")
+                    .HasColumnType("int(11)")
+                    .HasDefaultValueSql("'0'");
+
+                entity.Property(e => e.LogoHeight)
+                    .IsRequired()
+                    .HasColumnName("logo_height")
+                    .HasColumnType("int(11)")
+                    .HasDefaultValueSql("'0'");
+
+                entity.Property(e => e.LogoFlexible)
+                    .IsRequired()
+                    .HasColumnName("logo_flexible")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'0'");
+
                 entity.Property(e => e.PreparedBy)
                     .IsRequired()
                     .HasColumnName("prepared_by")
@@ -1059,6 +1077,24 @@ namespace Mtd.Cpq.Manager.Data
                 entity.Property(e => e.Logo)
                     .HasColumnName("logo")
                     .HasColumnType("mediumblob");
+
+                entity.Property(e => e.LogoWidth)
+                    .IsRequired()
+                    .HasColumnName("logo_width")
+                    .HasColumnType("int(11)")
+                    .HasDefaultValueSql("'0'");
+
+                entity.Property(e => e.LogoHeight)
+                    .IsRequired()
+                    .HasColumnName("logo_height")
+                    .HasColumnType("int(11)")
+                    .HasDefaultValueSql("'0'");
+
+                entity.Property(e => e.LogoFlexible)
+                    .IsRequired()
+                    .HasColumnName("logo_flexible")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.Name)
                     .IsRequired()

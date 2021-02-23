@@ -97,12 +97,15 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
             MtdCpqProposal.Id = Guid.NewGuid().ToString();
 
             MtdCpqProposal.Logo = titles.Logo;
+            MtdCpqProposal.LogoWidth = titles.LogoWidth <= 0 ? 250 : titles.LogoWidth;
+            MtdCpqProposal.LogoHeight = titles.LogoHeight <= 0 ? 100 : titles.LogoHeight;
             MtdCpqProposal.PreparedBy = titles.PreparedBy;
             MtdCpqProposal.ContactName = titles.ContactName;
             MtdCpqProposal.ContactPhone = titles.ContactPhone;
             MtdCpqProposal.ContactEmail = titles.ContactEmail;
             MtdCpqProposal.DateCreation = DateTime.Now;
             MtdCpqProposal.Language = titles.Language;
+            MtdCpqProposal.LogoFlexible = titles.LogoFlexible;
 
             MtdCpqProposal.CustomerCurrency = _config.Value.CultureInfo;
 

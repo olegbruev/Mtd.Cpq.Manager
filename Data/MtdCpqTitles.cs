@@ -9,6 +9,9 @@ namespace Mtd.Cpq.Manager.Data
     {
         public string Id { get; set; }
         public byte[] Logo { get; set; }
+        public int LogoWidth { get; set; }
+        public int LogoHeight { get; set; }
+        public sbyte LogoFlexible { get; set; }
         public string Name { get; set; }
         public string PreparedBy { get; set; }
         public string ContactName { get; set; }

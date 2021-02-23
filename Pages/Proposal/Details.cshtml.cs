@@ -84,6 +84,9 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
                 .OrderBy(x => x.Sequence)
                 .ToListAsync();
 
+            MtdCpqProposal.LogoWidth = MtdCpqProposal.LogoWidth <= 0 ? 250 : MtdCpqProposal.LogoWidth;
+            MtdCpqProposal.LogoHeight = MtdCpqProposal.LogoHeight <= 0 ? 100 : MtdCpqProposal.LogoHeight;
+
             CatalogCulture = new CultureInfo(_config.Value.CatalogCulture, false);
             string cultureInfo = MtdCpqProposal.Language ?? _config.Value.CultureInfo;
             CultureView = new CultureInfo(cultureInfo, false);
@@ -143,8 +146,7 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
             proposal.ViewQty = MtdCpqProposal.ViewQty;
             proposal.ViewImages = MtdCpqProposal.ViewImages;
             proposal.ViewDatasheet = MtdCpqProposal.ViewDatasheet;
-            proposal.ViewProposal = MtdCpqProposal.ViewProposal;
-
+            proposal.ViewProposal = MtdCpqProposal.ViewProposal;            
 
             _context.MtdCpqProposal.Update(proposal);
             await _context.SaveChangesAsync();

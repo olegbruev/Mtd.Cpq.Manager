@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,7 +10,7 @@ using Mtd.Cpq.Manager.Data;
 using Mtd.Cpq.Manager.DataConfig;
 using Mtd.Cpq.Manager.Models;
 using Mtd.Cpq.Manager.Services;
-using Mtd.OrderMaker.Server.Areas.Identity.Data;
+
 using static Mtd.Cpq.Manager.Services.UserHandler;
 
 namespace Mtd.Cpq.Manager.Pages.Supervision.Parameters
@@ -33,11 +31,15 @@ namespace Mtd.Cpq.Manager.Pages.Supervision.Parameters
         [BindProperty]
         public MtdCpqTitles MtdCpqTitles { get; set; }
         public bool IsEditor { get; set; }
+
+        [BindProperty]
+        public bool LogoFlexible { get; set; }
+
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null) { return NotFound(); }
 
-            
+
             MtdCpqTitles = await _context.MtdCpqTitles.FindAsync(id);
             if (MtdCpqTitles == null) { return NotFound(); }
 
@@ -46,7 +48,7 @@ namespace Mtd.Cpq.Manager.Pages.Supervision.Parameters
             if (!access) { return NotFound(); }
 
             IsEditor = await _userHandler.CheckTitlesEditAsync(id, HttpContext.User);
-            
+
             Language language = new Language();
             string lang = MtdCpqTitles.Language;
 
@@ -55,6 +57,9 @@ namespace Mtd.Cpq.Manager.Pages.Supervision.Parameters
                 lang = _config.Value.CultureInfo;
                 MtdCpqTitles.Language = lang;
             }
+
+            LogoFlexible = MtdCpqTitles.LogoFlexible == 1;
+
             ViewData["Language"] = new SelectList(language.Items, "Culture", "Name", language.Items.Where(x => x.Culture.Equals(lang)));
 
             return Page();
@@ -77,10 +82,12 @@ namespace Mtd.Cpq.Manager.Pages.Supervision.Parameters
             MtdCpqTitles.Logo = imgSModify.Image;
             _context.Entry(MtdCpqTitles).Property(x => x.Logo).IsModified = imgSModify.Modify;
 
+            if (MtdCpqTitles.LogoWidth <= 0) { MtdCpqTitles.LogoWidth = 250; }
+            if (MtdCpqTitles.LogoHeight <= 0) { MtdCpqTitles.LogoHeight = 100; }
+            MtdCpqTitles.LogoFlexible = LogoFlexible ? (sbyte)1 : (sbyte)0;
 
             await _context.SaveChangesAsync();
             await _userHandler.AddActionLogAsync(ActionType.EditTitles, HttpContext.User, MtdCpqTitles.Id);
-
 
 
             return RedirectToPage("./Index");

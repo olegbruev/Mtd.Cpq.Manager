@@ -91,6 +91,8 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
             proposal.PreparedFor = MtdCpqProposal.PreparedFor;
             proposal.Description = MtdCpqProposal.Description;
             proposal.Language = MtdCpqProposal.Language;
+            proposal.LogoWidth = MtdCpqProposal.LogoWidth <= 0 ? 250 : proposal.LogoWidth;
+            proposal.LogoHeight = MtdCpqProposal.LogoHeight <= 0 ? 100 : proposal.LogoHeight;
 
             try
             {

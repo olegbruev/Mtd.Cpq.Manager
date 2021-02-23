@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mtd.Cpq.Manager.Data;
 
 namespace Mtd.Cpq.Manager.Migrations
 {
     [DbContext(typeof(CpqContext))]
-    partial class CpqContextModelSnapshot : ModelSnapshot
+    [Migration("20210222191319_UpdateTitleSize")]
+    partial class UpdateTitleSize
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -539,12 +541,6 @@ namespace Mtd.Cpq.Manager.Migrations
                     b.Property<byte[]>("Logo")
                         .HasColumnName("logo")
                         .HasColumnType("mediumblob");
-
-                    b.Property<sbyte>("LogoFlexible")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("logo_flexible")
-                        .HasColumnType("tinyint(4)")
-                        .HasDefaultValueSql("'0'");
 
                     b.Property<int>("LogoHeight")
                         .ValueGeneratedOnAdd()
@@ -1128,12 +1124,6 @@ namespace Mtd.Cpq.Manager.Migrations
                     b.Property<byte[]>("Logo")
                         .HasColumnName("logo")
                         .HasColumnType("mediumblob");
-
-                    b.Property<sbyte>("LogoFlexible")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("logo_flexible")
-                        .HasColumnType("tinyint(4)")
-                        .HasDefaultValueSql("'0'");
 
                     b.Property<int>("LogoHeight")
                         .ValueGeneratedOnAdd()
