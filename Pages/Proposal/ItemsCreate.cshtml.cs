@@ -58,6 +58,11 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
                   .OrderBy(x => x.MtdCpqCatalog.Sequence)
                   .ThenBy(x => x.Name);
 
+
+            bool trialAccess = await _userHandler.CheckToTrialAccessAsync(User);
+            if (trialAccess) { query = query.Where(x => x.Trial >= 0); } else { query = query.Where(x => x.Trial == 0); }
+
+
             if (searchText != null)
             {
                 string text = searchText.ToUpper();

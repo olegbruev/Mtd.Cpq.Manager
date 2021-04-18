@@ -66,6 +66,9 @@ namespace Mtd.Cpq.Manager.Pages.Goods.Products
             bool som = await Components.MTDCheckbox.GetResult("master-product", Request);
             MtdCpqProduct.Som = som ? (sbyte)1 : (sbyte)0;
 
+            bool trial = await Components.MTDCheckbox.GetResult("master-trial", Request);
+            MtdCpqProduct.Trial = trial ? (sbyte)1 : (sbyte)0;
+
             if (!som) { master = null; }
 
             MTDImgSModify imgSModify = await MTDImgSelector.ImageModifyAsync(MtdCpqProduct.Id, Request);

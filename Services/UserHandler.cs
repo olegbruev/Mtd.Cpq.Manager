@@ -92,6 +92,14 @@ namespace Mtd.Cpq.Manager.Services
             return menu;
         }
 
+        public async Task<bool> CheckToTrialAccessAsync(ClaimsPrincipal user)
+        {
+            WebAppUser appUser = await GetUserAsync(user);
+            IList<string> roles = await this.GetRolesAsync(appUser);
+            return roles.Contains(SystemRoles.Admin) || roles.Contains(SystemRoles.GoodsManager);
+
+        }
+
         public async Task<bool> SetTitlesOwnerAsync(string guid, string newUserId, ClaimsPrincipal user)
         {
             WebAppUser appUser = await FindByIdAsync(newUserId);

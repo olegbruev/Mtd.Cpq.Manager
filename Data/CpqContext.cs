@@ -378,6 +378,12 @@ namespace Mtd.Cpq.Manager.Data
                     .HasColumnType("tinyint(4)")
                     .HasDefaultValueSql("'0'");
 
+                entity.Property(e => e.Trial)
+                    .IsRequired()
+                    .HasColumnName("trial")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'0'");
+
                 entity.Property(e => e.Price)
                     .IsRequired()
                     .HasColumnName("price")

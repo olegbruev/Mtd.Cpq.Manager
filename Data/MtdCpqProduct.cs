@@ -22,6 +22,7 @@ namespace Mtd.Cpq.Manager.Data
         public string Datasheet { get; set; }
         public string IdNumber { get; set; }
         public sbyte Som { get; set; }
+        public sbyte Trial { get; set; }
         public byte[] Image { get; set; }
         public decimal Price { get; set; }        
         public sbyte Archive { get; set; }
