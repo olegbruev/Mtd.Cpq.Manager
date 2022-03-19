@@ -22,6 +22,9 @@
         this.ImagesInput = document.getElementById("view-images-input");
         this.ImagesIcon = document.getElementById("view-images-icon");
 
+        this.AFactorInput = document.getElementById("view-afactor-input");
+        this.AFactorIcon = document.getElementById("view-afactor-icon");
+
         this.IconSpinner = ["fas", "fa-sync-alt", "fa-spin"];
         this.IconCheckCircleOn = ["fas", "fa-check-circle"];
         this.IconCheckSquareOn = ["fas", "fa-check-square"];
@@ -257,6 +260,35 @@ const ViewImagesClick = () => {
 
     setTimeout(function () { xmlHttp.send(formData) }, 150);
 }
+
+const ViewAfactorClick = () => {
+    viewData = new ViewData();
+    viewData.AFactorIcon.className = "";
+    viewData.AFactorIcon.classList.add(...viewData.IconSpinner.map((c) => c));
+
+    viewData.AFactorInput.value = viewData.AFactorInput.value === '1' ? '0' : '1';
+
+    const formData = CreateFormData(viewData.Form);
+
+    const xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("post", "/proposal/details?handler=viewset", true);
+    xmlHttp.onreadystatechange = function () {
+
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            viewData = new ViewData();
+            viewData.AFactorIcon.className = "";
+            viewData.AFactorIcon.classList.remove("fa-spin");
+            if (viewData.AFactorInput.value === '1') {
+                viewData.AFactorIcon.classList.add(...viewData.IconCheckSquareOn.map((c) => c));
+            } else {
+                viewData.AFactorIcon.classList.add(...viewData.IconCheckSquareOff.map((c) => c));
+            }
+        }
+    }
+
+    setTimeout(function () { xmlHttp.send(formData) }, 150);
+}
+
 
 function settingOpen() {
     document.getElementById("view-menu").style.width = "200px";

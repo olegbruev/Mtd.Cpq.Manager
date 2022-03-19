@@ -88,11 +88,18 @@
                 <span asp-validation-for="MtdCpqProduct.IdNumber" class="text-danger"></span>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <div class="form-group">
                 <label asp-for="MtdCpqProduct.Price" class="control-label"></label>
                 <input asp-for="MtdCpqProduct.Price" data-a-sep="." class="form-control" />
                 <span asp-validation-for="MtdCpqProduct.Price" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label asp-for="MtdCpqProduct.Afactor" class="control-label">Adjustment factor</label>
+                <input asp-for="MtdCpqProduct.Afactor" data-a-sep="." class="form-control" />
+                <span asp-validation-for="MtdCpqProduct.Afactor" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-2">

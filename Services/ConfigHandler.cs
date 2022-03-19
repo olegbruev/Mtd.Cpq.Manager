@@ -24,7 +24,6 @@ namespace Mtd.Cpq.Manager.Services
             this.env = env;
         }
 
-
         public async Task<string> GetLogo()
         {
             string result = string.Empty;
@@ -34,10 +33,11 @@ namespace Mtd.Cpq.Manager.Services
             {
                 string base64 = Convert.ToBase64String(LogoImg.FileData);
                 result = string.Format("data:{0};base64,{1}", LogoImg.FileType, base64);
+
             } else
             {
                 string root = env.ContentRootPath;
-                byte[] fileData = System.IO.File.ReadAllBytes($"{root}/wwwroot/img/logo-title.png");
+                byte[] fileData = System.IO.File.ReadAllBytes($"{root}/wwwroot/img/logo-mtd-cpq-220.png");
                 string base64 = Convert.ToBase64String(fileData);
                 result = string.Format("data:{0};base64,{1}", "image/png", base64);
             }

@@ -39,14 +39,17 @@ namespace Mtd.Cpq.Manager.Data
         public byte[] MasterImage { get; set; }
         public decimal MasterPrice { get; set; }
         public int MasterQty { get; set; }
+        public decimal MasterAfactor { get; set; }
         public sbyte ViewNote { get; set; }
         public sbyte ViewPriceGross { get; set; }
         public sbyte ViewPriceCustomer { get; set; }
         public sbyte ViewDelivery { get; set; }
         public sbyte ViewQty { get; set; }
         public sbyte ViewImages { get; set; }
+        public sbyte ViewAfactor { get; set; }
         public sbyte ViewProposal { get; set; }
         public sbyte ViewDatasheet { get; set; }
+        
         public string Language { get; set; }
 
         public virtual ICollection<MtdCpqProposalItem> MtdCpqProposalItem { get; set; }

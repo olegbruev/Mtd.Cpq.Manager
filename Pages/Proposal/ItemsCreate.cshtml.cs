@@ -118,6 +118,8 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
             MtdCpqProposal.MasterNote = dataProduct.Note;
             MtdCpqProposal.MasterImage = dataProduct.Image;
             MtdCpqProposal.MasterDatasheet = dataProduct.Datasheet;
+            MtdCpqProposal.MasterAfactor = dataProduct.Afactor;
+            MtdCpqProposal.ViewAfactor = 1;
 
             _context.MtdCpqProposal.Update(MtdCpqProposal);
 

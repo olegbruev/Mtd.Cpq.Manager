@@ -1,29 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>aspnet-Mtd.Cpq.Manager-58CE7E00-08B9-45D4-96EC-00738A4DB050</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <Version>1.2.6</Version>
-    <AssemblyVersion>1.2.6.1</AssemblyVersion>
-    <FileVersion>1.2.6.1</FileVersion>
+    <Version>2.0.0</Version>
+    <AssemblyVersion>2.0.0.1</AssemblyVersion>
+    <FileVersion>2.0.0.1</FileVersion>
     <Authors>Oleg Bruev</Authors>
     <Product>Mtd.Cpq.Manager</Product>
     <Copyright>Oleg Bruev</Copyright>
-    <Company>CEOTEX LLC</Company>
+    <Company></Company>
     <Description>CPQ Software
 The system of creating an offer and prices</Description>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
-    <PackageReleaseNotes>1.2.6.beta.1</PackageReleaseNotes>
+    <PackageReleaseNotes>Release 2.0.0.beta.1</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Areas\Identity\Data\Migrations\20200505151730_AddCpqOwners.cs" />
-    <Compile Remove="Areas\Identity\Data\Migrations\20200505151730_AddCpqOwners.Designer.cs" />
-    <Compile Remove="Areas\Identity\Data\Migrations\20200505153054_AddCpqOwners.cs" />
-    <Compile Remove="Areas\Identity\Data\Migrations\20200505153054_AddCpqOwners.Designer.cs" />
-    <Compile Remove="Areas\Identity\Data\Migrations\20200505165728_AddCpqOwnersLog.cs" />
-    <Compile Remove="Areas\Identity\Data\Migrations\20200505165728_AddCpqOwnersLog.Designer.cs" />
     <Compile Remove="Migrations\20191113091851_AddFlagStop.cs" />
     <Compile Remove="Migrations\20191113091851_AddFlagStop.Designer.cs" />
     <Compile Remove="Migrations\20191115095303_QtyAndPriceCustomer.cs" />
@@ -80,20 +74,21 @@ The system of creating an offer and prices</Description>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.9.1" />
     <PackageReference Include="DotNetCore.NPOI" Version="1.2.2" />
     <PackageReference Include="HtmlToOpenXml.dll" Version="2.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="5.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
-    <PackageReference Include="MySql.Data" Version="8.0.20" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.3" />
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
   </ItemGroup>
 
 
@@ -106,6 +101,7 @@ The system of creating an offer and prices</Description>
 
 
   <ItemGroup>
+    <Folder Include="Areas\" />
     <Folder Include="wwwroot\lib\Inputmask\" />
     <Folder Include="wwwroot\lib\suneditor\" />
   </ItemGroup>

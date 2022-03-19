@@ -45,14 +45,14 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_catalog");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.IdNumber)
-                    .HasName("ix_number");
+                    .HasDatabaseName("ix_number");
 
                 entity.HasIndex(e => e.Sequence)
-                    .HasName("ix_sequence");
+                    .HasDatabaseName("ix_sequence");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -92,7 +92,7 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_counter");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -110,11 +110,11 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_import");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.StatusProcess)
-                    .HasName("idx_process");
+                    .HasDatabaseName("idx_process");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -160,14 +160,14 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_import_data");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.IdNumber)
-                    .HasName("idx_number");
+                    .HasDatabaseName("idx_number");
 
                 entity.HasIndex(e => e.MtdCpqImportId)
-                    .HasName("fk_import_data_history_idx");
+                    .HasDatabaseName("fk_import_data_history_idx");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -240,7 +240,7 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_import_param");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -294,7 +294,7 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_one_of");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -325,21 +325,21 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_product");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.IdNumber)
-                    .HasName("id_number_UNIQUE")
+                    .HasDatabaseName("id_number_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.MtdCpqCatalogId)
-                    .HasName("fk_mtd_cpq_item_mtd_cpq_catalog1_idx");
+                    .HasDatabaseName("fk_mtd_cpq_item_mtd_cpq_catalog1_idx");
 
                 entity.HasIndex(e => e.Som)
-                    .HasName("ix_som_index");
+                    .HasDatabaseName("ix_som_index");
 
                 entity.HasIndex(e => e.Archive)
-                    .HasName("ix_archive");
+                    .HasDatabaseName("ix_archive");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -402,6 +402,12 @@ namespace Mtd.Cpq.Manager.Data
                     .HasColumnType("int(11)")
                     .HasDefaultValueSql("'0'");
 
+                entity.Property(e => e.Afactor)
+                    .IsRequired()
+                    .HasColumnName("afactor")
+                    .HasColumnType("decimal(20,2)")
+                    .HasDefaultValueSql("'1'");
+
                 entity.HasOne(d => d.MtdCpqCatalog)
                     .WithMany(p => p.MtdCpqProduct)
                     .HasForeignKey(d => d.MtdCpqCatalogId)
@@ -413,17 +419,17 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_proposal");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.IdNumber)
-                    .HasName("ix_number");
+                    .HasDatabaseName("ix_number");
 
                 entity.HasIndex(e => e.DateCreation)
-                    .HasName("ix_datecreation");
+                    .HasDatabaseName("ix_datecreation");
 
                 entity.HasIndex(e => e.MasterId)
-                    .HasName("idx_master_id");
+                    .HasDatabaseName("idx_master_id");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -532,6 +538,12 @@ namespace Mtd.Cpq.Manager.Data
                     .HasColumnType("int")
                     .HasDefaultValueSql("1");
 
+                entity.Property(e => e.MasterAfactor)
+                    .IsRequired()
+                    .HasColumnName("master_afactor")
+                    .HasColumnType("decimal(20,2)")
+                    .HasDefaultValueSql("'1'");
+
                 entity.Property(e => e.ViewNote)
                     .IsRequired()
                     .HasColumnName("view_note")
@@ -565,6 +577,11 @@ namespace Mtd.Cpq.Manager.Data
                     .HasColumnName("view_images")
                     .HasColumnType("tinyint(4)")
                     .HasDefaultValueSql("'0'");
+
+                entity.Property(e => e.ViewAfactor)
+                    .HasColumnName("view_afactor")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'1'");
 
                 entity.Property(e => e.ViewProposal)
                     .IsRequired()
@@ -618,31 +635,31 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_proposal_anchor");
 
                 entity.HasIndex(e => e.Cid)
-                    .HasName("fk_proposal_anchor_idx");
+                    .HasDatabaseName("fk_proposal_anchor_idx");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
                     .HasColumnType("varchar(36)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .UseCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.Cid)
                     .IsRequired()
                     .HasColumnName("cid")
                     .HasColumnType("varchar(36)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .UseCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.MtdCpqProductId)
                     .IsRequired()
                     .HasColumnName("mtd_cpq_product_id")
                     .HasColumnType("varchar(36)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .UseCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.Include)
                     .IsRequired()
@@ -665,14 +682,14 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_proposal_catalog");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.CId)
-                    .HasName("idx_cid");
+                    .HasDatabaseName("idx_cid");
 
                 entity.HasIndex(e => e.MtdCpqProposalId)
-                    .HasName("fk_mtd_cpq_proposal_catalog_idx");
+                    .HasDatabaseName("fk_mtd_cpq_proposal_catalog_idx");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -721,14 +738,14 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_proposal_one_of");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.CId)
-                    .HasName("idx_cid");
+                    .HasDatabaseName("idx_cid");
 
                 entity.HasIndex(e => e.MtdCpqProposalId)
-                    .HasName("fk_mtd_cpq_proposal_one_of_idx");
+                    .HasDatabaseName("fk_mtd_cpq_proposal_one_of_idx");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -768,23 +785,25 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_proposal_item");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.MtdCpqProductId)
-                    .HasName("fk_mtd_cpq_rule_idx");
+                    .HasDatabaseName("fk_mtd_cpq_rule_idx");
 
                 entity.HasIndex(e => e.MtdCpqProposalId)
-                    .HasName("fk_mtd_cpq_complectation_mtd_cpq_proposal1_idx");
+                    .HasDatabaseName("fk_mtd_cpq_complectation_mtd_cpq_proposal1_idx");
 
                 entity.HasIndex(e => e.ProposalCatalogId)
-                    .HasName("fk_mtd_cpq_proposalitems_catalog_idx");
+                    .HasDatabaseName("fk_mtd_cpq_proposalitems_catalog_idx");
 
                 entity.HasIndex(e => e.MtdCpqProposalOneOfId)
-                    .HasName("fk_mtd_cpq_proposalitems_one_of_idx");
+                    .HasDatabaseName("fk_mtd_cpq_proposalitems_one_of_idx");
 
-                entity.HasIndex(e => e.Selected).HasName("IX_SELECTED");
-                entity.HasIndex(e => e.Required).HasName("IX_REQUIRED");
+                entity.HasIndex(e => e.Selected)
+                    .HasDatabaseName("IX_SELECTED");
+                entity.HasIndex(e => e.Required)
+                    .HasDatabaseName("IX_REQUIRED");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -897,39 +916,39 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_rule_anchor");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.ProductAnchor)
-                    .HasName("fk_anchor_product_anchor_idx");
+                    .HasDatabaseName("fk_anchor_product_anchor_idx");
 
                 entity.HasIndex(e => e.ProductMaster)
-                    .HasName("fk_anchor_product_master_idx");
+                    .HasDatabaseName("fk_anchor_product_master_idx");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
                     .HasColumnType("varchar(36)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .UseCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.Notice)
                     .HasColumnName("notice")
                     .HasColumnType("text")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .UseCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.ProductAnchor)
                     .IsRequired()
                     .HasColumnName("product_anchor")
                     .HasColumnType("varchar(36)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .UseCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.ProductMaster)
                     .HasColumnName("product_master")
                     .HasColumnType("varchar(36)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .UseCollation("utf8mb4_0900_ai_ci");
 
                 entity.HasOne(d => d.ProductAnchorNavigation)
                     .WithMany(p => p.MtdCpqRuleAnchorProductAnchorNavigation)
@@ -948,34 +967,34 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_rule_anchor_bind");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.MtdCpqProductId)
-                    .HasName("fk_anchor_required_idx");
+                    .HasDatabaseName("fk_anchor_required_idx");
 
                 entity.HasIndex(e => e.MtdCpqRuleAnchorId)
-                    .HasName("fk_anchor_required_anchor_idx");
+                    .HasDatabaseName("fk_anchor_required_anchor_idx");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
                     .HasColumnType("varchar(36)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .UseCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.MtdCpqProductId)
                     .IsRequired()
                     .HasColumnName("mtd_cpq_product_id")
                     .HasColumnType("varchar(36)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .UseCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.MtdCpqRuleAnchorId)
                     .IsRequired()
                     .HasColumnName("mtd_cpq_rule_anchor_id")
                     .HasColumnType("varchar(36)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .UseCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.Include)
                     .IsRequired()
@@ -1003,17 +1022,17 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_rule_available");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.ProductIdChild)
-                    .HasName("fk_mtd_cpq_rule_available_mtd_cpq_product1_idx");
+                    .HasDatabaseName("fk_mtd_cpq_rule_available_mtd_cpq_product1_idx");
 
                 entity.HasIndex(e => e.ProductIdParent)
-                    .HasName("fk_mtd_cpq_available_mtd_cpq_product1_idx");
+                    .HasDatabaseName("fk_mtd_cpq_available_mtd_cpq_product1_idx");
 
                 entity.HasIndex(e => e.OneOfId)
-                    .HasName("fk_mtd_cpq_rule_availablel_item_one_of_idx");
+                    .HasDatabaseName("fk_mtd_cpq_rule_availablel_item_one_of_idx");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1060,7 +1079,7 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_titles");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -1123,7 +1142,7 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_config");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -1149,7 +1168,7 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_config_file");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -1183,7 +1202,7 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_notification");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -1216,14 +1235,14 @@ namespace Mtd.Cpq.Manager.Data
                 entity.ToTable("mtd_cpq_reader_user");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.UserName)
-                    .HasName("idx-username");
+                    .HasDatabaseName("idx-username");
 
                 entity.HasIndex(e => e.MessageId)
-                    .HasName("fk_notification_user_idx");
+                    .HasDatabaseName("fk_notification_user_idx");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")

@@ -9,8 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Mtd.OrderMaker.Server.Data;
 using Mtd.Cpq.Manager.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Entity;
 
 namespace Mtd.Cpq.Manager.Services
 {
@@ -97,8 +97,8 @@ namespace Mtd.Cpq.Manager.Services
             WebAppUser appUser = await GetUserAsync(user);
             IList<string> roles = await this.GetRolesAsync(appUser);
             return roles.Contains(SystemRoles.Admin) || roles.Contains(SystemRoles.GoodsManager);
-
         }
+
 
         public async Task<bool> SetTitlesOwnerAsync(string guid, string newUserId, ClaimsPrincipal user)
         {

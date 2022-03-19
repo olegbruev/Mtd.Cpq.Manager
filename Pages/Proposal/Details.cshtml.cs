@@ -145,6 +145,7 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
             proposal.ViewDelivery = MtdCpqProposal.ViewDelivery;
             proposal.ViewQty = MtdCpqProposal.ViewQty;
             proposal.ViewImages = MtdCpqProposal.ViewImages;
+            proposal.ViewAfactor = MtdCpqProposal.ViewAfactor;
             proposal.ViewDatasheet = MtdCpqProposal.ViewDatasheet;
             proposal.ViewProposal = MtdCpqProposal.ViewProposal;            
 

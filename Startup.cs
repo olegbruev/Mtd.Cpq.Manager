@@ -13,8 +13,9 @@ using Microsoft.AspNetCore.DataProtection;
 using System.IO;
 using Microsoft.Extensions.Hosting;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Data;
 using Microsoft.AspNetCore.Http;
+using Mtd.OrderMaker.Server.Entity;
+
 
 namespace Mtd.Cpq.Manager
 {
@@ -28,9 +29,10 @@ namespace Mtd.Cpq.Manager
         }
 
         public IConfiguration Configuration { get; }
+
+
         public IWebHostEnvironment Environment { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
@@ -51,9 +53,10 @@ namespace Mtd.Cpq.Manager
                 .PersistKeysToFileSystem(new DirectoryInfo(Configuration.GetConnectionString("KeysFolder")));
 
             services.AddDbContext<IdentityDbContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("IdentityConnection")));
+                options.UseMySql(Configuration.GetConnectionString("IdentityConnection"), new MySqlServerVersion(new Version(8, 0))));
+
             services.AddDbContext<CpqContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DataConnection")));
+                options.UseMySql(Configuration.GetConnectionString("DataConnection"), new MySqlServerVersion(new Version(8, 0))));
 
             services.AddDefaultIdentity<WebAppUser>(config =>
             {
@@ -114,26 +117,21 @@ namespace Mtd.Cpq.Manager
             {
                 options.LowercaseUrls = true;
                 options.LowercaseQueryStrings = false;
-            });     
+            });
 
+            services.AddHostedService<MigrationService>();
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+       
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
 
-            DataProcessing dataUp = new DataProcessing(serviceProvider, app);
-            dataUp.StartAsync();
-
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                app.UseDeveloperExceptionPage();         
             }
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 

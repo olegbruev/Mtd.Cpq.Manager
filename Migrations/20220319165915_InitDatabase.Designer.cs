@@ -9,61 +9,61 @@ using Mtd.Cpq.Manager.Data;
 namespace Mtd.Cpq.Manager.Migrations
 {
     [DbContext(typeof(CpqContext))]
-    [Migration("20210222191319_UpdateTitleSize")]
-    partial class UpdateTitleSize
+    [Migration("20220319165915_InitDatabase")]
+    partial class InitDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.12");
 
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqCatalog", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("IdNumber")
                         .IsRequired()
-                        .HasColumnName("id_number")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("id_number");
 
                     b.Property<byte[]>("Image")
-                        .HasColumnName("image")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("image");
 
                     b.Property<string>("ImportTag")
-                        .HasColumnName("import_tag")
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("import_tag");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Note")
-                        .HasColumnName("note")
-                        .HasColumnType("varchar(768)");
+                        .HasColumnType("varchar(768)")
+                        .HasColumnName("note");
 
                     b.Property<int>("Sequence")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("sequence")
                         .HasColumnType("int(11)")
+                        .HasColumnName("sequence")
                         .HasDefaultValueSql("'0'");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("IdNumber")
-                        .HasName("ix_number");
+                        .HasDatabaseName("ix_number");
 
                     b.HasIndex("Sequence")
-                        .HasName("ix_sequence");
+                        .HasDatabaseName("ix_sequence");
 
                     b.ToTable("mtd_cpq_catalog");
                 });
@@ -71,26 +71,26 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqConfig", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Name")
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Value")
-                        .HasColumnName("value")
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("value");
 
                     b.Property<string>("ValueType")
-                        .HasColumnName("value_type")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("value_type");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_cpq_config");
                 });
@@ -98,33 +98,33 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqConfigFile", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<byte[]>("FileData")
                         .IsRequired()
-                        .HasColumnName("file_data")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("file_data");
 
                     b.Property<string>("FileName")
                         .IsRequired()
-                        .HasColumnName("file_name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("file_name");
 
                     b.Property<long>("FileSize")
-                        .HasColumnName("file_size")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnName("file_size");
 
                     b.Property<string>("FileType")
                         .IsRequired()
-                        .HasColumnName("file_type")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("file_type");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_cpq_config_file");
                 });
@@ -132,18 +132,18 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqCounter", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<long>("Counter")
-                        .HasColumnName("id_number")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnName("id_number");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_cpq_counter");
                 });
@@ -151,54 +151,54 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqImport", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<sbyte>("DatasheetLoad")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("datasheet_load")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("datasheet_load")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("NoteLoad")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("note_load")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("note_load")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("OldToArchive")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("old_to_archive")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("old_to_archive")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<int>("StatusProcess")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("status_process")
                         .HasColumnType("int(11)")
+                        .HasColumnName("status_process")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<string>("StatusText")
-                        .HasColumnName("status_text")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("status_text");
 
                     b.Property<DateTime>("TimeCr")
-                        .HasColumnName("time_cr")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime")
+                        .HasColumnName("time_cr");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnName("user_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("StatusProcess")
-                        .HasName("idx_process");
+                        .HasDatabaseName("idx_process");
 
                     b.ToTable("mtd_cpq_import");
                 });
@@ -206,79 +206,79 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqImportData", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<int>("Action")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("action")
                         .HasColumnType("int(11)")
+                        .HasColumnName("action")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<string>("Datasheet")
-                        .HasColumnName("datasheet")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("datasheet");
 
                     b.Property<string>("IdNumber")
                         .IsRequired()
-                        .HasColumnName("id_number")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("id_number");
 
                     b.Property<sbyte>("MasterProduct")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("master_product")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("master_product")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<string>("MtdCpqImportId")
                         .IsRequired()
-                        .HasColumnName("mtd_cpq_import_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_cpq_import_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Note")
-                        .HasColumnName("note")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("note");
 
                     b.Property<string>("Parent")
-                        .HasColumnName("parent")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("parent");
 
                     b.Property<decimal>("Price")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("price")
                         .HasColumnType("decimal(20,2)")
+                        .HasColumnName("price")
                         .HasDefaultValueSql("'0.00'");
 
                     b.Property<sbyte>("Required")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("required")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("required")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<string>("TagCatalog")
-                        .HasColumnName("catalog_tag")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("catalog_tag");
 
                     b.Property<string>("TagOneOf")
-                        .HasColumnName("one_of")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("one_of");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("IdNumber")
-                        .HasName("idx_number");
+                        .HasDatabaseName("idx_number");
 
                     b.HasIndex("MtdCpqImportId")
-                        .HasName("fk_import_data_history_idx");
+                        .HasDatabaseName("fk_import_data_history_idx");
 
                     b.ToTable("mtd_cpq_import_data");
                 });
@@ -286,51 +286,51 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqImportParam", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<int>("ColData")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("col_data")
                         .HasColumnType("int(11)")
+                        .HasColumnName("col_data")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<int>("ColName")
-                        .HasColumnName("col_name")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("col_name");
 
                     b.Property<int>("ColNote")
-                        .HasColumnName("col_note")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("col_note");
 
                     b.Property<int>("ColNumber")
-                        .HasColumnName("col_number")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("col_number");
 
                     b.Property<int>("ColPrice")
-                        .HasColumnName("col_price")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("col_price");
 
                     b.Property<string>("TagData")
                         .IsRequired()
-                        .HasColumnName("tag_data")
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("tag_data");
 
                     b.Property<string>("TagMaster")
                         .IsRequired()
-                        .HasColumnName("tag_master")
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("tag_master");
 
                     b.Property<string>("TagRequired")
                         .IsRequired()
-                        .HasColumnName("tag_required")
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("tag_required");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_cpq_import_param");
                 });
@@ -338,33 +338,33 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqNotification", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnName("message")
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("message");
 
                     b.Property<DateTime>("TimeCr")
-                        .HasColumnName("timecr")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime")
+                        .HasColumnName("timecr");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnName("title")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("title");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnName("user_name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("user_name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_cpq_notification");
                 });
@@ -372,31 +372,31 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqOneOf", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Color")
-                        .HasColumnName("color")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("color");
 
                     b.Property<string>("ImportTag")
-                        .HasColumnName("import_tag")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("import_tag");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Note")
-                        .HasColumnName("note")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("note");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_cpq_one_of");
                 });
@@ -404,78 +404,90 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProduct", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
+
+                    b.Property<decimal>("Afactor")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,2)")
+                        .HasColumnName("afactor")
+                        .HasDefaultValueSql("'1'");
 
                     b.Property<sbyte>("Archive")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("archive")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("archive")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<string>("Datasheet")
-                        .HasColumnName("datasheet")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("datasheet");
 
                     b.Property<string>("IdNumber")
                         .IsRequired()
-                        .HasColumnName("id_number")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("id_number");
 
                     b.Property<byte[]>("Image")
-                        .HasColumnName("image")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("image");
 
                     b.Property<string>("MtdCpqCatalogId")
                         .IsRequired()
-                        .HasColumnName("mtd_cpq_catalog_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_cpq_catalog_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Note")
-                        .HasColumnName("note")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("note");
 
                     b.Property<decimal>("Price")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("price")
                         .HasColumnType("decimal(20,2)")
+                        .HasColumnName("price")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<int>("Sequence")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("sequence")
                         .HasColumnType("int(11)")
+                        .HasColumnName("sequence")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("Som")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("som")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("som")
+                        .HasDefaultValueSql("'0'");
+
+                    b.Property<sbyte>("Trial")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("trial")
                         .HasDefaultValueSql("'0'");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Archive")
-                        .HasName("ix_archive");
+                        .HasDatabaseName("ix_archive");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("IdNumber")
                         .IsUnique()
-                        .HasName("id_number_UNIQUE");
+                        .HasDatabaseName("id_number_UNIQUE");
 
                     b.HasIndex("MtdCpqCatalogId")
-                        .HasName("fk_mtd_cpq_item_mtd_cpq_catalog1_idx");
+                        .HasDatabaseName("fk_mtd_cpq_item_mtd_cpq_catalog1_idx");
 
                     b.HasIndex("Som")
-                        .HasName("ix_som_index");
+                        .HasDatabaseName("ix_som_index");
 
                     b.ToTable("mtd_cpq_product");
                 });
@@ -483,199 +495,217 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProposal", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<sbyte>("ConfigChangeRule")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("config_change_rule")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("config_change_rule")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("ConfigMasterInluded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("config_master_included")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("config_master_included")
                         .HasDefaultValueSql("'1'");
 
                     b.Property<string>("ContactEmail")
                         .IsRequired()
-                        .HasColumnName("contact_email")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("contact_email");
 
                     b.Property<string>("ContactName")
                         .IsRequired()
-                        .HasColumnName("contact_name")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("contact_name");
 
                     b.Property<string>("ContactPhone")
                         .IsRequired()
-                        .HasColumnName("contact_phone")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("contact_phone");
 
                     b.Property<string>("CustomerCurrency")
-                        .HasColumnName("customer_currency")
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("customer_currency");
 
                     b.Property<DateTime>("DateCreation")
-                        .HasColumnName("date_creation")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime")
+                        .HasColumnName("date_creation");
 
                     b.Property<string>("DeliveryCondition")
-                        .HasColumnName("delivery_condition")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("delivery_condition");
 
                     b.Property<string>("Description")
-                        .HasColumnName("description")
-                        .HasColumnType("varchar(3072)");
+                        .HasColumnType("varchar(3072)")
+                        .HasColumnName("description");
 
                     b.Property<string>("IdNumber")
                         .IsRequired()
-                        .HasColumnName("id_number")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("id_number");
 
                     b.Property<string>("Language")
-                        .HasColumnName("language")
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("language");
 
                     b.Property<byte[]>("Logo")
-                        .HasColumnName("logo")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("logo");
+
+                    b.Property<sbyte>("LogoFlexible")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("logo_flexible")
+                        .HasDefaultValueSql("'0'");
 
                     b.Property<int>("LogoHeight")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("logo_height")
                         .HasColumnType("int(11)")
+                        .HasColumnName("logo_height")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<int>("LogoWidth")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("logo_width")
                         .HasColumnType("int(11)")
+                        .HasColumnName("logo_width")
                         .HasDefaultValueSql("'0'");
 
+                    b.Property<decimal>("MasterAfactor")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,2)")
+                        .HasColumnName("master_afactor")
+                        .HasDefaultValueSql("'1'");
+
                     b.Property<string>("MasterDatasheet")
-                        .HasColumnName("master_datasheet")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("master_datasheet");
 
                     b.Property<string>("MasterId")
-                        .HasColumnName("master_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("master_id");
 
                     b.Property<byte[]>("MasterImage")
-                        .HasColumnName("master_image")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("master_image");
 
                     b.Property<string>("MasterName")
-                        .HasColumnName("master_name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("master_name");
 
                     b.Property<string>("MasterNote")
-                        .HasColumnName("master_note")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("master_note");
 
                     b.Property<string>("MasterNumber")
-                        .HasColumnName("master_number")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("master_number");
 
                     b.Property<decimal>("MasterPrice")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("master_price")
                         .HasColumnType("decimal(20,2)")
+                        .HasColumnName("master_price")
                         .HasDefaultValueSql("'0.00'");
 
                     b.Property<int>("MasterQty")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("master_qty")
                         .HasColumnType("int")
+                        .HasColumnName("master_qty")
                         .HasDefaultValueSql("1");
 
                     b.Property<string>("PreparedBy")
                         .IsRequired()
-                        .HasColumnName("prepared_by")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("prepared_by");
 
                     b.Property<string>("PreparedFor")
                         .IsRequired()
-                        .HasColumnName("prepared_for")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("prepared_for");
 
                     b.Property<decimal>("PriceCustomer")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("price_customer")
                         .HasColumnType("decimal(20,2)")
+                        .HasColumnName("price_customer")
                         .HasDefaultValueSql("'0.00'");
 
                     b.Property<string>("TitleName")
-                        .HasColumnName("title_name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("title_name");
 
                     b.Property<string>("TitleNote")
-                        .HasColumnName("title_note")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("title_note");
+
+                    b.Property<sbyte>("ViewAfactor")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("view_afactor")
+                        .HasDefaultValueSql("'1'");
 
                     b.Property<sbyte>("ViewDatasheet")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("view_datasheet")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("view_datasheet")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("ViewDelivery")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("view_delivery")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("view_delivery")
                         .HasDefaultValueSql("'1'");
 
                     b.Property<sbyte>("ViewImages")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("view_images")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("view_images")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("ViewNote")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("view_note")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("view_note")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("ViewPriceCustomer")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("view_price_customer")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("view_price_customer")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("ViewPriceGross")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("view_price_gross")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("view_price_gross")
                         .HasDefaultValueSql("'1'");
 
                     b.Property<sbyte>("ViewProposal")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("view_proposal")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("view_proposal")
                         .HasDefaultValueSql("'1'");
 
                     b.Property<sbyte>("ViewQty")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("view_qty")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("view_qty")
                         .HasDefaultValueSql("'1'");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DateCreation")
-                        .HasName("ix_datecreation");
+                        .HasDatabaseName("ix_datecreation");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("IdNumber")
-                        .HasName("ix_number");
+                        .HasDatabaseName("ix_number");
 
                     b.HasIndex("MasterId")
-                        .HasName("idx_master_id");
+                        .HasDatabaseName("idx_master_id");
 
                     b.ToTable("mtd_cpq_proposal");
                 });
@@ -683,41 +713,41 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProposalAnchor", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
                         .HasColumnType("varchar(36)")
-                        .HasAnnotation("MySql:CharSet", "utf8mb4")
-                        .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
+                        .HasColumnName("id")
+                        .UseCollation("utf8mb4_0900_ai_ci")
+                        .HasCharSet("utf8mb4");
 
                     b.Property<string>("Cid")
                         .IsRequired()
-                        .HasColumnName("cid")
                         .HasColumnType("varchar(36)")
-                        .HasAnnotation("MySql:CharSet", "utf8mb4")
-                        .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
+                        .HasColumnName("cid")
+                        .UseCollation("utf8mb4_0900_ai_ci")
+                        .HasCharSet("utf8mb4");
 
                     b.Property<sbyte>("Include")
-                        .HasColumnName("include")
-                        .HasColumnType("tinyint(4)");
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("include");
 
                     b.Property<string>("MtdCpqProductId")
                         .IsRequired()
-                        .HasColumnName("mtd_cpq_product_id")
                         .HasColumnType("varchar(36)")
-                        .HasAnnotation("MySql:CharSet", "utf8mb4")
-                        .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
+                        .HasColumnName("mtd_cpq_product_id")
+                        .UseCollation("utf8mb4_0900_ai_ci")
+                        .HasCharSet("utf8mb4");
 
                     b.Property<sbyte>("Required")
-                        .HasColumnName("required")
-                        .HasColumnType("tinyint(4)");
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("required");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Cid")
-                        .HasName("fk_proposal_anchor_idx");
+                        .HasDatabaseName("fk_proposal_anchor_idx");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_cpq_proposal_anchor");
                 });
@@ -725,50 +755,50 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProposalCatalog", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("CId")
                         .IsRequired()
-                        .HasColumnName("cid")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("cid");
 
                     b.Property<string>("IdNumber")
-                        .HasColumnName("id_number")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("id_number");
 
                     b.Property<byte[]>("Image")
-                        .HasColumnName("image")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("image");
 
                     b.Property<string>("MtdCpqProposalId")
-                        .HasColumnName("mtd_cpq_proposal_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_cpq_proposal_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Note")
-                        .HasColumnName("note")
-                        .HasColumnType("varchar(768)");
+                        .HasColumnType("varchar(768)")
+                        .HasColumnName("note");
 
                     b.Property<int>("Sequence")
-                        .HasColumnName("sequence")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("sequence");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CId")
-                        .HasName("idx_cid");
+                        .HasDatabaseName("idx_cid");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdCpqProposalId")
-                        .HasName("fk_mtd_cpq_proposal_catalog_idx");
+                        .HasDatabaseName("fk_mtd_cpq_proposal_catalog_idx");
 
                     b.ToTable("mtd_cpq_proposal_catalog");
                 });
@@ -776,115 +806,115 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProposalItem", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<sbyte>("AnchorHistory")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("anchor_history")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("anchor_history")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<string>("AnchorNotice")
-                        .HasColumnName("anchor_notice")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("anchor_notice");
 
                     b.Property<string>("Datasheet")
-                        .HasColumnName("datasheet")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("datasheet");
 
                     b.Property<sbyte>("Forbidden")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("forbidden")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("forbidden")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<string>("IdNumber")
                         .IsRequired()
-                        .HasColumnName("id_number")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("id_number");
 
                     b.Property<byte[]>("Image")
-                        .HasColumnName("image")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("image");
 
                     b.Property<string>("MtdCpqProductId")
                         .IsRequired()
-                        .HasColumnName("mtd_cpq_product_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_cpq_product_id");
 
                     b.Property<string>("MtdCpqProposalId")
                         .IsRequired()
-                        .HasColumnName("mtd_cpq_proposal_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_cpq_proposal_id");
 
                     b.Property<string>("MtdCpqProposalOneOfId")
-                        .HasColumnName("mtd_cpq_proposal_one_of_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_cpq_proposal_one_of_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Note")
-                        .HasColumnName("note")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("note");
 
                     b.Property<decimal>("Price")
-                        .HasColumnName("price")
-                        .HasColumnType("decimal(20,2)");
+                        .HasColumnType("decimal(20,2)")
+                        .HasColumnName("price");
 
                     b.Property<string>("ProposalCatalogId")
                         .IsRequired()
-                        .HasColumnName("mtd_cpq_proposal_catalog_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_cpq_proposal_catalog_id");
 
                     b.Property<int>("Qty")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("qty")
                         .HasColumnType("int(11)")
+                        .HasColumnName("qty")
                         .HasDefaultValueSql("'1'");
 
                     b.Property<sbyte>("Required")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("required")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("required")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("Selected")
-                        .HasColumnName("selected")
-                        .HasColumnType("tinyint(4)");
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("selected");
 
                     b.Property<int>("Sequence")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("sequence")
                         .HasColumnType("int(11)")
+                        .HasColumnName("sequence")
                         .HasDefaultValueSql("'0'");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdCpqProductId")
-                        .HasName("fk_mtd_cpq_rule_idx");
+                        .HasDatabaseName("fk_mtd_cpq_rule_idx");
 
                     b.HasIndex("MtdCpqProposalId")
-                        .HasName("fk_mtd_cpq_complectation_mtd_cpq_proposal1_idx");
+                        .HasDatabaseName("fk_mtd_cpq_complectation_mtd_cpq_proposal1_idx");
 
                     b.HasIndex("MtdCpqProposalOneOfId")
-                        .HasName("fk_mtd_cpq_proposalitems_one_of_idx");
+                        .HasDatabaseName("fk_mtd_cpq_proposalitems_one_of_idx");
 
                     b.HasIndex("ProposalCatalogId")
-                        .HasName("fk_mtd_cpq_proposalitems_catalog_idx");
+                        .HasDatabaseName("fk_mtd_cpq_proposalitems_catalog_idx");
 
                     b.HasIndex("Required")
-                        .HasName("IX_REQUIRED");
+                        .HasDatabaseName("IX_REQUIRED");
 
                     b.HasIndex("Selected")
-                        .HasName("IX_SELECTED");
+                        .HasDatabaseName("IX_SELECTED");
 
                     b.ToTable("mtd_cpq_proposal_item");
                 });
@@ -892,42 +922,42 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProposalOneOf", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("CId")
                         .IsRequired()
-                        .HasColumnName("cid")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("cid");
 
                     b.Property<string>("Color")
-                        .HasColumnName("color")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("color");
 
                     b.Property<string>("MtdCpqProposalId")
-                        .HasColumnName("mtd_cpq_proposal_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_cpq_proposal_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Note")
-                        .HasColumnName("note")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("note");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CId")
-                        .HasName("idx_cid");
+                        .HasDatabaseName("idx_cid");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdCpqProposalId")
-                        .HasName("fk_mtd_cpq_proposal_one_of_idx");
+                        .HasDatabaseName("fk_mtd_cpq_proposal_one_of_idx");
 
                     b.ToTable("mtd_cpq_proposal_one_of");
                 });
@@ -935,34 +965,34 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqReaderUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("MessageId")
                         .IsRequired()
-                        .HasColumnName("message_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("message_id");
 
                     b.Property<DateTime>("TimeCr")
-                        .HasColumnName("timecr")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime")
+                        .HasColumnName("timecr");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnName("user_name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("user_name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MessageId")
-                        .HasName("fk_notification_user_idx");
+                        .HasDatabaseName("fk_notification_user_idx");
 
                     b.HasIndex("UserName")
-                        .HasName("idx-username");
+                        .HasDatabaseName("idx-username");
 
                     b.ToTable("mtd_cpq_reader_user");
                 });
@@ -970,41 +1000,41 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqRuleAnchor", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
                         .HasColumnType("varchar(36)")
-                        .HasAnnotation("MySql:CharSet", "utf8mb4")
-                        .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
+                        .HasColumnName("id")
+                        .UseCollation("utf8mb4_0900_ai_ci")
+                        .HasCharSet("utf8mb4");
 
                     b.Property<string>("Notice")
-                        .HasColumnName("notice")
                         .HasColumnType("text")
-                        .HasAnnotation("MySql:CharSet", "utf8mb4")
-                        .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
+                        .HasColumnName("notice")
+                        .UseCollation("utf8mb4_0900_ai_ci")
+                        .HasCharSet("utf8mb4");
 
                     b.Property<string>("ProductAnchor")
                         .IsRequired()
-                        .HasColumnName("product_anchor")
                         .HasColumnType("varchar(36)")
-                        .HasAnnotation("MySql:CharSet", "utf8mb4")
-                        .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
+                        .HasColumnName("product_anchor")
+                        .UseCollation("utf8mb4_0900_ai_ci")
+                        .HasCharSet("utf8mb4");
 
                     b.Property<string>("ProductMaster")
-                        .HasColumnName("product_master")
                         .HasColumnType("varchar(36)")
-                        .HasAnnotation("MySql:CharSet", "utf8mb4")
-                        .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
+                        .HasColumnName("product_master")
+                        .UseCollation("utf8mb4_0900_ai_ci")
+                        .HasCharSet("utf8mb4");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("ProductAnchor")
-                        .HasName("fk_anchor_product_anchor_idx");
+                        .HasDatabaseName("fk_anchor_product_anchor_idx");
 
                     b.HasIndex("ProductMaster")
-                        .HasName("fk_anchor_product_master_idx");
+                        .HasDatabaseName("fk_anchor_product_master_idx");
 
                     b.ToTable("mtd_cpq_rule_anchor");
                 });
@@ -1012,44 +1042,44 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqRuleAnchorBind", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
                         .HasColumnType("varchar(36)")
-                        .HasAnnotation("MySql:CharSet", "utf8mb4")
-                        .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
+                        .HasColumnName("id")
+                        .UseCollation("utf8mb4_0900_ai_ci")
+                        .HasCharSet("utf8mb4");
 
                     b.Property<sbyte>("Include")
-                        .HasColumnName("include")
-                        .HasColumnType("tinyint(4)");
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("include");
 
                     b.Property<string>("MtdCpqProductId")
                         .IsRequired()
-                        .HasColumnName("mtd_cpq_product_id")
                         .HasColumnType("varchar(36)")
-                        .HasAnnotation("MySql:CharSet", "utf8mb4")
-                        .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
+                        .HasColumnName("mtd_cpq_product_id")
+                        .UseCollation("utf8mb4_0900_ai_ci")
+                        .HasCharSet("utf8mb4");
 
                     b.Property<string>("MtdCpqRuleAnchorId")
                         .IsRequired()
-                        .HasColumnName("mtd_cpq_rule_anchor_id")
                         .HasColumnType("varchar(36)")
-                        .HasAnnotation("MySql:CharSet", "utf8mb4")
-                        .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
+                        .HasColumnName("mtd_cpq_rule_anchor_id")
+                        .UseCollation("utf8mb4_0900_ai_ci")
+                        .HasCharSet("utf8mb4");
 
                     b.Property<sbyte>("Required")
-                        .HasColumnName("required")
-                        .HasColumnType("tinyint(4)");
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("required");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdCpqProductId")
-                        .HasName("fk_anchor_required_idx");
+                        .HasDatabaseName("fk_anchor_required_idx");
 
                     b.HasIndex("MtdCpqRuleAnchorId")
-                        .HasName("fk_anchor_required_anchor_idx");
+                        .HasDatabaseName("fk_anchor_required_anchor_idx");
 
                     b.ToTable("mtd_cpq_rule_anchor_bind");
                 });
@@ -1057,43 +1087,43 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqRuleAvailable", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("OneOfId")
-                        .HasColumnName("one_of_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("one_of_id");
 
                     b.Property<string>("ProductIdChild")
                         .IsRequired()
-                        .HasColumnName("product_id_child")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("product_id_child");
 
                     b.Property<string>("ProductIdParent")
                         .IsRequired()
-                        .HasColumnName("product_id_parent")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("product_id_parent");
 
                     b.Property<sbyte>("Required")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("required")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("required")
                         .HasDefaultValueSql("'0'");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("OneOfId")
-                        .HasName("fk_mtd_cpq_rule_availablel_item_one_of_idx");
+                        .HasDatabaseName("fk_mtd_cpq_rule_availablel_item_one_of_idx");
 
                     b.HasIndex("ProductIdChild")
-                        .HasName("fk_mtd_cpq_rule_available_mtd_cpq_product1_idx");
+                        .HasDatabaseName("fk_mtd_cpq_rule_available_mtd_cpq_product1_idx");
 
                     b.HasIndex("ProductIdParent")
-                        .HasName("fk_mtd_cpq_available_mtd_cpq_product1_idx");
+                        .HasDatabaseName("fk_mtd_cpq_available_mtd_cpq_product1_idx");
 
                     b.ToTable("mtd_cpq_rule_available");
                 });
@@ -1101,57 +1131,63 @@ namespace Mtd.Cpq.Manager.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqTitles", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("ContactEmail")
-                        .HasColumnName("contact_email")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("contact_email");
 
                     b.Property<string>("ContactName")
-                        .HasColumnName("contact_name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("contact_name");
 
                     b.Property<string>("ContactPhone")
                         .IsRequired()
-                        .HasColumnName("contact_phone")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("contact_phone");
 
                     b.Property<string>("Language")
-                        .HasColumnName("language")
-                        .HasColumnType("varchar(250)");
+                        .HasColumnType("varchar(250)")
+                        .HasColumnName("language");
 
                     b.Property<byte[]>("Logo")
-                        .HasColumnName("logo")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("logo");
+
+                    b.Property<sbyte>("LogoFlexible")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("logo_flexible")
+                        .HasDefaultValueSql("'0'");
 
                     b.Property<int>("LogoHeight")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("logo_height")
                         .HasColumnType("int(11)")
+                        .HasColumnName("logo_height")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<int>("LogoWidth")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("logo_width")
                         .HasColumnType("int(11)")
+                        .HasColumnName("logo_width")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("name");
 
                     b.Property<string>("PreparedBy")
                         .IsRequired()
-                        .HasColumnName("prepared_by")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("prepared_by");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_cpq_titles");
                 });
@@ -1164,6 +1200,8 @@ namespace Mtd.Cpq.Manager.Migrations
                         .HasConstraintName("fk_import_data_history")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdCpqImport");
                 });
 
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProduct", b =>
@@ -1174,6 +1212,8 @@ namespace Mtd.Cpq.Manager.Migrations
                         .HasConstraintName("fk_mtd_cpq_item_mtd_cpq_catalog1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdCpqCatalog");
                 });
 
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProposalAnchor", b =>
@@ -1184,6 +1224,8 @@ namespace Mtd.Cpq.Manager.Migrations
                         .HasConstraintName("fk_proposal_anchor")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdCpqProposalItem");
                 });
 
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProposalCatalog", b =>
@@ -1193,6 +1235,8 @@ namespace Mtd.Cpq.Manager.Migrations
                         .HasForeignKey("MtdCpqProposalId")
                         .HasConstraintName("fk_mtd_cpq_proposal_catalog")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("MtdCpqProposal");
                 });
 
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProposalItem", b =>
@@ -1216,6 +1260,12 @@ namespace Mtd.Cpq.Manager.Migrations
                         .HasConstraintName("fk_mtd_cpq_proposalitems_catalog")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdCpqProposal");
+
+                    b.Navigation("MtdCpqProposalCatalog");
+
+                    b.Navigation("MtdCpqProposalOneOf");
                 });
 
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProposalOneOf", b =>
@@ -1225,6 +1275,8 @@ namespace Mtd.Cpq.Manager.Migrations
                         .HasForeignKey("MtdCpqProposalId")
                         .HasConstraintName("fk_mtd_cpq_proposal_one_of")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("MtdCpqProposal");
                 });
 
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqReaderUser", b =>
@@ -1235,6 +1287,8 @@ namespace Mtd.Cpq.Manager.Migrations
                         .HasConstraintName("fk_notification_user")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdCpqNotification");
                 });
 
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqRuleAnchor", b =>
@@ -1251,6 +1305,10 @@ namespace Mtd.Cpq.Manager.Migrations
                         .HasForeignKey("ProductMaster")
                         .HasConstraintName("fk_anchor_product_master")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("ProductAnchorNavigation");
+
+                    b.Navigation("ProductMasterNavigation");
                 });
 
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqRuleAnchorBind", b =>
@@ -1268,6 +1326,10 @@ namespace Mtd.Cpq.Manager.Migrations
                         .HasConstraintName("fk_anchor_required_anchor")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdCpqProduct");
+
+                    b.Navigation("MtdCpqRuleAnchor");
                 });
 
             modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqRuleAvailable", b =>
@@ -1291,6 +1353,74 @@ namespace Mtd.Cpq.Manager.Migrations
                         .HasConstraintName("fk_mtd_cpq_available_mtd_cpq_product1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdCpqOneOf");
+
+                    b.Navigation("ProductIdChildNavigation");
+
+                    b.Navigation("ProductIdParentNavigation");
+                });
+
+            modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqCatalog", b =>
+                {
+                    b.Navigation("MtdCpqProduct");
+                });
+
+            modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqImport", b =>
+                {
+                    b.Navigation("MtdCpqImportData");
+                });
+
+            modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqNotification", b =>
+                {
+                    b.Navigation("MtdCpqReaderUsers");
+                });
+
+            modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqOneOf", b =>
+                {
+                    b.Navigation("MtdCpqRuleAvailable");
+                });
+
+            modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProduct", b =>
+                {
+                    b.Navigation("MtdCpqRuleAnchorBind");
+
+                    b.Navigation("MtdCpqRuleAnchorProductAnchorNavigation");
+
+                    b.Navigation("MtdCpqRuleAnchorProductMasterNavigation");
+
+                    b.Navigation("MtdCpqRuleAvailableProductIdChildNavigation");
+
+                    b.Navigation("MtdCpqRuleAvailableProductIdParentNavigation");
+                });
+
+            modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProposal", b =>
+                {
+                    b.Navigation("MtdCpqProposalCatalog");
+
+                    b.Navigation("MtdCpqProposalItem");
+
+                    b.Navigation("MtdCpqProposalOneOf");
+                });
+
+            modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProposalCatalog", b =>
+                {
+                    b.Navigation("MtdCpqProposalItem");
+                });
+
+            modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProposalItem", b =>
+                {
+                    b.Navigation("MtdCpqProposalAnchor");
+                });
+
+            modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqProposalOneOf", b =>
+                {
+                    b.Navigation("MtdCpqProposalItem");
+                });
+
+            modelBuilder.Entity("Mtd.Cpq.Manager.Data.MtdCpqRuleAnchor", b =>
+                {
+                    b.Navigation("MtdCpqRuleAnchorBind");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,6 +10,9 @@
     bool ImageOn = Model.MtdCpqProposal.ViewImages == 1 ? true : false;
     decimal GrossPrice = 0;
     CultureInfo.CurrentUICulture = Model.CultureView;
+
+    decimal afactor = Model.MtdCpqProposal.ViewAfactor == 1 ? Model.MtdCpqProposal.MasterAfactor : 1;
+
 }
 
 <div class="d-md-flex">
@@ -87,6 +90,7 @@
         <tbody>
             @if (Model.MtdCpqProposal.MasterId != null && Model.MtdCpqProposal.ConfigMasterInluded == 1)
             {
+
                 <tr class="font-weight-bold">
                     <td>
                     </td>
@@ -107,10 +111,10 @@
                     @if (Price)
                     {
                         <td class="p-2 text-right text-nowrap">
-                            @Model.MtdCpqProposal.MasterPrice.ToString("C2", Model.CatalogCulture)
+                            @Math.Round(Model.MtdCpqProposal.MasterPrice * afactor).ToString("C2", Model.CatalogCulture)
                         </td>
                         <td class="p-2 text-right text-nowrap">
-                            @{ decimal masterSum = Model.MtdCpqProposal.MasterPrice * Model.MtdCpqProposal.MasterQty;
+                            @{ decimal masterSum = Math.Round(Model.MtdCpqProposal.MasterPrice * Model.MtdCpqProposal.MasterQty * afactor);
                                 GrossPrice += masterSum;
                             }
                             @masterSum.ToString("C2", Model.CatalogCulture)
@@ -150,6 +154,7 @@
 
             @foreach (var catalog in Model.Catalogs)
             {
+
                 var items = @Model.Items.Where(x => x.ProposalCatalogId == catalog.Id).ToList();
                 if (items.Count > 0)
                 {
@@ -173,9 +178,11 @@
                             }
                             @if (Price)
                             {
-                                <td class="text-right text-nowrap p-1">@item.Price.ToString("C2", Model.CatalogCulture)</td>
                                 <td class="text-right text-nowrap p-1">
-                                    @{decimal itemSum = item.Price * item.Qty; GrossPrice += itemSum;}
+                                    @Math.Round(item.Price*afactor).ToString("C2", Model.CatalogCulture)
+                                </td>
+                                <td class="text-right text-nowrap p-1">
+                                    @{decimal itemSum = Math.Round(item.Price * item.Qty * afactor); GrossPrice += itemSum;}
                                     @itemSum.ToString("C2", Model.CatalogCulture)
                                 </td>
                             }
@@ -215,7 +222,10 @@
             {
                 <tr style="font-weight: bolder">
                     <td colspan="@spanTitle" class="p-2 text-right">@Localizer["Total"]:</td>
-                    <td colspan="@spanTotal" class="text-right text-nowrap">@GrossPrice.ToString("C2", Model.CatalogCulture)</td>
+                    <td colspan="@spanTotal" class="text-right text-nowrap">
+
+                        @GrossPrice.ToString("C2", Model.CatalogCulture)
+                    </td>
                 </tr>
             }
 

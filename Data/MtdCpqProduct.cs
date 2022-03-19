@@ -27,6 +27,7 @@ namespace Mtd.Cpq.Manager.Data
         public decimal Price { get; set; }        
         public sbyte Archive { get; set; }
         public int Sequence { get; set; }
+        public decimal Afactor { get; set; }
 
         public virtual MtdCpqCatalog MtdCpqCatalog { get; set; }
         public virtual ICollection<MtdCpqRuleAnchorBind> MtdCpqRuleAnchorBind { get; set; }

@@ -192,6 +192,8 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
             if (!access) { return new JsonResult("NotFound"); }
 
             proposal.ConfigMasterInluded = proposal.ConfigMasterInluded == 1 ? (sbyte)0 : (sbyte)1;
+            proposal.ViewAfactor = proposal.ConfigMasterInluded;
+
             _context.MtdCpqProposal.Update(proposal);
             await _context.SaveChangesAsync();
             

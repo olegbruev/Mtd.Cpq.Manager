@@ -39,6 +39,7 @@
         <div id="view-proposal-params">
             @*START RADIO BUTTONS PRICE*@
             <hr style="border-top: 1px solid white;" />
+
             <div class="view-checker" onclick="ViewGPriceClick()">
                 <div class="view-checker-icon">
                     @{ string grossClass = "fas fa-check-circle";
@@ -51,7 +52,6 @@
                 </div>
                 <input id="view-gprice-input" type="hidden" asp-for="@Model.MtdCpqProposal.ViewPriceGross" />
             </div>
-
             <div class="view-checker" onclick="ViewCPriceClick()">
                 <div class="view-checker-icon">
                     @{ string custClass = "fas fa-check-circle";
@@ -64,10 +64,9 @@
                 </div>
                 <input id="view-cprice-input" type="hidden" asp-for="@Model.MtdCpqProposal.ViewPriceCustomer" />
             </div>
-
             <div class="view-checker" onclick="ViewNPriceClick()">
                 <div class="view-checker-icon">
-                    @{ string nopriceClass = "fas fa-check-circle";                        
+                    @{ string nopriceClass = "fas fa-check-circle";
                         int nopriceValue = 0;
                         if (Model.MtdCpqProposal.ViewPriceCustomer == 0 && Model.MtdCpqProposal.ViewPriceGross == 0)
                         {
@@ -86,6 +85,20 @@
 
             <hr style="border-top: 1px solid white;" />
             @*END RADIO BUTTONS PRICE*@
+
+            <div class="view-checker" onclick="ViewAfactorClick()">
+                <div class="view-checker-icon">
+                    @{ string afactorClass = "fas fa-check-square";
+                        if (Model.MtdCpqProposal.ViewAfactor != 1) { afactorClass = "fas fa-square"; }
+                    }
+                    <i id="view-afactor-icon" class="@afactorClass"></i>
+                </div>
+                <div class="view-checker-label">
+                    Adjustment factor
+                </div>
+                <input id="view-afactor-input" type="hidden" asp-for="@Model.MtdCpqProposal.ViewAfactor" />
+            </div>
+
 
             <div class="view-checker" onclick="ViewNoteClick()">
                 <div class="view-checker-icon">
@@ -139,5 +152,8 @@
                 <input id="view-images-input" type="hidden" asp-for="@Model.MtdCpqProposal.ViewImages" />
             </div>
         </div>
+
+
+
     </div>
 </form>
