@@ -13,6 +13,7 @@ namespace Mtd.Cpq.Manager
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+            .UseUrls("https://localhost:5003;http://localhost:5002")
                 .UseStartup<Startup>();
     }
 }

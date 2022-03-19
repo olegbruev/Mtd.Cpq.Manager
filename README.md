@@ -1,5 +1,5 @@
-<p align="center">
-    <img src="http://ordermaker.org/imgs/logo-ordermaker.png"
+﻿<p align="center">
+    <img src="http://ordermaker.org/imgs/logo-cpq.png"
         height="100%">
 </p>
 
@@ -11,60 +11,44 @@
 
 <hr>
 
-<strong>MTD OrderMaker</strong> is a simple web application that provides ability to make a knowledge base, query management system or any solutions based on forms and fields in a short time. 
+MTD CPQManager helps to formulate commercial offers, select the correct configuration of the equipment supplied to the client, reduces the time for the formation of the proposal eliminating errors in the selection of equipment, improves the efficiency of distributors or sales agents.
 
-MTD OrderMaker includes the Configurator module, provides administrators to create forms around which interaction functions automatically created � List (search and filtering), Editor, View and Print, and the ability to export data to Excel. Also, the user management module providers you to set the level of access rights for each user for each form. 
+⚠️ **This tool is part of the [MTD OrderMaker Server](https://github.com/olegbruev/OrderMakerServer) and does't work as a standalone solution. Both applications run on the same domain, e.g. order.example.com and cpq.example.com.**
 
-## Who is using 
+## History
 
-- Freelancers - automate the business processes of their customers.
-- System administrators or IT specialists of small companies handle tasks related to order management.
-- Back-end programmers use the MTD OrderMaker as an intermediary to simplify the collection of data from users into their data processing systems.
+This solution was originally intended to create complicated proposals related to medical equipment, where there is an ultrasound mainframe that has lot of items such as electronic probes, licenses, accessories etc. All this has complex links and rules for creating commercial offers. The purpose of creating this tool was to simplify the work of sales managers and reduce errors in the preparation of commercial offers.
+
+## Capabilities
+
+<img src="http://ordermaker.org/imgs/cpq-ring.png" align="right" width="350"> 
+     
+- A single list of goods or services, standard and uniformity of the definitions.
+- Import a price list from Excel and specify basic link rules.
+- Simple, extended or Tech Data description of items.
+- Differentiation of access rights to information.
+
+Link Items Rule Builder:
+- Disable or enable the ability to select an item
+- Exclude an item when another item is selected
+- Help message when selecting an item
+- "OR OR" - select only one of group
 
 ## How to start
 
-1. Download and install .Net Core 5.0 for Windows OS [x86](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-5.0.406-windows-x86-installer) or [x64](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-5.0.406-windows-x64-installer) depending on the operating system, also download and install the Hosting Bundle [x86](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-aspnetcore-5.0.15-windows-x86-installer) or [x64](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-aspnetcore-5.0.15-windows-x64-installer) if you will be using IIS as your web server.
-2. Download and install MySql Community Server 8.0 ([recommendation 8.0.15](https://downloads.mysql.com/archives/get/p/23/file/mysql-8.0.15-winx64.zip)). The MySql user you will use to connect from the web application must have Database Creator permissions.  
-3. Download the OrderMaker [latest release](https://github.com/olegbruev/OrderMakerServer/releases) in the publish.zip file archive.
-4. Unzip it and create file appsettings.json in same folder.  Use the appsettings.Template.json file to understand what settings you need to specify.
-5. Run Mtd.OrderMaker.Server.exe file. When opening the application in a browser, log in with the username and password that you specify in the appsettings.json file.
-6. Open the Configurator and Form Template Builder. Create a form. Then use the Action button to create the Part form (section). Open the created section and then create some field using Action button.
-7. Open the Users menu and Policy Template Designer. Create a policy and name it Default. Use the "Action" button and click "Select All".  Click Save button.
-8. Open the "Users" menu and the "Accounts" module (list of users). Click your account name and select the Default value in the Policy field. Click the Save button.
+1. First of all, install the [MTD OrderMaker Server](https://github.com/olegbruev/OrderMakerServer).
+3. Make sure the "CPQManagerLink" setting is "https://localhost:5003". If it doesn't, fix it and restart the app.
+4. Open the "Users" menu and the "Accounts" module (list of users) and make sure your account have CPQ Role is Administrator.
+5. Download the CPQ Manager [latest release](https://github.com/olegbruev/OrderMakerServer/releases) in the publish.zip file archive.
+6. Unzip it and create file appsettings.json in same folder.  Use the appsettings.Template.json file to understand what settings you need to specify.
+7. Run Mtd.Cpq.Manager.exe file. Then open browser and type address https://localhost:5003. If you are logged into the MTD OrderMaker Server and server is working on https://localhost:5001, then you authorization in CPQ Manager will be automatic.
 
-After all this, you will open the Desktop menu item and see your first database.
-
-<p align="center">
-      <img src="http://ordermaker.org/imgs/desktop2.png" width="650">
-</p>
-
-
-**Good luck building complex applications without programming!**:crossed_fingers:
+⚠️ To add products you need to create at least one Group (DATA MANAGE -> GROUPS LIST) and create Title for quotes (SUPERVISION -> TITLES&TERMS).
 
 ## License
 
-The MTD OrderMaker web application is free and open-source software and starting from version 2.0 is released under the MIT license. 
+The CPQ Manager web application is free and open source software released under the MIT license.
 
-## Project assistance
+## Project development
+Application guides and background information will be added gradually if the community shows interest in this project. 
 
-Unfortunately, I don't have time to promote and advertise this project. But I know that MTD OrderMaker helps a lot of people.
-If this project was useful to you, then infom other people about it so that this project helps even more people.
-
-- Add a [GitHub Star](https://github.com/olegbruev/ordermakerserver) to the project.
-- Make a post about the project on social networks.
-- Write interesting articles about project on [Dev.to](https://dev.to/), [Medium](https://medium.com/) or personal blog.
-
-
-## Third-party integrations
-
-List of vendors that are not in the [Dependency graph](https://github.com/olegbruev/OrderMakerServer/network/dependencies):
-
-| Library               | Description                                            |
-| --------------------- | ------------------------------------------------------ |
-| [xdan]                | DateTimePicker jQuery plugin select date and time.     |
-| [moment]              | A JavaScript date library for parsing, validating, manipulating, and formatting dates. |
-
-In the event that I accidentally failed to list a required notice, please bring it to my  attention on email job4bruev@gmail.com. 
-
-[xdan]:https://github.com/xdan/datetimepicker
-[moment]:https://github.com/moment/moment/
