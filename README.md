@@ -50,5 +50,5 @@ Link Items Rule Builder:
 The CPQ Manager web application is free and open source software released under the MIT license.
 
 ## Project development
-Application guides and background information will be added gradually if the community shows interest in this project. 
+This solution is focused on a small group of customers, so application guides and background information will be added gradually if the community shows interest in this project. 
 
