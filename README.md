@@ -39,7 +39,7 @@ Link Items Rule Builder:
 1. First of all, install the [MTD OrderMaker Server](https://github.com/olegbruev/OrderMakerServer).
 3. Make sure the "CPQManagerLink" setting is "https://localhost:5003". If it doesn't, fix it and restart the app.
 4. Open the "Users" menu and the "Accounts" module (list of users) and make sure your account have CPQ Role is Administrator.
-5. Download the CPQ Manager [latest release](https://github.com/olegbruev/OrderMakerServer/releases) in the publish.zip file archive.
+5. Download the CPQ Manager [latest release](https://github.com/olegbruev/Mtd.Cpq.Manager/releases) in the publish.zip file archive.
 6. Unzip it and create file appsettings.json in same folder.  Use the appsettings.Template.json file to understand what settings you need to specify.
 7. Run Mtd.Cpq.Manager.exe file. Then open browser and type address https://localhost:5003. If you are logged into the MTD OrderMaker Server and server is working on https://localhost:5001, then you authorization in CPQ Manager will be automatic.
 
