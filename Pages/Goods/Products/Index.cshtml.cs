@@ -72,7 +72,7 @@ namespace Mtd.Cpq.Manager.Pages.Goods.Products
                 Catalog = Catalogs.FirstOrDefault(x => x.Id == catalog);
             }
 
-            if (Catalog == null) { return NotFound(); }
+            if (Catalog == null) { return RedirectToPage("/Goods/Catalog/Index"); }
 
 
             IQueryable<MtdCpqProduct> query = _context.MtdCpqProduct

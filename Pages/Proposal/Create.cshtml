@@ -5,79 +5,89 @@
 
 @{
     ViewData["Title"] = Localizer["Create quote"];
+    var titles = ViewData["Params"] as SelectList;
 }
 
-    <form method="post" autocomplete="off">
-        <div class="d-flex flex-wrap">
-            <div class="flex-grow-1">
-                <h1>@ViewBag.Title</h1>
-            </div>
-            <div class="p-2 align-items-center">
-                <button class="btn btn-primary">
-                    <i class="fas fa-save"></i>
-                    Save
+
+@if (!titles.Any())
+{
+    <div class="alert alert-danger" role="alert">
+        @Localizer["First you need to create a Title! Go to the Supervision menu and create a Title."]
+    </div>
+}
+
+
+<form method="post" autocomplete="off">
+    <div class="d-flex flex-wrap">
+        <div class="flex-grow-1">
+            <h1>@ViewBag.Title</h1>
+        </div>
+        <div class="p-2 align-items-center">
+            <button class="btn btn-primary">
+                <i class="fas fa-save"></i>
+                Save
+            </button>
+        </div>
+    </div>
+
+    <div>
+        <a asp-page="./Index">
+            <i class="fas fa-arrow-left"></i>
+            Back to List
+        </a>
+    </div>
+    <hr />
+    <div class="input-group">
+        <div class="input-group-append">
+            <button style="width:150px" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-filter"></i>
+                @{ if (Model.Filter)
+                    { <text>Own Titles</text>}
+                else
+                {<text> All Titles</text>}
+                }
+            </button>
+            <div class="dropdown-menu" style="box-shadow: 2px 2px 3px #ccc">
+                <button class="dropdown-item btn btn-link" asp-page="./Create" asp-route-filter="false" asp-page-handler="Filter">
+                    All Titles
+                </button>
+                <button class="dropdown-item btn btn-link" asp-page="./Create" asp-route-filter="true" asp-page-handler="Filter">
+                    Own Titles
                 </button>
             </div>
         </div>
+        @*<label asp-for="TitleId" class="control-label">@Localizer["Titles and Terms"]</label>*@
+        <select asp-for="TitleId" class="form-control" asp-items="@ViewBag.Params"></select>
 
-        <div>
-            <a asp-page="./Index">
-                <i class="fas fa-arrow-left"></i>
-                Back to List
-            </a>
-        </div>
-        <hr />
-        <div class="input-group">
-            <div class="input-group-append">
-                <button style="width:150px" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-filter"></i>
-                    @{ if (Model.Filter)
-                        { <text>Own Titles</text>}
-                    else
-                    {<text> All Titles</text>}
-                    }
-                </button>
-                <div class="dropdown-menu" style="box-shadow: 2px 2px 3px #ccc">
-                    <button class="dropdown-item btn btn-link" asp-page="./Create" asp-route-filter="false" asp-page-handler="Filter">
-                        All Titles
-                    </button>
-                    <button class="dropdown-item btn btn-link" asp-page="./Create" asp-route-filter="true" asp-page-handler="Filter">
-                        Own Titles
-                    </button>
-                </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="MtdCpqProposal.PreparedFor" class="control-label"></label>
+                <input asp-for="MtdCpqProposal.PreparedFor" class="form-control" />
+                <span asp-validation-for="MtdCpqProposal.PreparedFor" class="text-danger"></span>
             </div>
-            @*<label asp-for="TitleId" class="control-label">@Localizer["Titles and Terms"]</label>*@
-            <select asp-for="TitleId" class="form-control" asp-items="@ViewBag.Params"></select>
-
-        </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label asp-for="MtdCpqProposal.PreparedFor" class="control-label"></label>
-                        <input asp-for="MtdCpqProposal.PreparedFor" class="form-control" />
-                        <span asp-validation-for="MtdCpqProposal.PreparedFor" class="text-danger"></span>
-                    </div>
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="MtdCpqProposal.TitleName" class="control-label"></label>
-                        <input asp-for="MtdCpqProposal.TitleName" class="form-control" />
-                        <span asp-validation-for="MtdCpqProposal.TitleName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="MtdCpqProposal.TitleNote" class="control-label"></label>
-                        <textarea asp-for="MtdCpqProposal.TitleNote" class="form-control"></textarea>
-                        <span asp-validation-for="MtdCpqProposal.TitleNote" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label asp-for="MtdCpqProposal.Description" class="control-label"></label>
-                        <textarea asp-for="MtdCpqProposal.Description" class="form-control" rows="9"></textarea>
-                        <span asp-validation-for="MtdCpqProposal.Description" class="text-danger"></span>
-                    </div>
-                </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MtdCpqProposal.TitleName" class="control-label"></label>
+                <input asp-for="MtdCpqProposal.TitleName" class="form-control" />
+                <span asp-validation-for="MtdCpqProposal.TitleName" class="text-danger"></span>
             </div>
-    </form>
+            <div class="form-group">
+                <label asp-for="MtdCpqProposal.TitleNote" class="control-label"></label>
+                <textarea asp-for="MtdCpqProposal.TitleNote" class="form-control"></textarea>
+                <span asp-validation-for="MtdCpqProposal.TitleNote" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="form-group">
+                <label asp-for="MtdCpqProposal.Description" class="control-label"></label>
+                <textarea asp-for="MtdCpqProposal.Description" class="form-control" rows="9"></textarea>
+                <span asp-validation-for="MtdCpqProposal.Description" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

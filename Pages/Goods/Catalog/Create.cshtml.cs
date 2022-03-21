@@ -32,7 +32,6 @@ namespace Mtd.Cpq.Manager.Pages.Goods.Catalog
         }
 
 
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -43,6 +42,8 @@ namespace Mtd.Cpq.Manager.Pages.Goods.Catalog
             MTDImgSModify imgSModify = await MTDImgSelector.ImageModifyAsync("1", Request);
             MtdCpqCatalog.Image = imgSModify.Image;
             MtdCpqCatalog.Id = Guid.NewGuid().ToString();
+            MtdCpqCatalog.IdNumber ??= Guid.NewGuid().ToString().Substring(0, 8);
+            MtdCpqCatalog.Name ??= "Catalog Name";
             _context.MtdCpqCatalog.Add(MtdCpqCatalog);
             await _context.SaveChangesAsync();
 

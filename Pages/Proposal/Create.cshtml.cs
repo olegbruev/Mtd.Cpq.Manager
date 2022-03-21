@@ -44,7 +44,9 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
                 PreparedFor = pf,
                 TitleName = tname,
                 TitleNote = tnote,
-                Description = ds
+                Description = ds,
+                PreparedBy = string.Empty,
+                
             };
 
             Filter = filter;
@@ -66,8 +68,7 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
                 var defaultList = await queryAccess.Select(x => new { x.Id, Name = $"{x.Name} {x.PreparedBy}" }).ToListAsync();
                 if (defaultList.Count > 0) { defaultList = defaultList.OrderBy(x => x.Name).ToList(); }
                 all.AddRange(defaultList);   
-            }
-        
+            }        
 
             ViewData["Params"] = new SelectList(all, "Id", "Name");
             return Page();
@@ -90,7 +91,7 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
             await _context.SaveChangesAsync();
             _context.Entry(dc).State = EntityState.Detached;
 
-            if (titles == null) { return NotFound(); }
+            if (titles == null) { return RedirectToPage("./Create"); }
 
             WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
 
@@ -106,6 +107,10 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
             MtdCpqProposal.DateCreation = DateTime.Now;
             MtdCpqProposal.Language = titles.Language;
             MtdCpqProposal.LogoFlexible = titles.LogoFlexible;
+            MtdCpqProposal.PreparedFor ??= string.Empty;
+            MtdCpqProposal.TitleName ??= string.Empty;
+            MtdCpqProposal.TitleNote ??= string.Empty;
+            MtdCpqProposal.Description ??= string.Empty;
 
             MtdCpqProposal.CustomerCurrency = _config.Value.CultureInfo;
 
@@ -125,10 +130,10 @@ namespace Mtd.Cpq.Manager.Pages.Proposal
 
         public IActionResult OnPostFilterAsync(bool filter = false)
         {
-            string pf = MtdCpqProposal.PreparedFor;
-            string tname = MtdCpqProposal.TitleName;
-            string tnote = MtdCpqProposal.TitleNote;
-            string ds = MtdCpqProposal.Description;
+            string pf = MtdCpqProposal.PreparedFor ?? string.Empty;
+            string tname = MtdCpqProposal.TitleName ?? string.Empty;
+            string tnote = MtdCpqProposal.TitleNote ?? string.Empty;
+            string ds = MtdCpqProposal.Description ?? string.Empty;
 
             return RedirectToPage("./Create", new { filter, pf,tname,tnote,ds });
         }
