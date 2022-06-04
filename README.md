@@ -1,5 +1,5 @@
 ﻿<p align="center">
-    <img src="http://ordermaker.org/imgs/logo-cpq.png"
+    <img src="./.github/logo-cpq.png"
         height="100%">
 </p>
 
@@ -21,7 +21,7 @@ This solution was originally intended to create complicated proposals related to
 
 ## Capabilities
 
-<img src="http://ordermaker.org/imgs/cpq-ring.png" align="right" width="350"> 
+<img src="./.github/cpq-ring.png" align="right" width="350"> 
      
 - A single list of goods or services, standard and uniformity of the definitions.
 - Import a price list from Excel and specify basic link rules.
