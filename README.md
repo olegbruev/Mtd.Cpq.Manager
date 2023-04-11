@@ -36,7 +36,7 @@ Link Items Rule Builder:
 
 ## How to start
 
-1. First of all, install the [MTD OrderMaker Server](https://github.com/olegbruev/OrderMakerServer).
+1. First of all, install the [MTD OrderMaker Server](https://github.com/olegbruev/OrderMakerServer). (⚠️ Strictly Version 2.1)
 3. Make sure the "CPQManagerLink" setting is "https://localhost:5003". If it doesn't, fix it and restart the app.
 4. Open the "Users" menu and the "Accounts" module (list of users) and make sure your account have CPQ Role is Administrator.
 5. Download the CPQ Manager [latest release](https://github.com/olegbruev/Mtd.Cpq.Manager/releases) in the publish.zip file archive.
